@@ -10,6 +10,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\DetailOrderController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 
@@ -52,6 +53,10 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::get('/orders/{order}/detail', [DetailOrderController::class, 'show']);
     Route::post('/orders/{order}/detail', [DetailOrderController::class, 'store'])->middleware('role:customer');
 
+    Route::get('/carts', [CartController::class, 'index'])->middleware('role:customer');
+    Route::post('/carts', [CartController::class, 'store'])->middleware('role:customer');
+    Route::post('/carts/{cart}', [CartController::class, 'update'])->middleware('role:customer');
+    Route::delete('/carts/{cart}', [CartController::class, 'destroy'])->middleware('role:customer');
 
     Route::get('/user', [UserController::class, 'index']);
     Route::post('/user/update', [UserController::class, 'update']);
