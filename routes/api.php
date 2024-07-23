@@ -8,6 +8,7 @@ use App\Http\Controllers\SizeController;
 use App\Http\Controllers\SolesController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CouponController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 
@@ -40,6 +41,12 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('/coupon', [CouponController::class, 'store'])->middleware('role:manager'); 
     Route::post('/coupon/{coupon}', [CouponController::class, 'update'])->middleware('role:manager'); 
     Route::delete('/coupon/{coupon}', [CouponController::class, 'destroy'])->middleware('role:manager'); 
+
+    Route::get('/orders', [OrderController::class, 'index']);
+    Route::get('/orders/{order}', [OrderController::class, 'show']);
+    Route::post('/orders', [OrderController::class, 'store'])->middleware('role:customer'); 
+    Route::post('/orders/{order}/pay', [OrderController::class, 'pay'])->middleware('role:manager'); 
+    Route::post('/orders/{order}/cancel', [OrderController::class, 'cancel'])->middleware('role:manager'); 
 
     Route::get('/user', [UserController::class, 'index']);
     Route::post('/user/update', [UserController::class, 'update']);

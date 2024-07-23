@@ -8,4 +8,29 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'order_code',
+        'user_id',
+        'address',
+        'phone',
+        'payment',
+        'total_amount',
+        'status',
+        'coupon_id'
+    ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($order) {
+            $order->order_code = self::generateOrderCode();
+        });
+    }
+
+    private static function generateOrderCode()
+    {
+        return strtoupper(bin2hex(random_bytes(7))); // Tạo 14 ký tự ngẫu nhiên gồm số và chữ viết hoa
+    }
 }
