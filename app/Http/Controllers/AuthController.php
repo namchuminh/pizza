@@ -11,9 +11,9 @@ use App\Models\User;
 class AuthController extends Controller
 {
     // Thời gian sống của access token (ví dụ: 15 phút)
-    private $accessTokenTTL = 15; // minutes
-    // Thời gian sống của refresh token (ví dụ: 7 ngày)
-    private $refreshTokenTTL = 7; // days
+    private $accessTokenTTL = 1; // minutes
+    // Thời gian sống của refresh token (ví dụ: 3 ngày)
+    private $refreshTokenTTL = 24 * 60 * 3; // 3 days
 
     // Đăng nhập và tạo access token và refresh token
     public function login(Request $request)
