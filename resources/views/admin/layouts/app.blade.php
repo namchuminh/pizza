@@ -28,7 +28,11 @@
     <link rel="stylesheet" href="{{ asset('plugins/summernote/summernote-bs4.css') }}">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-    
+    <script>
+      if (!localStorage.getItem('access_token')) {
+        window.location.href = '{{ route('admin.login') }}';
+      }
+    </script>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -42,8 +46,6 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
             </ul>
-
-
         </nav>
         <!-- /.navbar -->
 
@@ -74,6 +76,100 @@
                         </li>
 
                         <li class="nav-header">QUẢN LÝ MÓN ĂN</li>
+                        
+                        <li class="nav-item has-treeview">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fa-solid fas fa-pizza-slice"></i>
+                                <p>
+                                    Bánh Pizza
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.product.index') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Danh Sách</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.product.create') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Thêm Mới</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item has-treeview">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fa-solid fas fa-compress"></i>
+                                <p>
+                                    Kích Thước
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.size.index') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Danh Sách</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.size.create') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Thêm Mới</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item has-treeview">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fa-solid fas fa-border-style"></i>
+                                <p>
+                                    Viền Bánh
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.border.index') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Danh Sách</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.border.create') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Thêm Mới</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item has-treeview">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fa-solid fas fa-window-minimize"></i>
+                                <p>
+                                    Đế Bánh
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.soles.index') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Danh Sách</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.soles.create') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Thêm Mới</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-header">QUẢN LÝ CỬA HÀNG</li>
                         <li class="nav-item has-treeview">
                             <a href="{{ route('admin.category.index') }}" class="nav-link">
                                 <i class="nav-icon fa-solid fa-layer-group"></i>
@@ -98,51 +194,37 @@
                             </ul>
                         </li>
                         <li class="nav-item has-treeview">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fa-solid fa-utensils"></i>
+                            <a href="{{ route('admin.coupon.index') }}" class="nav-link">
+                                <i class="nav-icon fa-solid fa-newspaper"></i>
                                 <p>
-                                    Món Ăn
+                                    Mã Giảm Giá
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ route('admin.food.index') }}" class="nav-link">
+                                    <a href="{{ route('admin.coupon.index') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Danh Sách</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ route('admin.food.create') }}" class="nav-link">
+                                    <a href="{{ route('admin.coupon.create') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Thêm Mới</p>
                                     </a>
                                 </li>
                             </ul>
                         </li>
-                        <li class="nav-header">QUẢN LÝ CỬA HÀNG</li>
+
+                        <li class="nav-header">QUẢN LÝ BÁN HÀNG</li>
                         <li class="nav-item has-treeview">
-                            <a href="{{ route('admin.news.index') }}" class="nav-link">
-                                <i class="nav-icon fa-solid fa-newspaper"></i>
+                            <a href="{{ route('admin.order.index') }}" class="nav-link">
+                                <i class="nav-icon fa-solid fa-clipboard-list"></i>
                                 <p>
-                                    Tin Tức
-                                    <i class="right fas fa-angle-left"></i>
+                                    Hóa Đơn
                                 </p>
                             </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.news.index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Danh Sách</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.news.create') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Thêm Mới</p>
-                                    </a>
-                                </li>
-                            </ul>
                         </li>
                         <li class="nav-item has-treeview">
                             <a href="{{ route('admin.customer.index') }}" class="nav-link">
@@ -152,70 +234,7 @@
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item has-treeview">
-                            <a href="{{ route('admin.contact.index') }}" class="nav-link">
-                                <i class="nav-icon fa-solid fa-address-book"></i>
-                                <p>
-                                    Liên Hệ
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-header">QUẢN LÝ BÁN HÀNG</li>
-                        <li class="nav-item has-treeview">
-                            <a href="{{ route('admin.table.index') }}" class="nav-link">
-                                <i class="nav-icon fa-solid fa-table"></i>
-                                <p>
-                                    Bàn Ăn
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.table.index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Danh Sách</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.table.create') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Thêm Mới</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item has-treeview">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fa-solid fa-clipboard-list"></i>
-                                <p>
-                                    Hóa Đơn
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.order.index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Danh Sách</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('admin.order.create') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Thêm Mới</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
                         <li class="nav-header">CÀI ĐẶT CHUNG</li>
-                        <li class="nav-item has-treeview">
-                            <a href="{{ route('admin.config.index') }}" class="nav-link">
-                                <i class="nav-icon fa-solid fa-gear"></i>
-                                <p>
-                                    Cấu Hình
-                                </p>
-                            </a>
-                        </li>
                         <li class="nav-item has-treeview">
                             <a href="{{ route('admin.profile.index') }}" class="nav-link">
                                 <i class="nav-icon fa-solid fa-lock"></i>
@@ -225,7 +244,7 @@
                             </a>
                         </li>
                         <li class="nav-item has-treeview">
-                            <a href="{{ route('admin.logout') }}" class="nav-link">
+                            <a href="#" class="nav-link">
                                 <i class="nav-icon fa-solid fa-right-from-bracket"></i>
                                 <p>
                                     Đăng Xuất
