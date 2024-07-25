@@ -120,9 +120,14 @@ class UserController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        $User->status = 0;
-        $User->save();
-
-        return response()->json(['message' => 'User blocked successfully']);
+        if($User->status == 0){
+            $User->status = 1;
+            $User->save();
+            return response()->json(['user' => $User]);
+        }else{
+            $User->status = 0;
+            $User->save();
+            return response()->json(['user' => $User]);
+        }
     }
 }

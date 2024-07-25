@@ -62,6 +62,7 @@ class AuthController extends Controller
 
             return response()->json([
                 'access_token' => $newAccessToken,
+                'refresh_token' => $refreshToken,
                 'token_type' => 'Bearer',
                 'expires_in' => $this->accessTokenTTL * 60
             ]);
