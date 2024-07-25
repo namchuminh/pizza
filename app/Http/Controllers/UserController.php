@@ -62,6 +62,16 @@ class UserController extends Controller
         return response()->json($User);
     }
 
+    public function profile()
+    {
+        $id = auth()->user()->id;
+        $User = User::find($id);
+        if (!$User) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+        return response()->json($User);
+    }
+
     // Cập nhật thông tin customer (có cả đổi mật khẩu)
     public function update(Request $request)
     {
@@ -73,11 +83,10 @@ class UserController extends Controller
 
         // Xác thực dữ liệu
         $validatedData = $request->validate([
-            'name' => 'nullable|string|max:255',
-            'email' => 'nullable|string|email|max:255|unique:users,email,' . auth()->user()->id,
-            'password' => 'nullable|string|min:4',
-            'phone' => 'nullable|string|max:15',
-            'address' => 'nullable|string|max:255'
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . auth()->user()->id,
+            'phone' => 'required|string|max:15',
+            'address' => 'required|string|max:255'
         ]);
 
         // Cập nhật mật khẩu nếu có
