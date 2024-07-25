@@ -148,7 +148,7 @@
 
         function refreshToken() {
             return $.ajax({
-                url: `http://127.0.0.1:8000/api/auth/refresh`,
+                url: `{{ $api_url }}refresh`,
                 method: 'POST',
                 data: {
                     'refresh_token': localStorage.getItem('refresh_token')
