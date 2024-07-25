@@ -24,6 +24,10 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
+                    <div class="card-header d-flex">
+                        <input id="search-input" class="form-control col-md-2" type="text" placeholder="Tên loại Pizza">
+                        <button id="search-button" class="btn btn-primary ml-2 timkiem">Tìm Kiếm</button>
+                    </div>
                     <!-- /.card-header -->
                     <div class="card-body table-responsive p-0">
                         <table class="table table-hover">
@@ -59,19 +63,21 @@
 @section('script')
 <script>
     $(document).ready(function() {
-        let currentPage = 1;
-        const perPage = 10; // Number of items per page
+        var currentPage = 1;
+        var currentSearch = '';
 
-        function fetchData(page) {
+        function fetchData(page, search = '') {
             $.ajax({
-                url: `{{ $api_url }}categories?page=${page}`,
+                url: `{{ $api_url }}categories?page=${page}&search=${search}`,
                 method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                },
                 success: function(response) {
-
                     // Clear the table body
                     $('tbody').empty();
 
-                    let rowNumber = (page - 1) * perPage + 1;
+                    let rowNumber = (page - 1) * response.per_page + 1;
 
                     // Populate the table with data
                     response.data.forEach(category => {
@@ -96,7 +102,7 @@
                     response.links.forEach(link => {
                         if (link.url) {
                             $('.pagination').append(`
-                                <li class="page-item"><a class="page-link" href="#" data-url="${link.url}">${link.label}</a></li>
+                                <li class="page-item ${link.active ? 'active' : ''}"><a class="page-link" href="#" data-url="${link.url}">${link.label}</a></li>
                             `);
                         } else {
                             $('.pagination').append(`
@@ -110,15 +116,7 @@
                         event.preventDefault();
                         const url = $(this).data('url');
                         const page = new URL(url).searchParams.get('page');
-                        fetchData(page);
-                    });
-
-                    // Handle pagination click events
-                    $('.page-link').on('click', function(event) {
-                        event.preventDefault();
-                        const url = $(this).data('url');
-                        const page = new URL(url).searchParams.get('page');
-                        fetchData(page);
+                        fetchData(page, currentSearch);
                     });
 
                     // Handle delete button click events
@@ -129,7 +127,39 @@
                             deleteAction(id);
                         }
                     });
+                },
+                error: function(xhr) {
+                    if (xhr.status === 401) {
+                        refreshToken().done(function() {
+                            fetchData(page, search);
+                        });
+                    } else {
+                        toastr.options = {
+                            closeButton: true,
+                            progressBar: true,
+                            positionClass: 'toast-top-right',
+                            timeOut: 5000
+                        };
+                        toastr.error('Lấy danh sách chuyên mục thất bại!', 'Thất Bại');
+                    }
                 }
+            });
+        }
+
+        function refreshToken() {
+            return $.ajax({
+                url: `http://127.0.0.1:8000/api/auth/refresh`,
+                method: 'POST',
+                data: {
+                    'refresh_token': localStorage.getItem('refresh_token')
+                }
+            }).done(function(response) {
+                localStorage.setItem('access_token', response.access_token);
+                localStorage.setItem('refresh_token', response.refresh_token);
+            }).fail(function(xhr) {
+                localStorage.removeItem('access_token');
+                localStorage.removeItem('refresh_token');
+                window.location.href = '/login'; // Replace with your login route
             });
         }
 
@@ -141,12 +171,11 @@
                     'Authorization': `Bearer ${localStorage.getItem('access_token')}`
                 },
                 success: function() {
-                    fetchData(currentPage); // Reload the categories
+                    fetchData(currentPage, currentSearch); // Reload the categories
                 },
                 error: function(xhr) {
                     if (xhr.status === 401) {
                         refreshToken().done(function() {
-                            // Retry the delete request with the new token
                             deleteAction(id);
                         });
                     } else {
@@ -162,24 +191,15 @@
             });
         }
 
-        function refreshToken() {
-            return $.ajax({
-                url: `{{ $api_url }}refresh`,
-                method: 'POST',
-                data: {
-                    'refresh_token': localStorage.getItem('refresh_token')
-                }
-            }).done(function(response) {
-                localStorage.setItem('access_token', response.access_token);
-            }).fail(function(xhr) {
-                localStorage.removeItem('access_token');
-                localStorage.removeItem('refresh_token');
-                window.location.href = '{{ route('admin.login') }}'; // Replace with your login route
-            });
-        }
+        $('#search-button').on('click', function(event) {
+            event.preventDefault();
+            currentSearch = $('#search-input').val();
+            currentPage = 1; // Reset to the first page
+            fetchData(currentPage, currentSearch);
+        });
 
         // Initial fetch
-        fetchData(currentPage);
+        fetchData(currentPage, currentSearch);
     });
 </script>
 @endsection

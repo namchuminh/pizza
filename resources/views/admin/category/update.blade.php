@@ -207,7 +207,7 @@
 	            };
 	            toastr.error('Vui lòng nhập tên chuyên mục!', 'Thất Bại');
             }else{
-                $("#duongdan").val(createSlug($(".tenchinh").val()))
+                $("#slug").val(createSlug($(".tenchinh").val()))
             }
         })
     });

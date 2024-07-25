@@ -169,7 +169,7 @@
                             <a href="{{ route('admin.category.index') }}" class="nav-link">
                                 <i class="nav-icon fa-solid fa-layer-group"></i>
                                 <p>
-                                    Loại Món
+                                    Loại Bánh Pizza
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
