@@ -16,7 +16,7 @@ class ProductController extends Controller
         $perPage = $request->query('per_page', 10); // Mặc định là 10 sản phẩm mỗi trang
 
         // Xây dựng query để tìm kiếm và phân trang
-        $query = Product::query();
+        $query = Product::with('category');
 
         if ($search) {
             $query->where('name', 'like', "%{$search}%")
@@ -65,7 +65,7 @@ class ProductController extends Controller
         if (!$product) {
             return response()->json(['error' => 'Product not found'], 404);
         }
-        return response()->json($id);
+        return response()->json($product);
     }
 
     // Cập nhật thông tin sản phẩm
