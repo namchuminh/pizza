@@ -18,4 +18,16 @@ class ProductController extends Controller
     public function update(){
         return view('admin.product.update');
     }
+
+    public function size(){
+        return view('admin.product.size');
+    }
+
+    public function border(){
+        return view('admin.product.border');
+    }
+
+    public function soles(){
+        return view('admin.product.soles');
+    }
 }

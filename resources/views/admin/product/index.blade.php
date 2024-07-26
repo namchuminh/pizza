@@ -98,9 +98,9 @@
                                 <td>${sale_price.toLocaleString('vi-VN')}đ</td>
                                 <td>${item.quantity} cái</td>
                                 <td>
-                                    <a class="btn btn-default" href="">Kích Thước</a>
-                                    <a class="btn btn-default" href="">Viền Bánh</a>
-                                    <a class="btn btn-default" href="">Đế Bánh</a>
+                                    <a class="btn btn-default" href="{{ route('admin.product.size') }}/?id=${item.id}">Kích Thước</a>
+                                    <a class="btn btn-default" href="{{ route('admin.product.border') }}/?id=${item.id}">Viền Bánh</a>
+                                    <a class="btn btn-default" href="{{ route('admin.product.soles') }}/?id=${item.id}">Đế Bánh</a>
                                 </td>
                                 <td>
                                     <a href="{{ route('admin.product.update') }}/?id=${item.id}" class="btn btn-primary">Sửa</a>
