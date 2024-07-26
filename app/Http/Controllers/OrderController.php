@@ -31,17 +31,18 @@ class OrderController extends Controller
 
             return response()->json($orders);
         }else{
-            // Lấy giá trị tìm kiếm và phân trang từ query parameters
             $search = $request->query('search');
             $perPage = $request->query('per_page', 10); // Mặc định là 10 orders mỗi trang
 
             // Xây dựng query để tìm kiếm và phân trang
-            $query = Order::query();
+            $query = Order::with('user'); // Thêm with('user') để tải thông tin của User liên quan
 
             if ($search) {
-                $query->where('order_code', 'like', "%{$search}%")
+                $query->where(function ($q) use ($search) {
+                    $q->where('order_code', 'like', "%{$search}%")
                     ->orWhere('address', 'like', "%{$search}%")
                     ->orWhere('phone', 'like', "%{$search}%");
+                });
             }
 
             $orders = $query->paginate($perPage);
@@ -73,7 +74,7 @@ class OrderController extends Controller
     // Lấy thông tin một order cụ thể
     public function show($id)
     {
-        $order = Order::find($id);
+        $order = Order::with('user')->with('coupon')->find($id);
         if (!$order) {
             return response()->json(['error' => 'Order not found'], 404);
         }
@@ -97,6 +98,30 @@ class OrderController extends Controller
         $order->update(['status' => 0]);
 
         return response()->json(['message' => 'Order cancelled successfully']);
+    }
+
+    public function status($id)
+    {
+        $order = Order::find($id);
+        if (!$order) {
+            return response()->json(['error' => 'Order not found'], 404);
+        }
+
+        if($order->id == 0){
+            return response()->json(['error' => 'Unauthorized']);
+        }
+
+        $status = $order->status + 1;
+
+        if($status >= 4){
+            return response()->json(['error' => 'Unauthorized']);
+        }
+
+        $order->status = $status;
+
+        $order->save();
+
+        return response()->json(['status' => $status]);
     }
 
     // Xác nhận thanh toán đơn hàng (cập nhật payment = 1)

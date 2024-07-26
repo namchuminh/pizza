@@ -49,6 +49,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('/orders', [OrderController::class, 'store'])->middleware('role:customer'); 
     Route::post('/orders/{order}/pay', [OrderController::class, 'pay'])->middleware('role:manager'); 
     Route::post('/orders/{order}/cancel', [OrderController::class, 'cancel'])->middleware('role:manager'); 
+    Route::post('/orders/{order}/status', [OrderController::class, 'status'])->middleware('role:manager'); 
 
     Route::get('/orders/{order}/detail', [DetailOrderController::class, 'show']);
     Route::post('/orders/{order}/detail', [DetailOrderController::class, 'store'])->middleware('role:customer');

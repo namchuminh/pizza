@@ -17,4 +17,8 @@ class DetailOrder extends Model
         'soles',
         'quantity'
     ];
+
+    public function product(){
+        return $this->belongsTo(Product::class);
+    }
 }

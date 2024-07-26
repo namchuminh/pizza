@@ -20,7 +20,9 @@ class DetailOrderController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        $detailOrders = DetailOrder::find($order->id);
+        $detailOrders = DetailOrder::with('product')
+            ->where('order_id', $order->id)
+            ->get();
 
         return response()->json($detailOrders);
     }
@@ -35,8 +37,6 @@ class DetailOrderController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        $validatedData['order_id'] = $order_id;
-
         $validatedData = $request->validate([
             'product_id' => 'required|exists:products,id',
             'size' => 'required|string|max:255',
@@ -45,6 +45,8 @@ class DetailOrderController extends Controller
             'quantity' => 'required|integer|min:1',
         ]);
 
+        $validatedData['order_id'] = $order_id;
+        
         // Tạo mới DetailOrder
         $detailOrder = DetailOrder::create($validatedData);
 
