@@ -17,12 +17,12 @@ class UserController extends Controller
         // Xây dựng query để tìm kiếm và phân trang
         $query = User::where('role_id', 3)
             ->leftJoin('customers', 'users.id', '=', 'customers.user_id')
-            ->select('users.*', 'customers.phone', 'customers.address');
+            ->select('users.*', 'customers.phone', 'customers.address', 'customers.name');
 
         if ($search) {
             $query->where(function ($q) use ($search) {
-                $q->where('users.name', 'like', "%{$search}%")
-                ->orWhere('users.email', 'like', "%{$search}%")
+                $q->where('users.email', 'like', "%{$search}%")
+                ->orWhere('customers.name', 'like', "%{$search}%")
                 ->orWhere('customers.phone', 'like', "%{$search}%")
                 ->orWhere('customers.address', 'like', "%{$search}%");
             });

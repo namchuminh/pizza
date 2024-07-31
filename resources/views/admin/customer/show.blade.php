@@ -85,7 +85,7 @@
                     'Authorization': `Bearer ${localStorage.getItem('access_token')}`
                 },
                 success: function(response) {
-                    $('#name').val(response.name);
+                    $('#name').val(response.customer.name);
                     $('#email').val(response.email);
                     $('#phone').val(response.customer.phone);
                     $('#address').val(response.customer.address);
