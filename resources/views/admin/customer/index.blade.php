@@ -38,7 +38,6 @@
                                     <th>Số Điện Thoại</th>
                                     <th>Email</th>
                                     <th>Địa Chỉ</th>
-                                    <th>Phân Quyền</th>
                                     <th>Trạng Thái</th>
                                     <th>Hành Động</th>
                                 </tr>
@@ -84,18 +83,7 @@
 
                     // Populate the table with data
                     response.data.forEach(item => {
-                        let roleText;
                         let statusText;
-
-                        if (item.role === "manager") {
-                            roleText = "Quản Lý";
-                        } else if (item.role === "customer") {
-                            roleText = "Khách Hàng";
-                        } else if (item.role === "eeployment") {
-                            roleText = "Nhân Viên";
-                        } else {
-                            roleText = item.role; 
-                        }
 
                         if (item.status === 0) {
                             statusText = "Bị Cấm";
@@ -106,10 +94,9 @@
                                     <td>${item.phone}</td>
                                     <td>${item.email}</td>
                                     <td>${item.address}</td>
-                                    <td>${roleText}</td>
                                     <td>${statusText}</td>
                                     <td>
-                                        <a href="{{ route('admin.user.show') }}/?id=${item.id}" class="btn btn-primary">Cho Hoạt Động</a>
+                                        <a href="{{ route('admin.customer.show') }}/?id=${item.id}" class="btn btn-primary">Cho Hoạt Động</a>
                                     </td>
                                 </tr>
                             `);
@@ -122,10 +109,9 @@
                                     <td>${item.phone}</td>
                                     <td>${item.email}</td>
                                     <td>${item.address}</td>
-                                    <td>${roleText}</td>
                                     <td>${statusText}</td>
                                     <td>
-                                        <a href="{{ route('admin.user.show') }}/?id=${item.id}" class="btn btn-danger">Cấm Người Dùng</a>
+                                        <a href="{{ route('admin.customer.show') }}/?id=${item.id}" class="btn btn-danger">Cấm Khách Hàng</a>
                                     </td>
                                 </tr>
                             `);

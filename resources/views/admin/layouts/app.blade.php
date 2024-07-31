@@ -24,9 +24,9 @@
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     <script>
-      if (!localStorage.getItem('access_token')) {
-        window.location.href = '{{ route('admin.login') }}';
-      }
+        if (!localStorage.getItem('access_token')) {
+            window.location.href = '{{ route('admin.login') }}';
+        }
     </script>
 </head>
 
@@ -222,10 +222,10 @@
                             </a>
                         </li>
                         <li class="nav-item has-treeview">
-                            <a href="{{ route('admin.user.index') }}" class="nav-link">
+                            <a href="{{ route('admin.customer.index') }}" class="nav-link">
                                 <i class="nav-icon fa-solid fa-user"></i>
                                 <p>
-                                    Người Dùng
+                                    Khách Hàng
                                 </p>
                             </a>
                         </li>

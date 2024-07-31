@@ -53,17 +53,10 @@
                                     id="address" name="address" disabled>
                             </div>
                         </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="ten">Phân Quyền</label>
-                                <input type="text" class="form-control"
-                                    id="role" name="role" disabled>
-                            </div>
-                        </div>
                     </div>
                     <div class="d-flex">
-                        <a class="btn btn-success mr-2" href="{{ route('admin.user.index') }}">Quay Lại</a>
-                        <button type="submit" class="btn btn-danger ban" style="display: none;">Cấm Người Dùng</button>
+                        <a class="btn btn-success mr-2" href="{{ route('admin.customer.index') }}">Quay Lại</a>
+                        <button type="submit" class="btn btn-danger ban" style="display: none;">Cấm Khách Hàng</button>
                         <button type="submit" class="btn btn-primary unban" style="display: none;">Cho Hoạt Động</button>
                     </div>
                 </form>
@@ -94,20 +87,8 @@
                 success: function(response) {
                     $('#name').val(response.name);
                     $('#email').val(response.email);
-                    $('#phone').val(response.phone);
-                    $('#address').val(response.address);
-
-                    let roleText;
-                    if (response.role === "manager") {
-                        roleText = "Quản Lý";
-                    } else if (response.role === "customer") {
-                        roleText = "Khách Hàng";
-                    } else if (response.role === "eeployment") {
-                        roleText = "Nhân Viên";
-                    } else {
-                        roleText = response.role; 
-                    }
-                    $('#role').val(roleText);
+                    $('#phone').val(response.customer.phone);
+                    $('#address').val(response.customer.address);
 
                     if (response.status === 1) {
                         $(".ban").css('display', 'block');
@@ -123,7 +104,7 @@
                             fetchData();
                         });
                     } else {
-                        window.location.href = '{{ route('admin.user.index') }}';
+                        window.location.href = '{{ route('admin.customer.index') }}';
                     }
                 }
             });

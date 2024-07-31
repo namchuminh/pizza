@@ -8,10 +8,10 @@ use Illuminate\Http\Request;
 class UserController extends Controller
 {
     public function index(){
-        return view('admin.user.index');
+        return view('admin.customer.index');
     }
 
     public function show(){
-        return view('admin.user.show');
+        return view('admin.customer.show');
     }
 }

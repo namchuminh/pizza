@@ -32,8 +32,7 @@
   <div class="card">
     <div class="card-body login-card-body">
       <p class="login-box-msg">Đăng nhập để thực hiện chức năng</p>
-      <form method="post" action="{{ $api_url . 'login/' }}">
-        @csrf
+      <form>
         <div class="input-group mb-3">
           <input type="email" class="form-control" placeholder="Email" name="email">
           <div class="input-group-append">
@@ -94,7 +93,7 @@
           const formData = $(this).serialize();
 
           $.ajax({
-              url: $(this).attr('action'),
+              url: '{{ $api_url . 'login/' }}',
               method: 'POST',
               data: formData,
               success: function(response) {

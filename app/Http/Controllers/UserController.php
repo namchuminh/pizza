@@ -11,51 +11,32 @@ class UserController extends Controller
     // Lấy danh sách tất cả các Users với tìm kiếm và phân trang
     public function index(Request $request)
     {
-        if(auth()->user()->role == 'manager'){
-            // Lấy giá trị tìm kiếm và phân trang từ query parameters
-            $search = $request->query('search');
-            $perPage = $request->query('per_page', 10); // Mặc định là 10 User mỗi trang
+        $search = $request->query('search');
+        $perPage = $request->query('per_page', 10); // Mặc định là 10 customer mỗi trang
 
-            // Xây dựng query để tìm kiếm và phân trang
-            $query = User::query();
+        // Xây dựng query để tìm kiếm và phân trang
+        $query = User::where('role_id', 3)
+            ->leftJoin('customers', 'users.id', '=', 'customers.user_id')
+            ->select('users.*', 'customers.phone', 'customers.address');
 
-            if ($search) {
-                $query->where('name', 'like', "%{$search}%")
-                    ->orWhere('email', 'like', "%{$search}%")
-                    ->orWhere('phone', 'like', "%{$search}%")
-                    ->orWhere('address', 'like', "%{$search}%");
-            }
-
-            $Users = $query->paginate($perPage);
-
-            return response()->json($Users);
-        }else if(auth()->user()->role == "employee"){
-            // Lấy giá trị tìm kiếm và phân trang từ query parameters
-            $search = $request->query('search');
-            $perPage = $request->query('per_page', 10); // Mặc định là 10 customer mỗi trang
-
-            // Xây dựng query để tìm kiếm và phân trang
-            $query = User::where('role', 'customer');
-
-            if ($search) {
-                $query->where(function ($q) use ($search) {
-                    $q->where('name', 'like', "%{$search}%")
-                    ->orWhere('email', 'like', "%{$search}%")
-                    ->orWhere('phone', 'like', "%{$search}%")
-                    ->orWhere('address', 'like', "%{$search}%");
-                });
-            }
-
-            $customers = $query->paginate($perPage);
-
-            return response()->json($customers);
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('users.name', 'like', "%{$search}%")
+                ->orWhere('users.email', 'like', "%{$search}%")
+                ->orWhere('customers.phone', 'like', "%{$search}%")
+                ->orWhere('customers.address', 'like', "%{$search}%");
+            });
         }
+
+        $customers = $query->paginate($perPage);
+
+        return response()->json($customers);
     }
 
     // Lấy thông tin một User cụ thể
     public function show($id)
     {
-        $User = User::find($id);
+        $User = User::with('customer')->find($id);
         if (!$User) {
             return response()->json(['error' => 'User not found'], 404);
         }

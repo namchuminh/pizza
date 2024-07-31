@@ -59,7 +59,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('/carts/{cart}', [CartController::class, 'update'])->middleware('role:customer');
     Route::delete('/carts/{cart}', [CartController::class, 'destroy'])->middleware('role:customer');
 
-    Route::get('/user', [UserController::class, 'index']);
+    Route::get('/user', [UserController::class, 'index'])->middleware('role:manager');
     Route::get('/user/profile', [UserController::class, 'profile']);
     Route::post('/user/update', [UserController::class, 'update']);
     Route::post('/user/{user}/block', [UserController::class, 'block']);

@@ -49,8 +49,8 @@ Route::prefix('admin')->group(function () {
     Route::get('/coupon/create', [CouponController::class, 'create'])->name('admin.coupon.create');
     Route::get('/coupon/update', [CouponController::class, 'update'])->name('admin.coupon.update');
 
-    Route::get('/user', [UserController::class, 'index'])->name('admin.user.index');
-    Route::get('/user/show', [UserController::class, 'show'])->name('admin.user.show');
+    Route::get('/customer', [UserController::class, 'index'])->name('admin.customer.index');
+    Route::get('/customer/show', [UserController::class, 'show'])->name('admin.customer.show');
 
     Route::get('/order', [OrderController::class, 'index'])->name('admin.order.index');
     Route::get('/order/show', [OrderController::class, 'show'])->name('admin.order.show');
