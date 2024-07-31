@@ -145,19 +145,19 @@
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fa-solid fas fa-window-minimize"></i>
                                 <p>
-                                    Đế Bánh
+                                    Topping Bánh
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ route('admin.soles.index') }}" class="nav-link">
+                                    <a href="{{ route('admin.toppings.index') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Danh Sách</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ route('admin.soles.create') }}" class="nav-link">
+                                    <a href="{{ route('admin.toppings.create') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Thêm Mới</p>
                                     </a>

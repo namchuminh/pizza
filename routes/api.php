@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\BorderController;
 use App\Http\Controllers\SizeController;
-use App\Http\Controllers\SolesController;
+use App\Http\Controllers\ToppingController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\OrderController;
@@ -32,9 +32,9 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('/sizes/{size}', [SizeController::class, 'update'])->middleware('role:manager'); 
     Route::delete('/sizes/{size}', [SizeController::class, 'destroy'])->middleware('role:manager'); 
 
-    Route::post('/soles', [SolesController::class, 'store'])->middleware('role:manager'); 
-    Route::post('/soles/{sole}', [SolesController::class, 'update'])->middleware('role:manager'); 
-    Route::delete('/soles/{sole}', [SolesController::class, 'destroy'])->middleware('role:manager'); 
+    Route::post('/toppings', [ToppingController::class, 'store'])->middleware('role:manager'); 
+    Route::post('/toppings/{toppings}', [ToppingController::class, 'update'])->middleware('role:manager'); 
+    Route::delete('/toppings/{toppings}', [ToppingController::class, 'destroy'])->middleware('role:manager'); 
     
     Route::post('/categories', [CategoryController::class, 'store'])->middleware('role:manager'); 
     Route::post('/categories/{category}', [CategoryController::class, 'update'])->middleware('role:manager'); 
@@ -77,8 +77,8 @@ Route::get('/borders/{border}', [BorderController::class, 'show']);
 Route::get('/sizes', [SizeController::class, 'index']);
 Route::get('/sizes/{size}', [SizeController::class, 'show']);
 
-Route::get('/soles', [SolesController::class, 'index']);
-Route::get('/soles/{soles}', [SolesController::class, 'show']);
+Route::get('/toppings', [ToppingController::class, 'index']);
+Route::get('/toppings/{toppings}', [ToppingController::class, 'show']);
 
 Route::get('/categories', [CategoryController::class, 'index']);
 Route::get('/categories/{category}', [CategoryController::class, 'show']);

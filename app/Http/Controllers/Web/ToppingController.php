@@ -5,17 +5,17 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class SolesController extends Controller
+class ToppingController extends Controller
 {
     public function index(){
-        return view('admin.soles.index');
+        return view('admin.toppings.index');
     }
 
     public function create(){
-        return view('admin.soles.create');
+        return view('admin.toppings.create');
     }
 
     public function update(){
-        return view('admin.soles.update');
+        return view('admin.toppings.update');
     }
 }

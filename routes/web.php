@@ -7,7 +7,7 @@ use App\Http\Controllers\Web\CategoryController;
 use App\Http\Controllers\Web\ProductController;
 use App\Http\Controllers\Web\SizeController;
 use App\Http\Controllers\Web\BorderController;
-use App\Http\Controllers\Web\SolesController;
+use App\Http\Controllers\Web\ToppingController;
 use App\Http\Controllers\Web\CouponController;
 use App\Http\Controllers\Web\UserController;
 use App\Http\Controllers\Web\OrderController;
@@ -34,9 +34,9 @@ Route::prefix('admin')->group(function () {
     Route::get('/border/create', [BorderController::class, 'create'])->name('admin.border.create');
     Route::get('/border/update', [BorderController::class, 'update'])->name('admin.border.update');
 
-    Route::get('/soles', [SolesController::class, 'index'])->name('admin.soles.index');
-    Route::get('/soles/create', [SolesController::class, 'create'])->name('admin.soles.create');
-    Route::get('/soles/update', [SolesController::class, 'update'])->name('admin.soles.update');
+    Route::get('/toppings', [ToppingController::class, 'index'])->name('admin.toppings.index');
+    Route::get('/toppings/create', [ToppingController::class, 'create'])->name('admin.toppings.create');
+    Route::get('/toppings/update', [ToppingController::class, 'update'])->name('admin.toppings.update');
 
     Route::get('/product', [ProductController::class, 'index'])->name('admin.product.index');
     Route::get('/product/create', [ProductController::class, 'create'])->name('admin.product.create');

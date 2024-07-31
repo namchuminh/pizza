@@ -25,7 +25,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header d-flex">
-                        <input id="search-input" class="form-control col-md-2" type="text" placeholder="Tên đế bánh Pizza">
+                        <input id="search-input" class="form-control col-md-2" type="text" placeholder="Tên topping">
                         <button id="search-button" class="btn btn-primary ml-2 timkiem">Tìm Kiếm</button>
                     </div>
                     <!-- /.card-header -->
@@ -34,7 +34,8 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Tên Đế Bánh</th>
+                                    <th>Tên Topping</th>
+                                    <th>Giá Thêm</th>
                                     <th>Hành Động</th>
                                 </tr>
                             </thead>
@@ -66,7 +67,7 @@
 
         function fetchData(page, search = '') {
             $.ajax({
-                url: `{{ $api_url }}soles?page=${page}&search=${search}`,
+                url: `{{ $api_url }}toppings?page=${page}&search=${search}`,
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('access_token')}`
@@ -79,12 +80,14 @@
 
                     // Populate the table with data
                     response.data.forEach(item => {
+                        let price = Number(item.price);
                         $('tbody').append(`
                             <tr>
                                 <td>${rowNumber++}</td>
                                 <td>${item.name}</td>
+                                <td>+ ${price.toLocaleString('vi-VN')}đ</td>
                                 <td>
-                                    <a href="{{ route('admin.soles.update') }}/?id=${item.id}" class="btn btn-primary">Sửa</a>
+                                    <a href="{{ route('admin.toppings.update') }}/?id=${item.id}" class="btn btn-primary">Sửa</a>
                                     <a href="#" data-id="${item.id}" class="btn btn-danger delete-btn">Xóa</a>
                                 </td>
                             </tr>
@@ -119,7 +122,7 @@
                     $('.delete-btn').on('click', function(event) {
                         event.preventDefault();
                         const id = $(this).data('id');
-                        if (confirm('Bạn có chắc chắn muốn xóa đế bánh Pizza này?')) {
+                        if (confirm('Bạn có chắc chắn muốn xóa topping này?')) {
                             deleteAction(id);
                         }
                     });
@@ -136,7 +139,7 @@
                             positionClass: 'toast-top-right',
                             timeOut: 5000
                         };
-                        toastr.error('Lấy danh sách đế bánh Pizza thất bại!', 'Thất Bại');
+                        toastr.error('Lấy danh sách topping thất bại!', 'Thất Bại');
                     }
                 }
             });
@@ -161,7 +164,7 @@
 
         function deleteAction(id) {
             $.ajax({
-                url: `{{ $api_url }}soles/${id}`,
+                url: `{{ $api_url }}toppings/${id}`,
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('access_token')}`

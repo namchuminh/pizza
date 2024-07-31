@@ -1,17 +1,17 @@
 @extends('Admin.layouts.app')
-@section('title', 'Cập nhật đế bánh Pizza')
+@section('title', 'Thêm topping Pizza')
 @section('content')
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Quản Lý Đế Bánh Pizza</h1>
+                <h1>Quản Lý Topping</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Trang Chủ</a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('admin.soles.index') }}">Quản Lý Đế Bánh Pizza</a></li>
-                    <li class="breadcrumb-item active">Cập Nhật Đế Bánh Pizza</li>
+                    <li class="breadcrumb-item"><a href="{{ route('admin.toppings.index') }}">Quản Lý Topping</a></li>
+                    <li class="breadcrumb-item active">Thêm Topping</li>
                 </ol>
             </div>
         </div>
@@ -28,14 +28,21 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="ten">Tên Đế Bánh</label>
-                                <input type="text" class="form-control" id="name" placeholder="Đế bánh Pizza"
+                                <label for="ten">Tên Topping</label>
+                                <input type="text" class="form-control" id="name" placeholder="Tên topping"
                                     name="name">
                             </div>
                         </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="ten">Giá Thêm</label>
+                                <input type="number" class="form-control" id="price" placeholder="Giá tính thêm"
+                                    name="price">
+                            </div>
+                        </div>
                     </div>
-                    <a class="btn btn-success" href="{{ route('admin.soles.index') }}">Quay Lại</a>
-                    <button type="submit" class="btn btn-primary">Cập Nhật Đế Pizza</button>
+                    <a class="btn btn-success" href="{{ route('admin.toppings.index') }}">Quay Lại</a>
+                    <button type="submit" class="btn btn-primary">Thêm Topping</button>
                 </form>
             </div>
         </div>
@@ -45,41 +52,14 @@
 @section('script')
 <script>
     $(document).ready(function() {
-        var id = window.location.search.split('id=')[1];
-
-        function fetchData() {
-            $.ajax({
-                url: `{{ $api_url }}soles/${id}`,
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('access_token')}`
-                },
-                success: function(response) {
-                    $('#name').val(response.name);
-                },
-                error: function(xhr) {
-                    if (xhr.status === 401) {
-                        refreshToken().done(function() {
-                            // Retry the fetch data request with the new token
-                            fetchData();
-                        });
-                    } else {
-                        window.location.href = '{{ route('admin.soles.index') }}';
-                    }
-                }
-            });
-        }
-
-        fetchData();
-
         $('form').on('submit', function(event) {
             event.preventDefault(); // Ngăn không cho form gửi theo cách mặc định
 
             const formData = new FormData(this);
 
-            function update() {
+            function create() {
                 $.ajax({
-                    url: `{{ $api_url }}soles/${id}`,
+                    url: `{{ $api_url }}toppings/`,
                     type: 'POST',
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('access_token')}`
@@ -89,20 +69,20 @@
                     contentType: false,
                     processData: false,
                     success: function(response) {
+                        console.log(response)
                         toastr.options = {
                             closeButton: true,
                             progressBar: true,
                             positionClass: 'toast-top-right',
                             timeOut: 5000
                         };
-                        toastr.success('Cập nhật đế bánh Pizza thành công!', 'Thành Công');
-                        fetchData();
+                        window.location.href = '{{ route('admin.toppings.index') }}'
                     },
                     error: function(xhr) {
                         if (xhr.status === 401) {
                             refreshToken().done(function() {
                                 // Retry the update request with the new token
-                                update();
+                                create();
                             });
                         } else if (xhr.status === 422) {
                             var errors = xhr.responseJSON.errors;
@@ -126,7 +106,7 @@
                                 positionClass: 'toast-top-right',
                                 timeOut: 5000
                             };
-                            toastr.error('Cập nhật đế bánh Pizza thất bại!', 'Thất Bại');
+                            toastr.error('Thêm topping thất bại!', 'Thất Bại');
                         }
                     }
                 });
@@ -149,7 +129,7 @@
                 });
             }
 
-            update();
+            create();
         });
     });
 </script>
