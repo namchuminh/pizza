@@ -63,6 +63,7 @@
                 },
                 success: function(response) {
                     $('#name').val(response.name);
+                    $('#price').val(response.price);
                 },
                 error: function(xhr) {
                     if (xhr.status === 401) {

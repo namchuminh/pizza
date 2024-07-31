@@ -31,6 +31,7 @@ class BorderController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
+            'price' => 'required|int'
         ]);
 
         // Tạo mới border
@@ -61,6 +62,7 @@ class BorderController extends Controller
         // Xác thực dữ liệu
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
+            'price' => 'required|int'
         ]);
 
         // Cập nhật border
