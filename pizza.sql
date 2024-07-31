@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 20, 2024 at 06:41 PM
+-- Generation Time: Jul 31, 2024 at 08:44 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -30,6 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `borders` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL,
+  `price` int(11) NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -38,10 +39,11 @@ CREATE TABLE `borders` (
 -- Dumping data for table `borders`
 --
 
-INSERT INTO `borders` (`id`, `name`, `created_at`, `updated_at`) VALUES
-(1, 'Rounded', NULL, NULL),
-(2, 'Flat', NULL, NULL),
-(3, 'Pointed', NULL, NULL);
+INSERT INTO `borders` (`id`, `name`, `price`, `created_at`, `updated_at`) VALUES
+(1, 'Rounded', 0, NULL, NULL),
+(2, 'Flat', 0, NULL, NULL),
+(3, 'Tròn', 0, NULL, '2024-07-25 01:10:23'),
+(8, 'Rounded', 15000, '2024-07-31 11:15:33', '2024-07-31 11:16:23');
 
 -- --------------------------------------------------------
 
@@ -60,6 +62,13 @@ CREATE TABLE `carts` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `carts`
+--
+
+INSERT INTO `carts` (`id`, `user_id`, `product_id`, `size`, `border`, `soles`, `quantity`, `created_at`, `updated_at`) VALUES
+(1, 2, 9, 'Smaill', 'Rounder', 'Rubber', 3, '2024-07-23 08:02:09', '2024-07-23 08:03:26');
 
 -- --------------------------------------------------------
 
@@ -81,10 +90,9 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`id`, `name`, `image`, `slug`, `created_at`, `updated_at`) VALUES
-(2, 'Category 2', 'category2.jpg', 'category-2', NULL, NULL),
-(3, 'Category 3', 'category3.jpg', 'category-3', NULL, NULL),
-(11, 'abc', 'images/I3UtRGO9cCTw81UKelDqBzdjBNfCW0ShC74odBdl.jpg', 'ab-cd-e', '2024-07-20 07:58:36', '2024-07-20 07:58:36'),
-(12, 'abc1', 'images/QCoqbHWc5MCXptzzQWXGycwFmPlNUeqo5Y9ycAe3.jpg', 'ab-cd-e111', '2024-07-20 07:59:47', '2024-07-20 07:59:47');
+(2, 'Hải Sản', 'images/8UYMdhd435FGRY2YMHu2dPyH8gOpCEzUy9JVfMfV.jpg', 'hai-san', NULL, '2024-07-26 08:27:48'),
+(3, 'Category 3', 'images/cdLMa9UlQ0U6G3CZDqd42L0cP2hNpKKNPafwEnRB.jpg', 'category-3', NULL, '2024-07-24 04:27:21'),
+(14, 'Category 4', 'images/Ck7fnFicBCZo2l1bWLM2EDZQJd3NUeOAr2xxRlKK.jpg', 'category-4', '2024-07-25 00:28:21', '2024-07-25 00:28:21');
 
 -- --------------------------------------------------------
 
@@ -108,7 +116,31 @@ CREATE TABLE `coupons` (
 --
 
 INSERT INTO `coupons` (`id`, `code`, `description`, `value`, `quantity`, `expiry_date`, `created_at`, `updated_at`) VALUES
-(2, 'GIAMGIA21', 'Giảm giá 21%', 21, 5, '2024-11-14', '2024-07-20 08:18:19', '2024-07-20 08:18:19');
+(2, 'GIAMGIA22', 'Mã giảm giá lên đến 21%', 22, 5, '2024-11-16', '2024-07-20 08:18:19', '2024-07-26 08:28:44'),
+(3, 'GIAMGIA50', 'Mã khuyến mãi giảm giá lên đến 50%', 50, 15, '2024-07-26', '2024-07-25 00:37:51', '2024-07-25 08:24:02');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `customers`
+--
+
+CREATE TABLE `customers` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `phone` varchar(255) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `customers`
+--
+
+INSERT INTO `customers` (`id`, `user_id`, `phone`, `address`, `created_at`, `updated_at`) VALUES
+(2, 3, '0999888999', 'Hà Nội', '2024-07-31 17:48:15', '2024-07-31 17:48:18'),
+(3, 2, '0555666777', 'Hồ Chí Minh', '2024-07-31 18:44:22', '2024-07-31 18:44:22');
 
 -- --------------------------------------------------------
 
@@ -124,6 +156,36 @@ CREATE TABLE `detail_orders` (
   `border` varchar(255) NOT NULL,
   `soles` varchar(255) NOT NULL,
   `quantity` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `detail_orders`
+--
+
+INSERT INTO `detail_orders` (`id`, `order_id`, `product_id`, `size`, `border`, `soles`, `quantity`, `created_at`, `updated_at`) VALUES
+(1, 1, 9, 'Small', 'Round', 'Rubber', 2, '2024-07-25 22:55:53', '2024-07-25 22:55:53'),
+(2, 1, 10, 'Small', 'Round', 'Rubber', 2, '2024-07-25 22:56:06', '2024-07-25 22:56:06');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `employees`
+--
+
+CREATE TABLE `employees` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `phone` varchar(255) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  `position` varchar(255) NOT NULL,
+  `date_of_birth` date NOT NULL,
+  `id_card_number` varchar(255) NOT NULL,
+  `date_of_issue` date NOT NULL,
+  `place_of_issue` varchar(255) NOT NULL,
+  `start_date` date NOT NULL,
+  `salary` double NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -180,7 +242,11 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (19, '2024_07_19_154231_create_orders_table', 13),
 (20, '2024_07_19_154431_create_detail_orders_table', 14),
 (21, '2024_07_19_161739_add_coupon_id_to_orders_table', 15),
-(22, '2024_07_20_154815_add_status_user', 16);
+(22, '2024_07_20_154815_add_status_user', 16),
+(23, '2024_07_31_115023_create_roles_table', 17),
+(24, '2024_07_31_115422_create_customers_table', 18),
+(25, '2024_07_31_115917_create_employees_table', 19),
+(26, '2024_07_31_121031_add_role_id_to_users_table', 20);
 
 -- --------------------------------------------------------
 
@@ -201,6 +267,14 @@ CREATE TABLE `orders` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`id`, `order_code`, `user_id`, `address`, `phone`, `payment`, `total_amount`, `status`, `coupon_id`, `created_at`, `updated_at`) VALUES
+(1, 'A2B3108AC4C503', 2, 'Hà Nội', '0999888999', 1, 150000, 2, 3, '2024-07-23 05:09:43', '2024-07-31 06:01:29'),
+(2, 'C1D7C8B978B91C', 2, 'Hà Nội', '0999888999', 1, 150000, 1, NULL, '2024-07-23 05:10:09', '2024-07-25 10:58:04');
 
 -- --------------------------------------------------------
 
@@ -255,6 +329,16 @@ CREATE TABLE `products` (
   `category_id` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`id`, `name`, `short_description`, `detailed_description`, `original_price`, `sale_price`, `image`, `slug`, `quantity`, `tags`, `created_at`, `updated_at`, `category_id`) VALUES
+(9, 'Pizza 2', 'Mô tả ngắn', 'Mô tả dài', 15000, 10000, 'images/vQPtg4Oou2bi2wCZXU2uXjPzr2iJZYy1fdrt7EMm.jpg', 'pizza-21', 15, 'pizza1, bánh pizza', '2024-07-23 08:00:34', '2024-07-26 05:05:45', 14),
+(10, 'Pizza 3', 'Mô tả ngắn', 'Mô tả dài', 15000, 10000, 'images/Ue95s35KDQtWUaPRcFwYRUX51LdAyWI2QrLlTOUL.jpg', 'pizza-3', 15, 'pizza1, bánh pizza', '2024-07-23 08:00:57', '2024-07-23 08:00:57', 3),
+(12, 'Bánh Pizza giao diện', 'abcde', '<p>Để làm nên chiếc bánh pizza thì mình cần có các nguyên liệu chính như: <a href=\"https://www.bachhoaxanh.com/bot-da-dung-bot-mi\"><strong>Bột mì</strong></a><strong>, men nở, </strong><a href=\"https://www.bachhoaxanh.com/dau-an-dau-olive\"><strong>dầu oliu</strong></a><strong>.</strong> Phần làm nên hương vị của bánh chính là <strong>lớp </strong><a href=\"https://www.bachhoaxanh.com/gia-vi-nem-san-sot-ca-mi-y\"><strong>sốt cà chua</strong></a><strong> phủ lên trên đế bánh trước khi cho xúc xích, rau củ và cuối cùng chính là phủ lên lớp </strong><a href=\"https://www.bachhoaxanh.com/pho-mai-an/pho-mai-mozzarella-khoi-bottega-zelachi-goi-200g\"><strong>phô mai béo mozzarella</strong></a><strong>, </strong><a href=\"https://www.bachhoaxanh.com/pho-mai-an/pho-mai-bottega-zelachi-cheddar-goi-200g-16-mieng\"><strong>Cheddar</strong></a><strong>,...</strong></p><figure class=\"image\"><img style=\"aspect-ratio:762/429;\" src=\"https://cdn.tgdd.vn/Files/2021/12/07/1402760/tong-hop-cac-cach-lam-pizza-chi-can-o-nha-cung-co-the-thuong-thuc-202112070702477965.jpg\" alt=\"Nguyên liệu làm đế bánh pizza\" width=\"762\" height=\"429\"></figure><p><br>&nbsp;</p>', 15000, 13000, 'images/A8PFK2gN3AhWaAM7hvlgu2B3yWSNEapKfwvJhp3E.jpg', 'banh-pizza-giao-dien', 15, 'pizza, bánh pizza giao diện, pizza mới', '2024-07-26 05:04:04', '2024-07-26 05:05:55', 2),
+(13, 'Pizza Hải Sản', 'Bánh pizza hải sản thơm ngon lắm', '<p>Bánh pizza hải sản thơm ngon,Bánh pizza hải sản thơm ngon,Bánh pizza hải sản thơm ngon</p>', 29000, 25000, 'images/065LZp2rzU462TeAMx8t1hMqB7v1nxOpVivBgrNx.jpg', 'pizza-hai-san', 15, 'Hải Sản, Pizza.', '2024-07-26 08:26:47', '2024-07-26 08:27:07', 2);
+
 -- --------------------------------------------------------
 
 --
@@ -300,12 +384,35 @@ CREATE TABLE `product_sole` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `roles`
+--
+
+CREATE TABLE `roles` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `roles`
+--
+
+INSERT INTO `roles` (`id`, `name`, `created_at`, `updated_at`) VALUES
+(1, 'manager', '2024-07-31 12:04:42', '2024-07-31 12:04:42'),
+(2, 'employee', '2024-07-31 12:04:54', '2024-07-31 12:04:54'),
+(3, 'customer', '2024-07-31 12:05:05', '2024-07-31 12:05:05');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `sizes`
 --
 
 CREATE TABLE `sizes` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL,
+  `price` int(11) NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -314,37 +421,38 @@ CREATE TABLE `sizes` (
 -- Dumping data for table `sizes`
 --
 
-INSERT INTO `sizes` (`id`, `name`, `created_at`, `updated_at`) VALUES
-(1, 'Small', NULL, NULL),
-(2, 'Medium', NULL, NULL),
-(3, 'Large', NULL, NULL),
-(4, 'Extra Large', NULL, NULL),
-(5, 'Small', NULL, NULL),
-(6, 'Medium', NULL, NULL),
-(7, 'Large', NULL, NULL),
-(8, 'Extra Large', NULL, NULL);
+INSERT INTO `sizes` (`id`, `name`, `price`, `created_at`, `updated_at`) VALUES
+(5, '30mm', 15000, NULL, '2024-07-31 11:37:39'),
+(6, 'Medium 1', 0, NULL, '2024-07-25 01:02:25'),
+(7, 'Large', 0, NULL, NULL),
+(8, 'Extra Large', 0, NULL, NULL),
+(10, '15mm', 0, '2024-07-25 00:57:49', '2024-07-25 00:57:49'),
+(11, '50mm', 0, '2024-07-25 00:58:17', '2024-07-25 01:01:44'),
+(12, 'Rounded', 16000, '2024-07-31 11:08:30', '2024-07-31 11:09:58'),
+(13, 'Món Nhậu', 15000, '2024-07-31 11:08:33', '2024-07-31 11:08:33');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `soles`
+-- Table structure for table `toppings`
 --
 
-CREATE TABLE `soles` (
+CREATE TABLE `toppings` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL,
+  `price` int(11) NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `soles`
+-- Dumping data for table `toppings`
 --
 
-INSERT INTO `soles` (`id`, `name`, `created_at`, `updated_at`) VALUES
-(1, 'Rubber', NULL, NULL),
-(2, 'Leather', NULL, NULL),
-(3, 'Canvas', NULL, NULL);
+INSERT INTO `toppings` (`id`, `name`, `price`, `created_at`, `updated_at`) VALUES
+(1, 'Rubber', 0, NULL, NULL),
+(2, 'Leather', 16000, NULL, '2024-07-31 11:38:28'),
+(3, 'Canvas11', 15000, NULL, '2024-07-31 11:37:50');
 
 -- --------------------------------------------------------
 
@@ -354,13 +462,11 @@ INSERT INTO `soles` (`id`, `name`, `created_at`, `updated_at`) VALUES
 
 CREATE TABLE `users` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `role_id` bigint(20) UNSIGNED DEFAULT NULL,
   `name` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) NOT NULL,
-  `phone` varchar(255) DEFAULT NULL,
-  `address` varchar(255) DEFAULT NULL,
-  `role` enum('manager','employee','customer') NOT NULL,
   `status` int(11) NOT NULL DEFAULT 1,
   `remember_token` varchar(100) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -371,9 +477,10 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `phone`, `address`, `role`, `status`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Nguyễn Văn Z', 'admin@gmail.com', NULL, '$2y$10$CKH57DVV8LMl/TfSBPTsqOT51bFljZJdEXcSFp0/PxzaKGVsUofQq', '0555666777', 'Hà Nội', 'manager', 1, NULL, '2024-07-19 11:32:07', '2024-07-20 09:38:17'),
-(2, 'Nguyễn Văn B', 'nguyenvanb@gmail.com', NULL, '$2y$10$tkOwHK6UxxCCs19y5jX9x./Q7rYfva08JnAttEl7p/zZM/7jnI8AC', '0355666999', 'Hà Nội', 'customer', 1, NULL, '2024-07-20 16:13:26', '2024-07-20 09:35:06');
+INSERT INTO `users` (`id`, `role_id`, `name`, `email`, `email_verified_at`, `password`, `status`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Quản Trị Viên', 'admin@gmail.com', NULL, '$2y$10$sdgg8NAZ634FqCYb/D0t7uqM2ANCXg0n0xEPk4iy7k1lL4Fe.s14y', 1, NULL, '2024-07-19 11:32:07', '2024-07-25 02:47:23'),
+(2, 3, 'Nguyễn Văn B', 'nguyenvanb@gmail.com', NULL, '$2y$10$tkOwHK6UxxCCs19y5jX9x./Q7rYfva08JnAttEl7p/zZM/7jnI8AC', 1, NULL, '2024-07-20 16:13:26', '2024-07-26 08:29:37'),
+(3, 3, 'Khách Hàng', 'khachhang@gmail.com', NULL, '$2y$10$tkOwHK6UxxCCs19y5jX9x./Q7rYfva08JnAttEl7p/zZM/7jnI8AC', 1, NULL, '2024-07-31 17:38:06', '2024-07-31 10:58:05');
 
 --
 -- Indexes for dumped tables
@@ -408,12 +515,26 @@ ALTER TABLE `coupons`
   ADD UNIQUE KEY `coupons_code_unique` (`code`);
 
 --
+-- Indexes for table `customers`
+--
+ALTER TABLE `customers`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `customers_user_id_foreign` (`user_id`);
+
+--
 -- Indexes for table `detail_orders`
 --
 ALTER TABLE `detail_orders`
   ADD PRIMARY KEY (`id`),
   ADD KEY `detail_orders_order_id_foreign` (`order_id`),
   ADD KEY `detail_orders_product_id_foreign` (`product_id`);
+
+--
+-- Indexes for table `employees`
+--
+ALTER TABLE `employees`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `employees_user_id_foreign` (`user_id`);
 
 --
 -- Indexes for table `failed_jobs`
@@ -484,15 +605,22 @@ ALTER TABLE `product_sole`
   ADD KEY `product_sole_sole_id_foreign` (`sole_id`);
 
 --
+-- Indexes for table `roles`
+--
+ALTER TABLE `roles`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `roles_name_unique` (`name`);
+
+--
 -- Indexes for table `sizes`
 --
 ALTER TABLE `sizes`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `soles`
+-- Indexes for table `toppings`
 --
-ALTER TABLE `soles`
+ALTER TABLE `toppings`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -500,7 +628,8 @@ ALTER TABLE `soles`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `users_email_unique` (`email`);
+  ADD UNIQUE KEY `users_email_unique` (`email`),
+  ADD KEY `users_role_id_foreign` (`role_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -510,30 +639,42 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `borders`
 --
 ALTER TABLE `borders`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `carts`
 --
 ALTER TABLE `carts`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `coupons`
 --
 ALTER TABLE `coupons`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `customers`
+--
+ALTER TABLE `customers`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `detail_orders`
 --
 ALTER TABLE `detail_orders`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `employees`
+--
+ALTER TABLE `employees`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
@@ -546,13 +687,13 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -564,7 +705,7 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `product_border`
@@ -585,22 +726,28 @@ ALTER TABLE `product_sole`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `roles`
+--
+ALTER TABLE `roles`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `sizes`
 --
 ALTER TABLE `sizes`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
--- AUTO_INCREMENT for table `soles`
+-- AUTO_INCREMENT for table `toppings`
 --
-ALTER TABLE `soles`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+ALTER TABLE `toppings`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
@@ -614,11 +761,23 @@ ALTER TABLE `carts`
   ADD CONSTRAINT `carts_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
+-- Constraints for table `customers`
+--
+ALTER TABLE `customers`
+  ADD CONSTRAINT `customers_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
 -- Constraints for table `detail_orders`
 --
 ALTER TABLE `detail_orders`
   ADD CONSTRAINT `detail_orders_order_id_foreign` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `detail_orders_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `employees`
+--
+ALTER TABLE `employees`
+  ADD CONSTRAINT `employees_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `orders`
@@ -652,7 +811,13 @@ ALTER TABLE `product_size`
 --
 ALTER TABLE `product_sole`
   ADD CONSTRAINT `product_sole_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `product_sole_sole_id_foreign` FOREIGN KEY (`sole_id`) REFERENCES `soles` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `product_sole_sole_id_foreign` FOREIGN KEY (`sole_id`) REFERENCES `toppings` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `users`
+--
+ALTER TABLE `users`
+  ADD CONSTRAINT `users_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
