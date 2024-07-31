@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 31, 2024 at 08:44 PM
+-- Generation Time: Jul 31, 2024 at 10:19 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -128,6 +128,7 @@ INSERT INTO `coupons` (`id`, `code`, `description`, `value`, `quantity`, `expiry
 CREATE TABLE `customers` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `user_id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
   `phone` varchar(255) DEFAULT NULL,
   `address` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -138,9 +139,9 @@ CREATE TABLE `customers` (
 -- Dumping data for table `customers`
 --
 
-INSERT INTO `customers` (`id`, `user_id`, `phone`, `address`, `created_at`, `updated_at`) VALUES
-(2, 3, '0999888999', 'Hà Nội', '2024-07-31 17:48:15', '2024-07-31 17:48:18'),
-(3, 2, '0555666777', 'Hồ Chí Minh', '2024-07-31 18:44:22', '2024-07-31 18:44:22');
+INSERT INTO `customers` (`id`, `user_id`, `name`, `phone`, `address`, `created_at`, `updated_at`) VALUES
+(2, 3, 'Nguyễn Văn Khách', '0999888999', 'Hà Nội', '2024-07-31 17:48:15', '2024-07-31 17:48:18'),
+(3, 2, 'Nguyễn Văn Bánh', '0555666777', 'Hà Nội', '2024-07-31 18:44:22', '2024-07-31 13:18:16');
 
 -- --------------------------------------------------------
 
@@ -177,6 +178,7 @@ INSERT INTO `detail_orders` (`id`, `order_id`, `product_id`, `size`, `border`, `
 CREATE TABLE `employees` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `user_id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
   `phone` varchar(255) NOT NULL,
   `address` varchar(255) NOT NULL,
   `position` varchar(255) NOT NULL,
@@ -189,6 +191,13 @@ CREATE TABLE `employees` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `employees`
+--
+
+INSERT INTO `employees` (`id`, `user_id`, `name`, `phone`, `address`, `position`, `date_of_birth`, `id_card_number`, `date_of_issue`, `place_of_issue`, `start_date`, `salary`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Quản Trị Viên', '0555444666', 'Hà Nội', 'Quản Lý', '2024-08-01', '001202020202', '2024-08-31', 'Cục quản lý TTAN XH', '2024-08-01', 1500000, '2024-07-31 19:55:37', '2024-07-31 13:19:02');
 
 -- --------------------------------------------------------
 
@@ -463,7 +472,6 @@ INSERT INTO `toppings` (`id`, `name`, `price`, `created_at`, `updated_at`) VALUE
 CREATE TABLE `users` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `role_id` bigint(20) UNSIGNED DEFAULT NULL,
-  `name` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) NOT NULL,
@@ -477,10 +485,10 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `role_id`, `name`, `email`, `email_verified_at`, `password`, `status`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Quản Trị Viên', 'admin@gmail.com', NULL, '$2y$10$sdgg8NAZ634FqCYb/D0t7uqM2ANCXg0n0xEPk4iy7k1lL4Fe.s14y', 1, NULL, '2024-07-19 11:32:07', '2024-07-25 02:47:23'),
-(2, 3, 'Nguyễn Văn B', 'nguyenvanb@gmail.com', NULL, '$2y$10$tkOwHK6UxxCCs19y5jX9x./Q7rYfva08JnAttEl7p/zZM/7jnI8AC', 1, NULL, '2024-07-20 16:13:26', '2024-07-26 08:29:37'),
-(3, 3, 'Khách Hàng', 'khachhang@gmail.com', NULL, '$2y$10$tkOwHK6UxxCCs19y5jX9x./Q7rYfva08JnAttEl7p/zZM/7jnI8AC', 1, NULL, '2024-07-31 17:38:06', '2024-07-31 10:58:05');
+INSERT INTO `users` (`id`, `role_id`, `email`, `email_verified_at`, `password`, `status`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 1, 'admin@gmail.com', NULL, '$2y$10$cV5kuTDre80wUeeA8GEi6ukExRKBfgcKdmUglqB0.irVYKig50r1S', 1, NULL, '2024-07-19 11:32:07', '2024-07-31 13:16:34'),
+(2, 3, 'nguyenvanb@gmail.com', NULL, '$2y$10$cz1BxdnUoDdzhHRcFtzo3.eyd7EnH5zx1tX7HsnsTu3ewt61mMevi', 1, NULL, '2024-07-20 16:13:26', '2024-07-31 13:18:16'),
+(3, 3, 'khachhang@gmail.com', NULL, '$2y$10$tkOwHK6UxxCCs19y5jX9x./Q7rYfva08JnAttEl7p/zZM/7jnI8AC', 1, NULL, '2024-07-31 17:38:06', '2024-07-31 10:58:05');
 
 --
 -- Indexes for dumped tables
@@ -675,7 +683,7 @@ ALTER TABLE `detail_orders`
 -- AUTO_INCREMENT for table `employees`
 --
 ALTER TABLE `employees`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
