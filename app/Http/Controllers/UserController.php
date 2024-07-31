@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Employee;
+use App\Models\Customer;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 
@@ -45,40 +47,68 @@ class UserController extends Controller
 
     public function profile()
     {
-        $id = auth()->user()->id;
-        $User = User::find($id);
-        if (!$User) {
+        $user = auth()->user();
+
+        // Load the related customer or employee data
+        $user->load(['customer', 'employee']);
+
+        if ($user->customer) {
+            return response()->json(['user' => $user, 'role' => 'customer']);
+        } elseif ($user->employee) {
+            return response()->json(['user' => $user, 'role' => 'employee']);
+        } else {
             return response()->json(['error' => 'User not found'], 404);
         }
-        return response()->json($User);
     }
 
     // Cập nhật thông tin customer (có cả đổi mật khẩu)
     public function update(Request $request)
     {
-        // Tìm customer theo ID
-        $user = User::find(auth()->user()->id);
-        if (!$user) {
-            return response()->json(['error' => 'User not found'], 404);
-        }
+        // Lấy user hiện tại
+        $user = auth()->user();
 
         // Xác thực dữ liệu
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . auth()->user()->id,
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
             'phone' => 'required|string|max:15',
-            'address' => 'required|string|max:255'
+            'address' => 'required|string|max:255',
+            'password' => 'nullable|string|min:1' // nếu có đổi mật khẩu
         ]);
 
-        // Cập nhật mật khẩu nếu có
+        // Cập nhật thông tin user
+        $user->email = $validatedData['email'];
+
         if ($request->filled('password')) {
-            $validatedData['password'] = Hash::make($request->input('password'));
+            $user->password = Hash::make($request->input('password'));
         }
 
-        // Cập nhật thông tin user
-        $user->update($validatedData);
+        $user->save();
 
-        return response()->json($user);
+        // Kiểm tra vai trò và cập nhật thông tin tương ứng
+        if ($user->role_id == 3) { // Customer
+            $customer = Customer::where('user_id', $user->id)->first();
+            if ($customer) {
+                $customer->name = $validatedData['name'];
+                $customer->phone = $validatedData['phone'];
+                $customer->address = $validatedData['address'];
+                $customer->save();
+            } else {
+                return response()->json(['error' => 'Customer not found'], 404);
+            }
+        } else { // Employee
+            $employee = Employee::where('user_id', $user->id)->first();
+            if ($employee) {
+                $employee->name = $validatedData['name'];
+                $employee->phone = $validatedData['phone'];
+                $employee->address = $validatedData['address'];
+                $employee->save();
+            } else {
+                return response()->json(['error' => 'Employee not found'], 404);
+            }
+        }
+
+        return response()->json(['user' => $user]);
     }
 
     // Cấm khách hàng (đổi status bằng 0)

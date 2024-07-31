@@ -88,10 +88,10 @@
                     'Authorization': `Bearer ${localStorage.getItem('access_token')}`
                 },
                 success: function(response) {
-                    $('#name').val(response.name);
-                    $('#email').val(response.email);
-                    $('#phone').val(response.phone);
-                    $('#address').val(response.address);
+                    $('#name').val(response.user.employee.name);
+                    $('#email').val(response.user.email);
+                    $('#phone').val(response.user.employee.phone);
+                    $('#address').val(response.user.employee.address);
                 },
                 error: function(xhr) {
                     if (xhr.status === 401) {
