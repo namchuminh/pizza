@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 01, 2024 at 01:58 PM
+-- Generation Time: Aug 01, 2024 at 11:40 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -216,7 +216,9 @@ CREATE TABLE `employees` (
 --
 
 INSERT INTO `employees` (`id`, `user_id`, `name`, `phone`, `address`, `position`, `date_of_birth`, `id_card_number`, `start_date`, `salary`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Quản Trị Viên', '0555444666', 'Hà Nội', 'Quản Lý', '2024-08-01', '001202020202', '2024-08-01', 1500000, '2024-07-31 19:55:37', '2024-07-31 13:19:02');
+(1, 1, 'Quản Trị Viên', '0555444666', 'Hà Nội', 'Quản Lý', '2024-08-01', '001202020202', '2024-08-01', 1500000, '2024-07-31 19:55:37', '2024-07-31 13:19:02'),
+(2, 2, 'Nguyễn Văn Bình', '0999888999', 'Hồ Chí Minh', 'Nhân Viên', '2024-08-02', '001202020202', '2024-08-01', 1000000, '2024-08-01 20:49:46', '2024-08-02 20:49:46'),
+(5, 6, 'Nguyễn Văn Chung', '0888999888', 'Tầng 1, Tòa ABC, Đường XYZ, Quận JQK', 'Nhân Viên Thu Ngân', '2024-08-02', '001202020205', '2024-08-10', 1500000, '2024-08-01 14:27:00', '2024-08-01 14:27:00');
 
 -- --------------------------------------------------------
 
@@ -277,7 +279,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (26, '2024_07_31_121031_add_role_id_to_users_table', 20),
 (29, '2024_08_01_081053_create_detail_products_table', 21),
 (30, '2024_08_01_082546_add_detail_product_id_to_detail_orders_table', 22),
-(31, '2024_08_01_084044_add_detail_product_id_to_carts_table', 23);
+(31, '2024_08_01_084044_add_detail_product_id_to_carts_table', 23),
+(32, '2024_08_01_213736_add_employee_id_to_orders', 24);
 
 -- --------------------------------------------------------
 
@@ -289,6 +292,7 @@ CREATE TABLE `orders` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `order_code` varchar(255) NOT NULL,
   `customer_id` bigint(20) UNSIGNED NOT NULL,
+  `employee_id` bigint(20) UNSIGNED DEFAULT NULL,
   `address` varchar(255) NOT NULL,
   `phone` varchar(255) NOT NULL,
   `payment` tinyint(1) NOT NULL DEFAULT 0,
@@ -303,9 +307,9 @@ CREATE TABLE `orders` (
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`id`, `order_code`, `customer_id`, `address`, `phone`, `payment`, `total_amount`, `status`, `coupon_id`, `created_at`, `updated_at`) VALUES
-(1, 'A2B3108AC4C503', 2, 'Hà Nội', '0999888999', 1, 150000, 3, 3, '2024-07-23 05:09:43', '2024-08-01 04:57:31'),
-(2, 'C1D7C8B978B91C', 2, 'Hà Nội', '0999888999', 1, 150000, 1, NULL, '2024-07-23 05:10:09', '2024-07-25 10:58:04');
+INSERT INTO `orders` (`id`, `order_code`, `customer_id`, `employee_id`, `address`, `phone`, `payment`, `total_amount`, `status`, `coupon_id`, `created_at`, `updated_at`) VALUES
+(1, 'A2B3108AC4C503', 2, 5, 'Hà Nội', '0999888999', 1, 150000, 3, 3, '2024-07-23 05:09:43', '2024-08-01 04:57:31'),
+(2, 'C1D7C8B978B91C', 2, 1, 'Hà Nội', '0999888999', 1, 150000, 1, NULL, '2024-07-23 05:10:09', '2024-07-25 10:58:04');
 
 -- --------------------------------------------------------
 
@@ -371,10 +375,10 @@ INSERT INTO `products` (`id`, `name`, `short_description`, `detailed_description
 -- --------------------------------------------------------
 
 --
--- Table structure for table `product_border`
+-- Table structure for table `product_borders`
 --
 
-CREATE TABLE `product_border` (
+CREATE TABLE `product_borders` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `product_id` bigint(20) UNSIGNED NOT NULL,
   `border_id` bigint(20) UNSIGNED NOT NULL,
@@ -382,19 +386,39 @@ CREATE TABLE `product_border` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `product_borders`
+--
+
+INSERT INTO `product_borders` (`id`, `product_id`, `border_id`, `created_at`, `updated_at`) VALUES
+(5, 9, 8, '2024-08-01 12:30:00', '2024-08-01 12:30:00'),
+(7, 9, 3, '2024-08-01 12:31:19', '2024-08-01 12:31:19'),
+(8, 9, 8, '2024-08-01 12:31:20', '2024-08-01 12:31:20');
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `product_sole`
+-- Table structure for table `product_toppings`
 --
 
-CREATE TABLE `product_sole` (
+CREATE TABLE `product_toppings` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `product_id` bigint(20) UNSIGNED NOT NULL,
-  `sole_id` bigint(20) UNSIGNED NOT NULL,
+  `topping_id` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `product_toppings`
+--
+
+INSERT INTO `product_toppings` (`id`, `product_id`, `topping_id`, `created_at`, `updated_at`) VALUES
+(7, 9, 2, '2024-08-01 12:52:19', '2024-08-01 12:52:19'),
+(8, 9, 3, '2024-08-01 12:52:20', '2024-08-01 12:52:20'),
+(9, 9, 1, '2024-08-01 12:52:23', '2024-08-01 12:52:23'),
+(11, 10, 1, '2024-08-01 12:52:54', '2024-08-01 12:52:54'),
+(12, 10, 2, '2024-08-01 12:52:56', '2024-08-01 12:52:56');
 
 -- --------------------------------------------------------
 
@@ -492,8 +516,9 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `role_id`, `email`, `email_verified_at`, `password`, `status`, `remember_token`, `created_at`, `updated_at`) VALUES
 (1, 1, 'admin@gmail.com', NULL, '$2y$10$Q1WwZ2ryq7/Z0oMaajJOoug0Be8ijiky8aB.3hvxk2gX5.PATlZ0y', 1, NULL, '2024-07-19 11:32:07', '2024-08-01 04:00:15'),
-(2, 3, 'nguyenvanb@gmail.com', NULL, '$2y$10$cz1BxdnUoDdzhHRcFtzo3.eyd7EnH5zx1tX7HsnsTu3ewt61mMevi', 1, NULL, '2024-07-20 16:13:26', '2024-07-31 13:18:16'),
-(3, 3, 'khachhang@gmail.com', NULL, '$2y$10$tkOwHK6UxxCCs19y5jX9x./Q7rYfva08JnAttEl7p/zZM/7jnI8AC', 1, NULL, '2024-07-31 17:38:06', '2024-07-31 10:58:05');
+(2, 2, 'nguyenvanb@gmail.com', NULL, '$2y$10$cz1BxdnUoDdzhHRcFtzo3.eyd7EnH5zx1tX7HsnsTu3ewt61mMevi', 1, NULL, '2024-07-20 16:13:26', '2024-07-31 13:18:16'),
+(3, 3, 'khachhang@gmail.com', NULL, '$2y$10$tkOwHK6UxxCCs19y5jX9x./Q7rYfva08JnAttEl7p/zZM/7jnI8AC', 1, NULL, '2024-07-31 17:38:06', '2024-07-31 10:58:05'),
+(6, 2, 'nguyenvanc@gmail.com', NULL, '$2y$10$lu42guEmbhrOlwRab5Y0WuIOFQncvO95b9Jd8fhOZFVqyWobU15oS', 1, NULL, '2024-08-01 14:27:00', '2024-08-01 14:30:51');
 
 --
 -- Indexes for dumped tables
@@ -579,7 +604,8 @@ ALTER TABLE `orders`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `orders_order_code_unique` (`order_code`),
   ADD KEY `orders_coupon_id_foreign` (`coupon_id`),
-  ADD KEY `customer_id` (`customer_id`);
+  ADD KEY `customer_id` (`customer_id`),
+  ADD KEY `orders_employee_id_foreign` (`employee_id`);
 
 --
 -- Indexes for table `password_resets`
@@ -604,20 +630,20 @@ ALTER TABLE `products`
   ADD KEY `products_category_id_foreign` (`category_id`);
 
 --
--- Indexes for table `product_border`
+-- Indexes for table `product_borders`
 --
-ALTER TABLE `product_border`
+ALTER TABLE `product_borders`
   ADD PRIMARY KEY (`id`),
   ADD KEY `product_border_product_id_foreign` (`product_id`),
   ADD KEY `product_border_border_id_foreign` (`border_id`);
 
 --
--- Indexes for table `product_sole`
+-- Indexes for table `product_toppings`
 --
-ALTER TABLE `product_sole`
+ALTER TABLE `product_toppings`
   ADD PRIMARY KEY (`id`),
   ADD KEY `product_sole_product_id_foreign` (`product_id`),
-  ADD KEY `product_sole_sole_id_foreign` (`sole_id`);
+  ADD KEY `product_sole_sole_id_foreign` (`topping_id`);
 
 --
 -- Indexes for table `roles`
@@ -696,7 +722,7 @@ ALTER TABLE `detail_products`
 -- AUTO_INCREMENT for table `employees`
 --
 ALTER TABLE `employees`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -708,7 +734,7 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `orders`
@@ -729,16 +755,16 @@ ALTER TABLE `products`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
--- AUTO_INCREMENT for table `product_border`
+-- AUTO_INCREMENT for table `product_borders`
 --
-ALTER TABLE `product_border`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE `product_borders`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT for table `product_sole`
+-- AUTO_INCREMENT for table `product_toppings`
 --
-ALTER TABLE `product_sole`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE `product_toppings`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `roles`
@@ -762,7 +788,7 @@ ALTER TABLE `toppings`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Constraints for dumped tables
@@ -806,6 +832,7 @@ ALTER TABLE `employees`
 --
 ALTER TABLE `orders`
   ADD CONSTRAINT `orders_coupon_id_foreign` FOREIGN KEY (`coupon_id`) REFERENCES `coupons` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `orders_employee_id_foreign` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
@@ -815,18 +842,18 @@ ALTER TABLE `products`
   ADD CONSTRAINT `products_category_id_foreign` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `product_border`
+-- Constraints for table `product_borders`
 --
-ALTER TABLE `product_border`
+ALTER TABLE `product_borders`
   ADD CONSTRAINT `product_border_border_id_foreign` FOREIGN KEY (`border_id`) REFERENCES `borders` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `product_border_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `product_sole`
+-- Constraints for table `product_toppings`
 --
-ALTER TABLE `product_sole`
+ALTER TABLE `product_toppings`
   ADD CONSTRAINT `product_sole_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `product_sole_sole_id_foreign` FOREIGN KEY (`sole_id`) REFERENCES `toppings` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `product_sole_sole_id_foreign` FOREIGN KEY (`topping_id`) REFERENCES `toppings` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `users`
