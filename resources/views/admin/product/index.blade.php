@@ -96,7 +96,7 @@
                                 <td>
                                     <a class="btn btn-default" href="{{ route('admin.product.size') }}/?id=${item.id}">Giá Bán</a>
                                     <a class="btn btn-default" href="{{ route('admin.product.border') }}/?id=${item.id}">Viền Bánh</a>
-                                    <a class="btn btn-default" href="{{ route('admin.product.soles') }}/?id=${item.id}">Đế Bánh</a>
+                                    <a class="btn btn-default" href="{{ route('admin.product.topping') }}/?id=${item.id}">Topping</a>
                                 </td>
                                 <td>
                                     <a href="{{ route('admin.product.update') }}/?id=${item.id}" class="btn btn-primary">Sửa</a>

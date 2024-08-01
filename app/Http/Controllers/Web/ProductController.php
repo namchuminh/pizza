@@ -27,7 +27,7 @@ class ProductController extends Controller
         return view('admin.product.border');
     }
 
-    public function soles(){
-        return view('admin.product.soles');
+    public function topping(){
+        return view('admin.product.topping');
     }
 }

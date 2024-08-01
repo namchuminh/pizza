@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\DetailProduct;
+use App\Models\ProductBorder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -65,6 +66,53 @@ class ProductController extends Controller
         $detailProduct->delete();
 
         return response()->json(['message' => 'Detail product deleted successfully'], 200);
+    }
+
+    public function border($id){
+
+        $product = Product::with('category')->find($id);
+        if (!$product) {
+            return response()->json(['error' => 'Product not found'], 404);
+        }
+
+        $productBorders = ProductBorder::with('border')->where('product_id',$id)->get();
+        return response()->json($productBorders);
+    }
+
+    public function storeBorder(Request $request, $id){
+        
+        $product = Product::with('category')->find($id);
+        if (!$product) {
+            return response()->json(['error' => 'Product not found'], 404);
+        }
+
+        // Xác thực dữ liệu đầu vào
+        $validatedData = $request->validate([
+            'border_id' => 'required|exists:borders,id'
+        ]);
+
+        // Tạo chi tiết sản phẩm mới
+        $productBorder = new ProductBorder();
+        $productBorder->product_id = $id;
+        $productBorder->border_id = $validatedData['border_id'];
+        $productBorder->save();
+
+        return response()->json($productBorder, 201);
+    }
+
+    public function deleteBorder(Request $request, $id)
+    {
+        // Tìm chi tiết sản phẩm theo ID
+        $productBorder = ProductBorder::find($id);
+
+        if (!$productBorder) {
+            return response()->json(['error' => 'Border not found'], 404);
+        }
+
+        // Xóa chi tiết sản phẩm
+        $productBorder->delete();
+
+        return response()->json(['message' => 'Border deleted successfully'], 200);
     }
 
     // Tạo sản phẩm mới

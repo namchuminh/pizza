@@ -1,5 +1,5 @@
 @extends('Admin.layouts.app')
-@section('title', 'Cập nhật sản phẩm')
+@section('title', 'Cập nhật giá bán')
 @section('content')
 <section class="content-header">
     <div class="container-fluid">
@@ -310,20 +310,6 @@
                 }
             });
         }
-
-        $('#taoduongdan').click(function(){
-            if($(".tenchinh").val() == ""){
-                toastr.options = {
-	                closeButton: true,
-	                progressBar: true,
-	                positionClass: 'toast-top-right', // Vị trí hiển thị
-	                timeOut: 5000 // Thời gian tự động đóng
-	            };
-	            toastr.error('Vui lòng nhập tên sản phẩm!', 'Thất Bại');
-            }else{
-                $("#slug").val(createSlug($(".tenchinh").val()))
-            }
-        })
     });
 </script>
 @endsection

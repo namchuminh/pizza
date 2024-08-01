@@ -1,7 +1,6 @@
 @extends('Admin.layouts.app')
-@section('title', 'Cập nhật sản phẩm')
+@section('title', 'Cập nhật viền bánh')
 @section('content')
-<link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet">
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
@@ -12,7 +11,7 @@
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Trang Chủ</a></li>
                     <li class="breadcrumb-item"><a href="{{ route('admin.product.index') }}">Quản Lý Sản Phẩm</a></li>
-                    <li class="breadcrumb-item active">Kích Thước</li>
+                    <li class="breadcrumb-item active">Viền Bánh</li>
                 </ol>
             </div>
         </div>
@@ -43,16 +42,56 @@
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="image">Chọn Kích Thước</label>
-                                <select multiple class="form-control" multiple="multiple" style="width: 100%;" name="sizes" id="sizes"></select>
+                                <label for="image">Chọn Viền Bánh</label>
+                                <select class="form-control" name="border_id" id="border_id">
+                                </select>
                             </div>
                         </div>
                     </div>
                     <a class="btn btn-success" href="{{ route('admin.product.index') }}">Quay Lại</a>
-                    <button type="submit" class="btn btn-primary">Cập Nhật Kích Thước</button>
+                    <button type="submit" class="btn btn-primary">Thêm Viền Bánh</button>
                 </form>
             </div>
         </div>
+    </div><!-- /.container-fluid -->
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Danh sách giá bán theo viền bánh</h5>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body table-responsive p-0">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Viền Bánh</th>
+                                    <th>Giá Tính Thêm</th>
+                                    <th>Hành Động</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer clearfix">
+                        <ul class="pagination pagination-sm m-0 float-right">
+                            <li class="page-item">
+                                <a class="page-link" href="#"></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+        <!-- /.row -->
     </div><!-- /.container-fluid -->
 </section>
 @endsection
@@ -90,24 +129,65 @@
             });
         }
 
-        function fetchDataSize() {
+        function fetchDataBorder() {
             $.ajax({
-                url: `{{ $api_url }}sizes`,
+                url: `{{ $api_url }}borders`,
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('access_token')}`
                 },
                 success: function(response) {
-                    $("#sizes").empty();
+                    $("#border_id").empty();
                     response.data.forEach(item => {
-                        $("#sizes").append(`<option value="${item.id}">${item.name}</option>`);
+                        $("#border_id").append(`<option value="${item.id}">${item.name}</option>`);
                     });
                 },
                 error: function(xhr) {
                     if (xhr.status === 401) {
                         refreshToken().done(function() {
                             // Retry the fetch data request with the new token
-                            fetchDataSize();
+                            fetchDataBorder();
+                        });
+                    }
+                }
+            });
+        }
+
+        function fetchDataBorderProduct() {
+            $.ajax({
+                url: `{{ $api_url }}products/${id}/border`,
+                method: 'GET',
+                success: function(response) {
+                    $('tbody').empty();
+                    let rowNumber = 1;
+                    response.forEach(item => {
+                        let price = Number(item.border.price);
+                        $('tbody').append(`
+                            <tr>
+                                <td>${rowNumber++}</td>
+                                <td>${item.border.name}</td>
+                                <td>${price.toLocaleString('vi-VN')}đ</td>
+                                <td>
+                                    <a href="#" data-id="${item.id}" class="btn btn-danger delete-btn">Xóa</a>
+                                </td>
+                            </tr>
+                        `);
+                    });
+
+                    // Handle delete button click events
+                    $('.delete-btn').on('click', function(event) {
+                        event.preventDefault();
+                        const id = $(this).data('id');
+                        if (confirm('Bạn có chắc chắn muốn xóa viền bánh này?')) {
+                            deleteAction(id);
+                        }
+                    });
+                },
+                error: function(xhr) {
+                    if (xhr.status === 401) {
+                        refreshToken().done(function() {
+                            // Retry the fetch data request with the new token
+                            fetchData();
                         });
                     }
                 }
@@ -115,16 +195,16 @@
         }
 
         fetchData();
-        fetchDataSize();
+        fetchDataBorder();
+        fetchDataBorderProduct();
 
         $('form').on('submit', function(event) {
             event.preventDefault(); // Ngăn không cho form gửi theo cách mặc định
 
             const formData = new FormData(this);
-            formData.set('detailed_description', detailed_description);
-            function update() {
+            function create() {
                 $.ajax({
-                    url: `{{ $api_url }}products/${id}`,
+                    url: `{{ $api_url }}products/${id}/border`,
                     type: 'POST',
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('access_token')}`
@@ -134,18 +214,19 @@
                     contentType: false,
                     processData: false,
                     success: function(response) {
+                        fetchDataBorderProduct();
                         toastr.options = {
                             closeButton: true,
                             progressBar: true,
                             positionClass: 'toast-top-right',
                             timeOut: 5000
                         };
-                        toastr.success('Cập nhật sản phẩm thành công!', 'Thành Công');
+                        toastr.success('Thêm viền bánh thành công!', 'Thành Công');
                     },
                     error: function(xhr) {
                         if (xhr.status === 401) {
                             refreshToken().done(function() {
-                                update();
+                                create();
                             });
                         } else if (xhr.status === 422) {
                             var errors = xhr.responseJSON.errors;
@@ -169,7 +250,7 @@
                                 positionClass: 'toast-top-right',
                                 timeOut: 5000
                             };
-                            toastr.error('Cập nhật sản phẩm thất bại!', 'Thất Bại');
+                            toastr.error('Thêm viền bánh thất bại!', 'Thất Bại');
                         }
                     }
                 });
@@ -192,33 +273,36 @@
                 });
             }
 
-            update();
+            create();
         });
 
-        $('#taoduongdan').click(function(){
-            if($(".tenchinh").val() == ""){
-                toastr.options = {
-	                closeButton: true,
-	                progressBar: true,
-	                positionClass: 'toast-top-right', // Vị trí hiển thị
-	                timeOut: 5000 // Thời gian tự động đóng
-	            };
-	            toastr.error('Vui lòng nhập tên sản phẩm!', 'Thất Bại');
-            }else{
-                $("#slug").val(createSlug($(".tenchinh").val()))
-            }
-        })
+        function deleteAction(id) {
+            $.ajax({
+                url: `{{ $api_url }}products/${id}/border`,
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                },
+                success: function() {
+                    fetchDataBorderProduct();
+                },
+                error: function(xhr) {
+                    if (xhr.status === 401) {
+                        refreshToken().done(function() {
+                            deleteAction(id);
+                        });
+                    } else {
+                        toastr.options = {
+                            closeButton: true,
+                            progressBar: true,
+                            positionClass: 'toast-top-right',
+                            timeOut: 5000
+                        };
+                        toastr.error('Xóa viền bánh thất bại!', 'Thất Bại');
+                    }
+                }
+            });
+        }
     });
 </script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
-
-<!-- Initialize Select2 -->
-<script>
-    $(document).ready(function() {
-        $('select').select2();
-    });
-</script>
-<style type="text/css">
-  .ck-editor__editable {min-height: 300px;}
-</style>
 @endsection
