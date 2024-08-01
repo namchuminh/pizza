@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\DetailProduct;
 use App\Models\ProductBorder;
+use App\Models\ProductTopping;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -113,6 +114,53 @@ class ProductController extends Controller
         $productBorder->delete();
 
         return response()->json(['message' => 'Border deleted successfully'], 200);
+    }
+
+    public function topping($id){
+
+        $product = Product::with('category')->find($id);
+        if (!$product) {
+            return response()->json(['error' => 'Product not found'], 404);
+        }
+
+        $productToppings = ProductTopping::with('topping')->where('product_id',$id)->get();
+        return response()->json($productToppings);
+    }
+
+    public function storeTopping(Request $request, $id){
+        
+        $product = Product::with('category')->find($id);
+        if (!$product) {
+            return response()->json(['error' => 'Product not found'], 404);
+        }
+
+        // Xác thực dữ liệu đầu vào
+        $validatedData = $request->validate([
+            'topping_id' => 'required|exists:toppings,id'
+        ]);
+
+        // Tạo chi tiết sản phẩm mới
+        $productTopping = new ProductTopping();
+        $productTopping->product_id = $id;
+        $productTopping->topping_id = $validatedData['topping_id'];
+        $productTopping->save();
+
+        return response()->json($productTopping, 201);
+    }
+
+    public function deleteTopping(Request $request, $id)
+    {
+        // Tìm chi tiết sản phẩm theo ID
+        $productTopping = ProductTopping::find($id);
+
+        if (!$productTopping) {
+            return response()->json(['error' => 'Topping not found'], 404);
+        }
+
+        // Xóa chi tiết sản phẩm
+        $productTopping->delete();
+
+        return response()->json(['message' => 'Topping deleted successfully'], 200);
     }
 
     // Tạo sản phẩm mới
