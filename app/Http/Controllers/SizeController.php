@@ -30,8 +30,7 @@ class SizeController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'price' => 'required|int',
+            'name' => 'required|string|max:255'
         ]);
 
         // Tạo mới size
@@ -61,8 +60,7 @@ class SizeController extends Controller
 
         // Xác thực dữ liệu
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'price' => 'required|int',
+            'name' => 'required|string|max:255'
         ]);
 
         // Cập nhật size

@@ -33,13 +33,6 @@
                                     name="name">
                             </div>
                         </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="ten">Giá Thêm</label>
-                                <input type="number" class="form-control" id="price" placeholder="Giá tính thêm"
-                                    name="price">
-                            </div>
-                        </div>
                     </div>
                     <a class="btn btn-success" href="{{ route('admin.size.index') }}">Quay Lại</a>
                     <button type="submit" class="btn btn-primary">Thêm Kích Thước Pizza</button>

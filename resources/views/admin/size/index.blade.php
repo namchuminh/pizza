@@ -35,7 +35,6 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Tên Kích Thước</th>
-                                    <th>Giá Thêm</th>
                                     <th>Hành Động</th>
                                 </tr>
                             </thead>
@@ -80,12 +79,10 @@
 
                     // Populate the table with data
                     response.data.forEach(item => {
-                        let price = Number(item.price);
                         $('tbody').append(`
                             <tr>
                                 <td>${rowNumber++}</td>
                                 <td>${item.name}</td>
-                                <td>+ ${price.toLocaleString('vi-VN')}đ</td>
                                 <td>
                                     <a href="{{ route('admin.size.update') }}/?id=${item.id}" class="btn btn-primary">Sửa</a>
                                     <a href="#" data-id="${item.id}" class="btn btn-danger delete-btn">Xóa</a>
