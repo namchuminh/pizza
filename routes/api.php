@@ -8,6 +8,7 @@ use App\Http\Controllers\SizeController;
 use App\Http\Controllers\ToppingController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CouponController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\DetailOrderController;
 use App\Http\Controllers\CartController;
@@ -52,6 +53,12 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('/coupon', [CouponController::class, 'store'])->middleware('role:manager'); 
     Route::post('/coupon/{coupon}', [CouponController::class, 'update'])->middleware('role:manager'); 
     Route::delete('/coupon/{coupon}', [CouponController::class, 'destroy'])->middleware('role:manager'); 
+
+    Route::get('/employees', [EmployeeController::class, 'index'])->middleware('role:manager');
+    Route::get('/employees/{employee}', [EmployeeController::class, 'show'])->middleware('role:manager');
+    Route::post('/employees', [EmployeeController::class, 'store'])->middleware('role:manager'); 
+    Route::post('/employees/{employee}', [EmployeeController::class, 'update'])->middleware('role:manager'); 
+    Route::delete('/employees/{employee}', [EmployeeController::class, 'destroy'])->middleware('role:manager'); 
 
     Route::get('/orders', [OrderController::class, 'index']);
     Route::get('/orders/{order}', [OrderController::class, 'show']);

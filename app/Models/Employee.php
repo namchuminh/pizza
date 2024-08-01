@@ -17,9 +17,11 @@ class Employee extends Model
         'position',
         'date_of_birth',
         'id_card_number',
-        'date_of_issue',
-        'place_of_issue',
         'start_date',
         'salary'
     ];
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }

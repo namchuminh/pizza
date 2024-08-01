@@ -9,6 +9,7 @@ use App\Http\Controllers\Web\SizeController;
 use App\Http\Controllers\Web\BorderController;
 use App\Http\Controllers\Web\ToppingController;
 use App\Http\Controllers\Web\CouponController;
+use App\Http\Controllers\Web\EmployeeController;
 use App\Http\Controllers\Web\UserController;
 use App\Http\Controllers\Web\OrderController;
 use App\Http\Controllers\Web\ProfileController;
@@ -48,6 +49,10 @@ Route::prefix('admin')->group(function () {
     Route::get('/coupon', [CouponController::class, 'index'])->name('admin.coupon.index');
     Route::get('/coupon/create', [CouponController::class, 'create'])->name('admin.coupon.create');
     Route::get('/coupon/update', [CouponController::class, 'update'])->name('admin.coupon.update');
+
+    Route::get('/employee', [EmployeeController::class, 'index'])->name('admin.employee.index');
+    Route::get('/employee/create', [EmployeeController::class, 'create'])->name('admin.employee.create');
+    Route::get('/employee/update', [EmployeeController::class, 'update'])->name('admin.employee.update');
 
     Route::get('/customer', [UserController::class, 'index'])->name('admin.customer.index');
     Route::get('/customer/show', [UserController::class, 'show'])->name('admin.customer.show');
