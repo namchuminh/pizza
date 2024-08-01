@@ -37,10 +37,8 @@
                                     <th>Hình Ảnh</th>
                                     <th>Tên Sản Phẩm</th>
                                     <th>Loại Sản Phẩm</th>
-                                    <th>Giá Gốc</th>
-                                    <th>Giá Bán</th>
                                     <th>Số Lượng</th>
-                                    <th>Thuộc Tính</th>
+                                    <th>Giá Bán & Thuộc Tính</th>
                                     <th>Hành Động</th>
                                 </tr>
                             </thead>
@@ -94,11 +92,9 @@
                                 <td><img src="{{ asset('storage') }}/${item.image}" alt="${item.name}" style="width: 150px; height: 150px;"></td>
                                 <td>${item.name}</td>
                                 <td>${item.category.name}</td>
-                                <td>${original_price.toLocaleString('vi-VN')}đ</td>
-                                <td>${sale_price.toLocaleString('vi-VN')}đ</td>
                                 <td>${item.quantity} cái</td>
                                 <td>
-                                    <a class="btn btn-default" href="{{ route('admin.product.size') }}/?id=${item.id}">Kích Thước</a>
+                                    <a class="btn btn-default" href="{{ route('admin.product.size') }}/?id=${item.id}">Giá Bán</a>
                                     <a class="btn btn-default" href="{{ route('admin.product.border') }}/?id=${item.id}">Viền Bánh</a>
                                     <a class="btn btn-default" href="{{ route('admin.product.soles') }}/?id=${item.id}">Đế Bánh</a>
                                 </td>

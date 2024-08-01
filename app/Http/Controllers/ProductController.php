@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\DetailProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -21,13 +22,49 @@ class ProductController extends Controller
         if ($search) {
             $query->where('name', 'like', "%{$search}%")
                   ->orWhere('short_description', 'like', "%{$search}%")
-                  ->orWhere('detailed_description', 'like', "%{$search}%")
-                  ->orWhere('tags', 'like', "%{$search}%");
+                  ->orWhere('detailed_description', 'like', "%{$search}%");
         }
 
         $products = $query->paginate($perPage);
 
         return response()->json($products);
+    }
+
+    public function detail($id){
+        $detailProducts = DetailProduct::with('size')->where('product_id',$id)->get();
+        return response()->json($detailProducts);
+    }
+
+    public function storeDetail(Request $request, $id){
+        // Xác thực dữ liệu đầu vào
+        $validatedData = $request->validate([
+            'size_id' => 'required|exists:sizes,id',
+            'price' => 'required|numeric'
+        ]);
+
+        // Tạo chi tiết sản phẩm mới
+        $detailProduct = new DetailProduct();
+        $detailProduct->product_id = $id;
+        $detailProduct->size_id = $validatedData['size_id'];
+        $detailProduct->price = $validatedData['price'];
+        $detailProduct->save();
+
+        return response()->json($detailProduct, 201);
+    }
+
+    public function deleteDetail(Request $request, $id)
+    {
+        // Tìm chi tiết sản phẩm theo ID
+        $detailProduct = DetailProduct::find($id);
+
+        if (!$detailProduct) {
+            return response()->json(['error' => 'Detail product not found'], 404);
+        }
+
+        // Xóa chi tiết sản phẩm
+        $detailProduct->delete();
+
+        return response()->json(['message' => 'Detail product deleted successfully'], 200);
     }
 
     // Tạo sản phẩm mới
@@ -37,12 +74,9 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'short_description' => 'nullable|string',
             'detailed_description' => 'nullable|string',
-            'original_price' => 'required|numeric',
-            'sale_price' => 'nullable|numeric',
             'image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
             'slug' => 'required|string|unique:products,slug',
             'quantity' => 'required|integer',
-            'tags' => 'nullable|string',
             'category_id' => 'required|exists:categories,id'
         ]);
 
@@ -82,12 +116,9 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'short_description' => 'nullable|string',
             'detailed_description' => 'nullable|string',
-            'original_price' => 'required|numeric',
-            'sale_price' => 'nullable|numeric',
             'image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
             'slug' => 'required|string|unique:products,slug,' . $id,
             'quantity' => 'required|integer',
-            'tags' => 'nullable|string',
             'category_id' => 'required|exists:categories,id'
         ]);
 

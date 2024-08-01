@@ -46,30 +46,9 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="ten">Giá Gốc</label>
-                                <input type="number" class="form-control" id="original_price" placeholder="Giá gốc"
-                                    name="original_price">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="ten">Giá Bán</label>
-                                <input type="number" class="form-control" id="sale_price" placeholder="Giá bán"
-                                    name="sale_price">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
                                 <label for="ten">Số Lượng</label>
                                 <input type="number" class="form-control tenchinh" id="quantity" placeholder="Số lượng"
                                     name="quantity">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="ten">Thẻ</label>
-                                <input type="text" class="form-control" id="tags" placeholder="Thẻ cách bởi dấu ,"
-                                    name="tags">
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -79,7 +58,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label for="image">Hình Ảnh</label>
                                 <input type="file" class="form-control" id="image" name="image">

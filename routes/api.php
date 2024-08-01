@@ -23,6 +23,9 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('/products', [ProductController::class, 'store'])->middleware('role:manager'); 
     Route::post('/products/{product}', [ProductController::class, 'update'])->middleware('role:manager'); 
     Route::delete('/products/{product}', [ProductController::class, 'destroy'])->middleware('role:manager');
+
+    Route::post('/products/{product}/detail', [ProductController::class, 'storeDetail'])->middleware('role:manager');
+    Route::delete('/products/{detail}/detail', [ProductController::class, 'deleteDetail'])->middleware('role:manager');
     
     Route::post('/borders', [BorderController::class, 'store'])->middleware('role:manager'); 
     Route::post('/borders/{border}', [BorderController::class, 'update'])->middleware('role:manager'); 
@@ -70,6 +73,7 @@ Route::post('/refresh', [AuthController::class, 'refresh']);
 
 Route::get('/products', [ProductController::class, 'index']);
 Route::get('/products/{product}', [ProductController::class, 'show']);
+Route::get('/products/{product}/detail', [ProductController::class, 'detail']);
 
 Route::get('/borders', [BorderController::class, 'index']);
 Route::get('/borders/{border}', [BorderController::class, 'show']);
