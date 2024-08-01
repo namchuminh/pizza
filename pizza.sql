@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 31, 2024 at 10:19 PM
+-- Generation Time: Aug 01, 2024 at 01:58 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -53,11 +53,10 @@ INSERT INTO `borders` (`id`, `name`, `price`, `created_at`, `updated_at`) VALUES
 
 CREATE TABLE `carts` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `user_id` bigint(20) UNSIGNED NOT NULL,
-  `product_id` bigint(20) UNSIGNED NOT NULL,
-  `size` varchar(255) NOT NULL,
-  `border` varchar(255) NOT NULL,
-  `soles` varchar(255) NOT NULL,
+  `detail_product_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `customer_id` bigint(20) UNSIGNED NOT NULL,
+  `border_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `topping_id` bigint(20) UNSIGNED DEFAULT NULL,
   `quantity` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -67,8 +66,8 @@ CREATE TABLE `carts` (
 -- Dumping data for table `carts`
 --
 
-INSERT INTO `carts` (`id`, `user_id`, `product_id`, `size`, `border`, `soles`, `quantity`, `created_at`, `updated_at`) VALUES
-(1, 2, 9, 'Smaill', 'Rounder', 'Rubber', 3, '2024-07-23 08:02:09', '2024-07-23 08:03:26');
+INSERT INTO `carts` (`id`, `detail_product_id`, `customer_id`, `border_id`, `topping_id`, `quantity`, `created_at`, `updated_at`) VALUES
+(1, 4, 2, 0, 0, 3, '2024-07-23 08:02:09', '2024-07-23 08:03:26');
 
 -- --------------------------------------------------------
 
@@ -151,11 +150,10 @@ INSERT INTO `customers` (`id`, `user_id`, `name`, `phone`, `address`, `created_a
 
 CREATE TABLE `detail_orders` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `detail_product_id` bigint(20) UNSIGNED DEFAULT NULL,
   `order_id` bigint(20) UNSIGNED NOT NULL,
-  `product_id` bigint(20) UNSIGNED NOT NULL,
-  `size` varchar(255) NOT NULL,
-  `border` varchar(255) NOT NULL,
-  `soles` varchar(255) NOT NULL,
+  `border_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `topping_id` bigint(20) UNSIGNED DEFAULT NULL,
   `quantity` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -165,9 +163,32 @@ CREATE TABLE `detail_orders` (
 -- Dumping data for table `detail_orders`
 --
 
-INSERT INTO `detail_orders` (`id`, `order_id`, `product_id`, `size`, `border`, `soles`, `quantity`, `created_at`, `updated_at`) VALUES
-(1, 1, 9, 'Small', 'Round', 'Rubber', 2, '2024-07-25 22:55:53', '2024-07-25 22:55:53'),
-(2, 1, 10, 'Small', 'Round', 'Rubber', 2, '2024-07-25 22:56:06', '2024-07-25 22:56:06');
+INSERT INTO `detail_orders` (`id`, `detail_product_id`, `order_id`, `border_id`, `topping_id`, `quantity`, `created_at`, `updated_at`) VALUES
+(1, 4, 1, 1, 1, 2, '2024-07-25 22:55:53', '2024-07-25 22:55:53'),
+(2, 7, 1, 8, 2, 2, '2024-07-25 22:56:06', '2024-07-25 22:56:06');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `detail_products`
+--
+
+CREATE TABLE `detail_products` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `product_id` bigint(20) UNSIGNED NOT NULL,
+  `size_id` bigint(20) UNSIGNED NOT NULL,
+  `price` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `detail_products`
+--
+
+INSERT INTO `detail_products` (`id`, `product_id`, `size_id`, `price`, `created_at`, `updated_at`) VALUES
+(4, 9, 5, 12000, '2024-08-01 02:54:02', '2024-08-01 02:54:02'),
+(7, 9, 12, 15000, '2024-08-01 03:05:53', '2024-08-01 03:05:53');
 
 -- --------------------------------------------------------
 
@@ -184,8 +205,6 @@ CREATE TABLE `employees` (
   `position` varchar(255) NOT NULL,
   `date_of_birth` date NOT NULL,
   `id_card_number` varchar(255) NOT NULL,
-  `date_of_issue` date NOT NULL,
-  `place_of_issue` varchar(255) NOT NULL,
   `start_date` date NOT NULL,
   `salary` double NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -196,8 +215,8 @@ CREATE TABLE `employees` (
 -- Dumping data for table `employees`
 --
 
-INSERT INTO `employees` (`id`, `user_id`, `name`, `phone`, `address`, `position`, `date_of_birth`, `id_card_number`, `date_of_issue`, `place_of_issue`, `start_date`, `salary`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Quản Trị Viên', '0555444666', 'Hà Nội', 'Quản Lý', '2024-08-01', '001202020202', '2024-08-31', 'Cục quản lý TTAN XH', '2024-08-01', 1500000, '2024-07-31 19:55:37', '2024-07-31 13:19:02');
+INSERT INTO `employees` (`id`, `user_id`, `name`, `phone`, `address`, `position`, `date_of_birth`, `id_card_number`, `start_date`, `salary`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Quản Trị Viên', '0555444666', 'Hà Nội', 'Quản Lý', '2024-08-01', '001202020202', '2024-08-01', 1500000, '2024-07-31 19:55:37', '2024-07-31 13:19:02');
 
 -- --------------------------------------------------------
 
@@ -255,7 +274,10 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (23, '2024_07_31_115023_create_roles_table', 17),
 (24, '2024_07_31_115422_create_customers_table', 18),
 (25, '2024_07_31_115917_create_employees_table', 19),
-(26, '2024_07_31_121031_add_role_id_to_users_table', 20);
+(26, '2024_07_31_121031_add_role_id_to_users_table', 20),
+(29, '2024_08_01_081053_create_detail_products_table', 21),
+(30, '2024_08_01_082546_add_detail_product_id_to_detail_orders_table', 22),
+(31, '2024_08_01_084044_add_detail_product_id_to_carts_table', 23);
 
 -- --------------------------------------------------------
 
@@ -266,7 +288,7 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 CREATE TABLE `orders` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `order_code` varchar(255) NOT NULL,
-  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `customer_id` bigint(20) UNSIGNED NOT NULL,
   `address` varchar(255) NOT NULL,
   `phone` varchar(255) NOT NULL,
   `payment` tinyint(1) NOT NULL DEFAULT 0,
@@ -281,8 +303,8 @@ CREATE TABLE `orders` (
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`id`, `order_code`, `user_id`, `address`, `phone`, `payment`, `total_amount`, `status`, `coupon_id`, `created_at`, `updated_at`) VALUES
-(1, 'A2B3108AC4C503', 2, 'Hà Nội', '0999888999', 1, 150000, 2, 3, '2024-07-23 05:09:43', '2024-07-31 06:01:29'),
+INSERT INTO `orders` (`id`, `order_code`, `customer_id`, `address`, `phone`, `payment`, `total_amount`, `status`, `coupon_id`, `created_at`, `updated_at`) VALUES
+(1, 'A2B3108AC4C503', 2, 'Hà Nội', '0999888999', 1, 150000, 3, 3, '2024-07-23 05:09:43', '2024-08-01 04:57:31'),
 (2, 'C1D7C8B978B91C', 2, 'Hà Nội', '0999888999', 1, 150000, 1, NULL, '2024-07-23 05:10:09', '2024-07-25 10:58:04');
 
 -- --------------------------------------------------------
@@ -327,12 +349,9 @@ CREATE TABLE `products` (
   `name` varchar(255) NOT NULL,
   `short_description` text NOT NULL,
   `detailed_description` longtext NOT NULL,
-  `original_price` int(11) NOT NULL,
-  `sale_price` int(11) NOT NULL,
   `image` text NOT NULL,
   `slug` varchar(255) NOT NULL,
   `quantity` int(11) NOT NULL,
-  `tags` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `category_id` bigint(20) UNSIGNED NOT NULL
@@ -342,11 +361,12 @@ CREATE TABLE `products` (
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`id`, `name`, `short_description`, `detailed_description`, `original_price`, `sale_price`, `image`, `slug`, `quantity`, `tags`, `created_at`, `updated_at`, `category_id`) VALUES
-(9, 'Pizza 2', 'Mô tả ngắn', 'Mô tả dài', 15000, 10000, 'images/vQPtg4Oou2bi2wCZXU2uXjPzr2iJZYy1fdrt7EMm.jpg', 'pizza-21', 15, 'pizza1, bánh pizza', '2024-07-23 08:00:34', '2024-07-26 05:05:45', 14),
-(10, 'Pizza 3', 'Mô tả ngắn', 'Mô tả dài', 15000, 10000, 'images/Ue95s35KDQtWUaPRcFwYRUX51LdAyWI2QrLlTOUL.jpg', 'pizza-3', 15, 'pizza1, bánh pizza', '2024-07-23 08:00:57', '2024-07-23 08:00:57', 3),
-(12, 'Bánh Pizza giao diện', 'abcde', '<p>Để làm nên chiếc bánh pizza thì mình cần có các nguyên liệu chính như: <a href=\"https://www.bachhoaxanh.com/bot-da-dung-bot-mi\"><strong>Bột mì</strong></a><strong>, men nở, </strong><a href=\"https://www.bachhoaxanh.com/dau-an-dau-olive\"><strong>dầu oliu</strong></a><strong>.</strong> Phần làm nên hương vị của bánh chính là <strong>lớp </strong><a href=\"https://www.bachhoaxanh.com/gia-vi-nem-san-sot-ca-mi-y\"><strong>sốt cà chua</strong></a><strong> phủ lên trên đế bánh trước khi cho xúc xích, rau củ và cuối cùng chính là phủ lên lớp </strong><a href=\"https://www.bachhoaxanh.com/pho-mai-an/pho-mai-mozzarella-khoi-bottega-zelachi-goi-200g\"><strong>phô mai béo mozzarella</strong></a><strong>, </strong><a href=\"https://www.bachhoaxanh.com/pho-mai-an/pho-mai-bottega-zelachi-cheddar-goi-200g-16-mieng\"><strong>Cheddar</strong></a><strong>,...</strong></p><figure class=\"image\"><img style=\"aspect-ratio:762/429;\" src=\"https://cdn.tgdd.vn/Files/2021/12/07/1402760/tong-hop-cac-cach-lam-pizza-chi-can-o-nha-cung-co-the-thuong-thuc-202112070702477965.jpg\" alt=\"Nguyên liệu làm đế bánh pizza\" width=\"762\" height=\"429\"></figure><p><br>&nbsp;</p>', 15000, 13000, 'images/A8PFK2gN3AhWaAM7hvlgu2B3yWSNEapKfwvJhp3E.jpg', 'banh-pizza-giao-dien', 15, 'pizza, bánh pizza giao diện, pizza mới', '2024-07-26 05:04:04', '2024-07-26 05:05:55', 2),
-(13, 'Pizza Hải Sản', 'Bánh pizza hải sản thơm ngon lắm', '<p>Bánh pizza hải sản thơm ngon,Bánh pizza hải sản thơm ngon,Bánh pizza hải sản thơm ngon</p>', 29000, 25000, 'images/065LZp2rzU462TeAMx8t1hMqB7v1nxOpVivBgrNx.jpg', 'pizza-hai-san', 15, 'Hải Sản, Pizza.', '2024-07-26 08:26:47', '2024-07-26 08:27:07', 2);
+INSERT INTO `products` (`id`, `name`, `short_description`, `detailed_description`, `image`, `slug`, `quantity`, `created_at`, `updated_at`, `category_id`) VALUES
+(9, 'Pizza 2', 'Mô tả ngắn', 'Mô tả dài', 'images/vQPtg4Oou2bi2wCZXU2uXjPzr2iJZYy1fdrt7EMm.jpg', 'pizza-21', 15, '2024-07-23 08:00:34', '2024-07-26 05:05:45', 14),
+(10, 'Pizza 3', 'Mô tả ngắn', 'Mô tả dài', 'images/Ue95s35KDQtWUaPRcFwYRUX51LdAyWI2QrLlTOUL.jpg', 'pizza-3', 15, '2024-07-23 08:00:57', '2024-07-23 08:00:57', 3),
+(12, 'Bánh Pizza giao diện', 'abcde', '<p>Để làm nên chiếc bánh pizza thì mình cần có các nguyên liệu chính như: <a href=\"https://www.bachhoaxanh.com/bot-da-dung-bot-mi\"><strong>Bột mì</strong></a><strong>, men nở, </strong><a href=\"https://www.bachhoaxanh.com/dau-an-dau-olive\"><strong>dầu oliu</strong></a><strong>.</strong> Phần làm nên hương vị của bánh chính là <strong>lớp </strong><a href=\"https://www.bachhoaxanh.com/gia-vi-nem-san-sot-ca-mi-y\"><strong>sốt cà chua</strong></a><strong> phủ lên trên đế bánh trước khi cho xúc xích, rau củ và cuối cùng chính là phủ lên lớp </strong><a href=\"https://www.bachhoaxanh.com/pho-mai-an/pho-mai-mozzarella-khoi-bottega-zelachi-goi-200g\"><strong>phô mai béo mozzarella</strong></a><strong>, </strong><a href=\"https://www.bachhoaxanh.com/pho-mai-an/pho-mai-bottega-zelachi-cheddar-goi-200g-16-mieng\"><strong>Cheddar</strong></a><strong>,...</strong></p><figure class=\"image\"><img style=\"aspect-ratio:762/429;\" src=\"https://cdn.tgdd.vn/Files/2021/12/07/1402760/tong-hop-cac-cach-lam-pizza-chi-can-o-nha-cung-co-the-thuong-thuc-202112070702477965.jpg\" alt=\"Nguyên liệu làm đế bánh pizza\" width=\"762\" height=\"429\"></figure><p><br>&nbsp;</p>', 'images/A8PFK2gN3AhWaAM7hvlgu2B3yWSNEapKfwvJhp3E.jpg', 'banh-pizza-giao-dien', 15, '2024-07-26 05:04:04', '2024-07-26 05:05:55', 2),
+(13, 'Pizza Hải Sản', 'Bánh pizza hải sản thơm ngon lắm', '<p>Bánh pizza hải sản thơm ngon,Bánh pizza hải sản thơm ngon,Bánh pizza hải sản thơm ngon</p>', 'images/065LZp2rzU462TeAMx8t1hMqB7v1nxOpVivBgrNx.jpg', 'pizza-hai-san', 15, '2024-07-26 08:26:47', '2024-07-26 08:27:07', 2),
+(14, 'Pizza1111', 'abcde', '<p>abcde</p>', 'images/8kcPwk4EQkAXyvZwjAt08Q66mhhmdsD3gm4Cr4lt.png', 'pizza111', 244, '2024-08-01 02:15:44', '2024-08-01 02:16:06', 3);
 
 -- --------------------------------------------------------
 
@@ -358,20 +378,6 @@ CREATE TABLE `product_border` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `product_id` bigint(20) UNSIGNED NOT NULL,
   `border_id` bigint(20) UNSIGNED NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `product_size`
---
-
-CREATE TABLE `product_size` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `product_id` bigint(20) UNSIGNED NOT NULL,
-  `size_id` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -421,7 +427,6 @@ INSERT INTO `roles` (`id`, `name`, `created_at`, `updated_at`) VALUES
 CREATE TABLE `sizes` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL,
-  `price` int(11) NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -430,15 +435,15 @@ CREATE TABLE `sizes` (
 -- Dumping data for table `sizes`
 --
 
-INSERT INTO `sizes` (`id`, `name`, `price`, `created_at`, `updated_at`) VALUES
-(5, '30mm', 15000, NULL, '2024-07-31 11:37:39'),
-(6, 'Medium 1', 0, NULL, '2024-07-25 01:02:25'),
-(7, 'Large', 0, NULL, NULL),
-(8, 'Extra Large', 0, NULL, NULL),
-(10, '15mm', 0, '2024-07-25 00:57:49', '2024-07-25 00:57:49'),
-(11, '50mm', 0, '2024-07-25 00:58:17', '2024-07-25 01:01:44'),
-(12, 'Rounded', 16000, '2024-07-31 11:08:30', '2024-07-31 11:09:58'),
-(13, 'Món Nhậu', 15000, '2024-07-31 11:08:33', '2024-07-31 11:08:33');
+INSERT INTO `sizes` (`id`, `name`, `created_at`, `updated_at`) VALUES
+(5, '30mm', NULL, '2024-08-01 03:09:17'),
+(6, 'Medium 1', NULL, '2024-07-25 01:02:25'),
+(7, 'Large', NULL, NULL),
+(8, 'Extra Large', NULL, NULL),
+(10, '15mm', '2024-07-25 00:57:49', '2024-07-25 00:57:49'),
+(11, '50mm', '2024-07-25 00:58:17', '2024-07-25 01:01:44'),
+(12, 'Rounded', '2024-07-31 11:08:30', '2024-07-31 11:09:58'),
+(13, 'Món Nhậu', '2024-07-31 11:08:33', '2024-07-31 11:08:33');
 
 -- --------------------------------------------------------
 
@@ -486,7 +491,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `role_id`, `email`, `email_verified_at`, `password`, `status`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 1, 'admin@gmail.com', NULL, '$2y$10$cV5kuTDre80wUeeA8GEi6ukExRKBfgcKdmUglqB0.irVYKig50r1S', 1, NULL, '2024-07-19 11:32:07', '2024-07-31 13:16:34'),
+(1, 1, 'admin@gmail.com', NULL, '$2y$10$Q1WwZ2ryq7/Z0oMaajJOoug0Be8ijiky8aB.3hvxk2gX5.PATlZ0y', 1, NULL, '2024-07-19 11:32:07', '2024-08-01 04:00:15'),
 (2, 3, 'nguyenvanb@gmail.com', NULL, '$2y$10$cz1BxdnUoDdzhHRcFtzo3.eyd7EnH5zx1tX7HsnsTu3ewt61mMevi', 1, NULL, '2024-07-20 16:13:26', '2024-07-31 13:18:16'),
 (3, 3, 'khachhang@gmail.com', NULL, '$2y$10$tkOwHK6UxxCCs19y5jX9x./Q7rYfva08JnAttEl7p/zZM/7jnI8AC', 1, NULL, '2024-07-31 17:38:06', '2024-07-31 10:58:05');
 
@@ -505,8 +510,9 @@ ALTER TABLE `borders`
 --
 ALTER TABLE `carts`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `carts_user_id_foreign` (`user_id`),
-  ADD KEY `carts_product_id_foreign` (`product_id`);
+  ADD KEY `customer_id` (`customer_id`),
+  ADD KEY `carts_detail_product_id_foreign` (`detail_product_id`),
+  ADD KEY `border_id` (`border_id`,`topping_id`);
 
 --
 -- Indexes for table `categories`
@@ -535,7 +541,16 @@ ALTER TABLE `customers`
 ALTER TABLE `detail_orders`
   ADD PRIMARY KEY (`id`),
   ADD KEY `detail_orders_order_id_foreign` (`order_id`),
-  ADD KEY `detail_orders_product_id_foreign` (`product_id`);
+  ADD KEY `detail_orders_detail_product_id_foreign` (`detail_product_id`),
+  ADD KEY `border_id` (`border_id`,`topping_id`);
+
+--
+-- Indexes for table `detail_products`
+--
+ALTER TABLE `detail_products`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `detail_products_product_id_foreign` (`product_id`),
+  ADD KEY `detail_products_size_id_foreign` (`size_id`);
 
 --
 -- Indexes for table `employees`
@@ -563,8 +578,8 @@ ALTER TABLE `migrations`
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `orders_order_code_unique` (`order_code`),
-  ADD KEY `orders_user_id_foreign` (`user_id`),
-  ADD KEY `orders_coupon_id_foreign` (`coupon_id`);
+  ADD KEY `orders_coupon_id_foreign` (`coupon_id`),
+  ADD KEY `customer_id` (`customer_id`);
 
 --
 -- Indexes for table `password_resets`
@@ -595,14 +610,6 @@ ALTER TABLE `product_border`
   ADD PRIMARY KEY (`id`),
   ADD KEY `product_border_product_id_foreign` (`product_id`),
   ADD KEY `product_border_border_id_foreign` (`border_id`);
-
---
--- Indexes for table `product_size`
---
-ALTER TABLE `product_size`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `product_size_product_id_foreign` (`product_id`),
-  ADD KEY `product_size_size_id_foreign` (`size_id`);
 
 --
 -- Indexes for table `product_sole`
@@ -680,6 +687,12 @@ ALTER TABLE `detail_orders`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT for table `detail_products`
+--
+ALTER TABLE `detail_products`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
 -- AUTO_INCREMENT for table `employees`
 --
 ALTER TABLE `employees`
@@ -695,7 +708,7 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `orders`
@@ -713,18 +726,12 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `product_border`
 --
 ALTER TABLE `product_border`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `product_size`
---
-ALTER TABLE `product_size`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
@@ -743,7 +750,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `sizes`
 --
 ALTER TABLE `sizes`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `toppings`
@@ -765,8 +772,8 @@ ALTER TABLE `users`
 -- Constraints for table `carts`
 --
 ALTER TABLE `carts`
-  ADD CONSTRAINT `carts_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `carts_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `carts_detail_product_id_foreign` FOREIGN KEY (`detail_product_id`) REFERENCES `detail_products` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `carts_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `customers`
@@ -778,8 +785,15 @@ ALTER TABLE `customers`
 -- Constraints for table `detail_orders`
 --
 ALTER TABLE `detail_orders`
-  ADD CONSTRAINT `detail_orders_order_id_foreign` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `detail_orders_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `detail_orders_detail_product_id_foreign` FOREIGN KEY (`detail_product_id`) REFERENCES `detail_products` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `detail_orders_order_id_foreign` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `detail_products`
+--
+ALTER TABLE `detail_products`
+  ADD CONSTRAINT `detail_products_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `detail_products_size_id_foreign` FOREIGN KEY (`size_id`) REFERENCES `sizes` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `employees`
@@ -792,7 +806,7 @@ ALTER TABLE `employees`
 --
 ALTER TABLE `orders`
   ADD CONSTRAINT `orders_coupon_id_foreign` FOREIGN KEY (`coupon_id`) REFERENCES `coupons` (`id`) ON DELETE SET NULL,
-  ADD CONSTRAINT `orders_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `products`
@@ -806,13 +820,6 @@ ALTER TABLE `products`
 ALTER TABLE `product_border`
   ADD CONSTRAINT `product_border_border_id_foreign` FOREIGN KEY (`border_id`) REFERENCES `borders` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `product_border_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE;
-
---
--- Constraints for table `product_size`
---
-ALTER TABLE `product_size`
-  ADD CONSTRAINT `product_size_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `product_size_size_id_foreign` FOREIGN KEY (`size_id`) REFERENCES `sizes` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `product_sole`
