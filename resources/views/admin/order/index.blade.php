@@ -103,7 +103,7 @@
                                 <tr>
                                     <td>${rowNumber++}</td>
                                     <td>${item.order_code}</td>
-                                    <td><a href="{{ route('admin.customer.show') }}?id=${item.user.id}">${item.user.name}</a></td>
+                                    <td><a href="{{ route('admin.customer.show') }}?id=${item.customer.id}">${item.customer.name}</a></td>
                                     <td>${totalAmount.toLocaleString('vi-VN')}đ</td>
                                     <td>${statusText}</td>
                                     <td>
@@ -119,7 +119,7 @@
                                 <tr>
                                     <td>${rowNumber++}</td>
                                     <td>${item.order_code}</td>
-                                    <td><a href="{{ route('admin.customer.show') }}?id=${item.user.id}">${item.user.name}</a></td>
+                                    <td><a href="{{ route('admin.customer.show') }}?id=${item.customer.id}">${item.customer.name}</a></td>
                                     <td>${totalAmount.toLocaleString('vi-VN')}đ</td>
                                     <td>${statusText}</td>
                                     <td>

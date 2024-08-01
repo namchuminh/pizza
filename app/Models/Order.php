@@ -34,9 +34,9 @@ class Order extends Model
         return strtoupper(bin2hex(random_bytes(7))); // Tạo 14 ký tự ngẫu nhiên gồm số và chữ viết hoa
     }
 
-    public function user()
+    public function customer()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Customer::class);
     }
 
     public function coupon()

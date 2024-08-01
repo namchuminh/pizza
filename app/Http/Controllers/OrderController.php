@@ -10,7 +10,7 @@ class OrderController extends Controller
     // Lấy danh sách tất cả các orders với tìm kiếm và phân trang
     public function index(Request $request)
     {
-        if(auth()->user()->role == 'customer'){
+        if(auth()->user()->role_id == 3){
             // Lấy giá trị tìm kiếm và phân trang từ query parameters
             $search = $request->query('search');
             $perPage = $request->query('per_page', 10); // Mặc định là 10 orders mỗi trang
@@ -35,7 +35,7 @@ class OrderController extends Controller
             $perPage = $request->query('per_page', 10); // Mặc định là 10 orders mỗi trang
 
             // Xây dựng query để tìm kiếm và phân trang
-            $query = Order::with('user'); // Thêm with('user') để tải thông tin của User liên quan
+            $query = Order::with('customer'); // Thêm with('user') để tải thông tin của User liên quan
 
             if ($search) {
                 $query->where(function ($q) use ($search) {
@@ -61,7 +61,7 @@ class OrderController extends Controller
             'coupon_id' => 'nullable|exists:coupons,id'
         ]);
 
-        $validatedData['user_id'] = auth()->user()->id;
+        $validatedData['customer_id'] = auth()->user()->id;
         $validatedData['payment'] = 0;
         $validatedData['status'] = 1;
         
@@ -74,12 +74,12 @@ class OrderController extends Controller
     // Lấy thông tin một order cụ thể
     public function show($id)
     {
-        $order = Order::with('user')->with('coupon')->find($id);
+        $order = Order::with('customer')->with('coupon')->find($id);
         if (!$order) {
             return response()->json(['error' => 'Order not found'], 404);
         }
 
-        if((auth()->user()->role == 'customer') && ($order->user_id != auth()->user()->id)){
+        if((auth()->user()->role_id == 3) && ($order->customer_id != auth()->user()->id)){
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 

@@ -18,7 +18,15 @@ class DetailOrder extends Model
         'quantity'
     ];
 
-    public function product(){
-        return $this->belongsTo(Product::class);
+    public function detail_product(){
+        return $this->belongsTo(DetailProduct::class);
+    }
+
+    public function border(){
+        return $this->belongsTo(Border::class);
+    }
+
+    public function topping(){
+        return $this->belongsTo(Topping::class);
     }
 }

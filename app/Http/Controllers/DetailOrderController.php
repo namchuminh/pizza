@@ -16,11 +16,11 @@ class DetailOrderController extends Controller
             return response()->json(['error' => 'Order not found'], 404);
         }
 
-        if((auth()->user()->role == 'customer') && ($order->user_id != auth()->user()->id)){
+        if((auth()->user()->role_id == 3) && ($order->user_id != auth()->user()->id)){
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        $detailOrders = DetailOrder::with('product')
+        $detailOrders = DetailOrder::with(['detail_product.product', 'detail_product.size'])->with('border')->with('topping')
             ->where('order_id', $order->id)
             ->get();
 

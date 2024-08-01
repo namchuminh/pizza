@@ -60,6 +60,7 @@
                     <th>Tên Sản Phẩm</th>
                     <th>Giá Bán</th>
                     <th>Số Lượng</th>
+                    <th>Đặt Thêm</th>
                     <th>Đơn Giá</th>
                 </tr>
                 </thead>
@@ -113,16 +114,37 @@
                     // Populate the table with data
                     response.forEach(item => {
 
-                        let sale_price = Number(item.product.sale_price);
-                        let sum = sale_price * Number(item.quantity)
+                        let price = Number(item.detail_product.price);
+                        let sum = price * Number(item.quantity)
+
+                        let border_price = 0;
+                        let topping_price = 0;
+
+                        if(item.border.price != null){
+                            border_price = Number(item.border.price)
+                            sum = sum + border_price;
+                        }
+
+                        if(item.topping.price != null){
+                            topping_price = Number(item.topping.price)
+                            sum = sum + topping_price;
+                        }
+
                         tempSum += sum;
+
                         $('tbody').append(`
                             <tr>
                                 <td>${rowNumber++}</td>
-                                <td class="not_print"><img src="{{ asset('storage') }}/${item.product.image}" alt="${item.product.image}" style="width: 150px; height: 150px;"></td>
-                                <td>${item.product.name}</td>
-                                <td>${sale_price.toLocaleString('vi-VN')}đ</td>
+                                <td class="not_print"><img src="{{ asset('storage') }}/${item.detail_product.product.image}" alt="${item.detail_product.product.image}" style="width: 150px; height: 150px;"></td>
+                                <td>${item.detail_product.product.name} (${item.detail_product.size.name})</td>
+                                <td>${price.toLocaleString('vi-VN')}đ</td>
                                 <td>${item.quantity} cái</td>
+                                <td>
+                                    <ul>
+                                        <li>Viền bánh: ${item.border.name} (+ ${border_price.toLocaleString('vi-VN')}đ)</li>
+                                        <li>Topping: ${item.topping.name} (+ ${topping_price.toLocaleString('vi-VN')}đ)</li>
+                                    </ul>
+                                </td>
                                 <td>${sum.toLocaleString('vi-VN')}đ</td>
                             </tr>
                         `);
@@ -150,7 +172,7 @@
                 },
                 success: function(response) {
                     $("#code").text(response.order_code);
-                    $("#customer").text(response.user.name);
+                    $("#customer").text(response.customer.name);
                     $("#phone").text(response.phone);
                     $("#address").text(response.address);
                     $("#created_at").text(response.created_at);
