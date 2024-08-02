@@ -170,7 +170,7 @@
                         <div class="top-right">
                             <div class="search-wrp">
                                 <button><i class="far fa-search"></i></button>
-                                <input placeholder="Search" aria-label="Search">
+                                <input placeholder="Tìm Kiếm " aria-label="Search">
                             </div>
                             <div class="social-icon d-flex align-items-center">
                                 <a href="#"><i class="fab fa-facebook-f"></i></a>
@@ -271,7 +271,7 @@
         <div class="breadcrumb-wrapper bg-cover" style="background-image: url('https://modinatheme.com/html/foodking-html/assets/img/banner/breadcrumb.jpg');">
             <div class="container">
                 <div class="page-heading center">
-                    <h1 class="title-breadcrumb-top"></h1>
+                    <h1 class="title-breadcrumb-top">@yield('title-breadcrumb')</h1>
                     <ul class="breadcrumb-items">
                         <li>
                             <a href="{{ route('web.home') }}">

@@ -210,7 +210,7 @@
                 <div class="header-middle-wrapper">
                     <form action="#" class="search-toggle-box d-md-block">
                         <div class="input-area">
-                            <input type="text" placeholder="Search">
+                            <input type="text" placeholder="Tìm Kiếm Pizza Dành Cho Bạn">
                             <button class="cmn-btn">
                                 <i class="far fa-search"></i>
                             </button>

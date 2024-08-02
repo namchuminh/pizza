@@ -67,7 +67,7 @@
             <div class="col-xl-9 col-lg-8 order-1 order-md-2">
                 <div class="woocommerce-notices-wrapper" style="padding: 15px 20px;">
                     <div class="product-showing">
-                        <h5><a href="#"><span><img src="https://modinatheme.com/html/foodking-html/assets/img/filter.png" alt="img"></span> Danh Sách Pizza</a></h5>
+                        <h5><a href="#" class="title-sub"><span><img src="https://modinatheme.com/html/foodking-html/assets/img/filter.png" alt="img"></span> Danh Sách Pizza</a></h5>
                     </div>
                     <div class="form-clt">
                         <div class="icon">
@@ -138,6 +138,8 @@
                     $('.list-pizza').empty();
                     // Populate the table with data
                     response.data.forEach(item => {
+                        $(".title-breadcrumb-top").html(item.category.name);
+                        $(".title-sub").html(`<span><img src="https://modinatheme.com/html/foodking-html/assets/img/filter.png" alt="img"></span> Loại Bánh: ${item.category.name}`);
                         let price = 0;
 
                         if(item.detail_products.length != 0){

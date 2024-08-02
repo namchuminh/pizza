@@ -21,7 +21,7 @@
                             <a href="#"><i class="fas fa-star"></i></a>
                             <a href="#"> <i class="fas fa-star"></i></a>
                         </div>
-                        <h3 class="pb-3 p-name">Whopper Burger King</h3>
+                        <h3 class="pb-3 p-name"></h3>
                         <div class="price-list d-flex align-items-center mb-4">
                             <del class="price" style="text-decoration: none;"></del>
                         </div>
