@@ -1,6 +1,11 @@
 @extends('web.layouts.app')
 @section('title-breadcrumb', 'Danh sách Pizza')
 @section('content')
+<style>
+    .image{
+        text-align: center;
+    }
+</style>
 <section class="product-details-section section-padding">
     <div class="container">
         <div class="product-details-wrapper style-2">

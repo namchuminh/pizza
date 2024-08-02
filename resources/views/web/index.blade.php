@@ -30,7 +30,17 @@
         <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
         <!-- Style.css -->
         <link rel="stylesheet" href="{{ asset('style.css') }}">
-
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                if (localStorage.getItem('access_token')) {
+                    var accountUrl = '{{ route('web.customer.index') }}';
+                    var accountLinks = document.getElementsByClassName('account');
+                    for (var i = 0; i < accountLinks.length; i++) {
+                        accountLinks[i].href = accountUrl;
+                    }
+                }
+            });
+        </script>
     </head>
     <body>
     <div id="preloader" class="preloader">
@@ -264,6 +274,12 @@
                             </div>
                             <a href="shop-cart.html" class="cart-icon">
                             <i class="far fa-shopping-basket"></i>
+                            </a>
+                            
+                        </div>
+                        <div class="menu-cart">
+                            <a class="account" href="{{ route('web.auth') }}">
+                                <i class="fas fa-user"></i>
                             </a>
                         </div>
                     </div>

@@ -30,6 +30,17 @@
         <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
         <!-- Style.css -->
         <link rel="stylesheet" href="{{ asset('style.css') }}">
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                if (localStorage.getItem('access_token')) {
+                    var accountUrl = '{{ route('web.customer.index') }}';
+                    var accountLinks = document.getElementsByClassName('account');
+                    for (var i = 0; i < accountLinks.length; i++) {
+                        accountLinks[i].href = accountUrl;
+                    }
+                }
+            });
+        </script>
     </head>
     <body>
         <!-- Proloader Start -->
@@ -249,7 +260,7 @@
                                     </a>
                                 </div>
                                 <div class="header-button">
-                                    <a href="contact.html" class="theme-btn bg-red-2">Tài Khoản</a>
+                                    <a href="{{ route('web.auth') }}" class="theme-btn bg-red-2 account">Tài Khoản</a>
                                 </div>
                                 <div class="header__hamburger d-xl-block my-auto">
                                     <div class="sidebar__toggle">

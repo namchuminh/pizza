@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\Customer;
+
 
 class AuthController extends Controller
 {
@@ -71,6 +73,29 @@ class AuthController extends Controller
         }
     }
 
+    public function register(Request $request){
+        $validatedData = $request->validate([
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:4',
+            'name' => 'required|string|max:255',
+            'phone' => 'required|string|max:15',
+            'address' => 'required|string|max:255'
+        ]);
+
+        // Tạo mới user
+        $user = User::create([
+            'email' => $validatedData['email'],
+            'password' => Hash::make($validatedData['password']),
+            'role_id' => 3, // Assuming role_id 3 is for customer
+            'status' => 1 // Assuming 1 means active
+        ]);
+
+        // Tạo mới employee
+        $employee = Customer::create(array_merge($validatedData, ['user_id' => $user->id]));
+
+        return response()->json($employee, 201);
+    }
+
     // Đăng xuất
     public function logout()
     {
@@ -84,5 +109,6 @@ class AuthController extends Controller
         $expiresAt = now()->addMinutes($ttl)->timestamp;
         return Crypt::encryptString($userId . '|' . $expiresAt);
     }
+    
 }
 
