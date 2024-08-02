@@ -27,4 +27,12 @@ class Product extends Model
     public function detail_products(){
         return $this->hasMany(DetailProduct::class);
     }
+
+    public function product_borders(){
+        return $this->hasMany(ProductBorder::class);
+    }
+
+    public function product_toppings(){
+        return $this->hasMany(ProductTopping::class);
+    }
 }

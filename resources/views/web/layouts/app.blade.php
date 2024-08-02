@@ -90,7 +90,7 @@
                     <div class="offcanvas__content">
                         <div class="offcanvas__top mb-5 d-flex justify-content-between align-items-center">
                             <div class="offcanvas__logo">
-                                <a href="index.html">
+                                <a href="{{ route('web.home') }}">
                                 <img src="https://modinatheme.com/html/foodking-html/assets/img/logo/logo.svg" alt="logo-img">
                                 </a>
                             </div>
@@ -187,7 +187,7 @@
                     <div class="mega-menu-wrapper">
                         <div class="header-main">
                             <div class="logo">
-                                <a href="index.html" class="header-logo">
+                                <a href="{{ route('web.home') }}" class="header-logo">
                                 <img src="https://modinatheme.com/html/foodking-html/assets/img/logo/logo.svg" alt="logo-img">
                                 </a>
                             </div>
@@ -200,6 +200,9 @@
                                                     <a href="{{ route('web.home') }}">
                                                     TRANG CHỦ
                                                     </a>
+                                                </li>
+                                                <li>
+                                                    <a href="{{ route('web.product.list') }}">MUA PIZZA</a>
                                                 </li>
                                             </ul>
                                         </nav>
@@ -268,7 +271,7 @@
         <div class="breadcrumb-wrapper bg-cover" style="background-image: url('https://modinatheme.com/html/foodking-html/assets/img/banner/breadcrumb.jpg');">
             <div class="container">
                 <div class="page-heading center">
-                    <h1>@yield('title-breadcrumb')</h1>
+                    <h1 class="title-breadcrumb-top"></h1>
                     <ul class="breadcrumb-items">
                         <li>
                             <a href="{{ route('web.home') }}">
@@ -278,7 +281,7 @@
                         <li>
                             <i class="far fa-chevron-right"></i>
                         </li>
-                        <li>
+                        <li class="title-breadcrumb">
                             @yield('title-breadcrumb')
                         </li>
                     </ul>
@@ -442,7 +445,7 @@
                 <div class="container">
                     <div class="footer-bottom-wrapper d-flex align-items-center justify-content-between">
                         <p class="wow fadeInLeft" data-wow-delay=".3s">
-                            © Copyright <span class="theme-color-3">2024</span> <a href="index.html">Foodking </a>. All Rights Reserved.
+                            © Copyright <span class="theme-color-3">2024</span> <a href="{{ route('web.home') }}">Foodking </a>. All Rights Reserved.
                         </p>
                         <ul class="wow fadeInRight" data-wow-delay=".5s">
                             <li>

@@ -195,7 +195,7 @@ class ProductController extends Controller
     // Lấy thông tin một sản phẩm cụ thể
     public function show($id)
     {
-        $product = Product::with('category')->find($id);
+        $product = Product::with('category')->with('detail_products')->find($id);
         if (!$product) {
             return response()->json(['error' => 'Product not found'], 404);
         }

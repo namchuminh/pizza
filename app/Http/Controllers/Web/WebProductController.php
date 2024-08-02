@@ -11,7 +11,7 @@ class WebProductController extends Controller
         return view('web.list');
     }
 
-    public function detail(){
-        return view('web.detail');
+    public function detail($slug){
+        return view('web.detail', compact('slug'));
     }
 }

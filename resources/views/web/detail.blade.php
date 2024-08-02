@@ -1,0 +1,249 @@
+@extends('web.layouts.app')
+@section('title-breadcrumb', 'Danh sách Pizza')
+@section('content')
+<section class="product-details-section section-padding">
+    <div class="container">
+        <div class="product-details-wrapper style-2">
+            <div class="row g-4">
+                <div class="col-xl-4 col-lg-6">
+                    <div class="product-image-items">
+                        <div class="product-image">
+                            <img style="width: 414px; height: 370px;" class="image_origin" src="" alt="img" class="w-100">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-5 col-lg-6">
+                    <div class="product-details-content">
+                        <div class="star pb-3">
+                            <a href="#"> <i class="fas fa-star"></i></a>
+                            <a href="#"><i class="fas fa-star"></i></a>
+                            <a href="#"> <i class="fas fa-star"></i></a>
+                            <a href="#"><i class="fas fa-star"></i></a>
+                            <a href="#"> <i class="fas fa-star"></i></a>
+                        </div>
+                        <h3 class="pb-3 p-name">Whopper Burger King</h3>
+                        <div class="price-list d-flex align-items-center mb-4">
+                            <del class="price" style="text-decoration: none;"></del>
+                        </div>
+                        <p class="mb-4 sort_des">
+                        </p>
+                        <div class="social-icon d-flex align-items-center">
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-vimeo-v"></i></a>
+                            <a href="#"><i class="fab fa-pinterest-p"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-4">
+                    <div class="product-form-wrapper">
+                        <form action="#" id="contact-forms" method="POST">
+                            <div class="form-clt">
+                                <label class="select-crust">Chọn Kích Thước</label>
+                                <div class="nice-select" tabindex="0">
+                                    <span class="current">
+                                        Chọn Kích Thước
+                                    </span>
+                                    <ul class="list size-list">
+
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="form-clt">
+                                <label class="select-crust">Chọn Viền Bánh</label>
+                                <div class="nice-select" tabindex="0">
+                                    <span class="current">
+                                        Chọn Viền Bánh
+                                    </span>
+                                    <ul class="list border-list">
+
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="form-clt">
+                                <label class="select-crust">Chọn Topping</label>
+                                <div class="nice-select" tabindex="0">
+                                    <span class="current">
+                                        Chọn Topping
+                                    </span>
+                                    <ul class="list topping-list">
+
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="form-clt">
+                                <label class="select-crust">Số Lượng</label>
+                                <div class="quantity-basket">
+                                    <p class="qty">
+                                        <button class="qtyminus" aria-hidden="true">&minus;</button>
+                                        <input type="number" name="qty" id="qty2" min="1" max="10" step="1" value="1">
+                                        <button class="qtyplus" aria-hidden="true">&plus;</button>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-clt">
+                                <button type="submit" class="theme-btn">
+                                    <i class="far fa-shopping-bag"></i>
+                                    <span class="button-text">Thêm Giỏ Hàng</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="single-tab">
+                <ul class="nav mb-4">
+                    <li class="nav-item">
+                        <a href="#description" data-bs-toggle="tab" class="nav-link active">
+                        Mô Tả Chi Tiết Bánh
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#additional" data-bs-toggle="tab" class="nav-link">
+                        Thông Tin Thêm
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div id="description" class="tab-pane fade show active">
+                        <div class="description-items">
+
+                        </div>
+                    </div>
+                    <div id="additional" class="tab-pane fade">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <td>Viền Bánh</td>
+                                        <td>
+                                            <ul class="border-product">
+
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Kích Thước</td>
+                                        <td>
+                                            <ul class="size-product">
+
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Topping Bánh</td>
+                                        <td>
+                                            <ul class="topping-product">
+
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@endsection
+@section('script')
+<script>
+    $(document).ready(function() {
+        var slug = "{{ $slug }}";
+        const id = slug.match(/(\d+)\.html$/)[1];
+        function fetchData(page, search = '') {
+            $.ajax({
+                url: `{{ $api_url }}products/${id}`,
+                method: 'GET',
+                success: function(response) {
+                    let price = Number(response.detail_products[0].price);
+                    let priceMax = Number(response.detail_products[response.detail_products.length - 1].price);
+                    $(".p-name").text(response.name);
+                    $(".description-items").html(response.detailed_description);
+                    $(".sort_des").html(response.short_description);
+                    $('.image_origin').attr("src", `{{ asset('storage') }}/${response.image}`);
+                    $(".title-breadcrumb-top").html(response.name);
+                    $("title").html(response.name)
+                    if(response.detail_products.length == 1){
+                        $(".price").text(price.toLocaleString('vi-VN') + "đ");
+                    }else if(response.detail_products.length > 1){
+                        $(".price").text(price.toLocaleString('vi-VN') + "đ đến " + priceMax.toLocaleString('vi-VN') + "đ");
+                    }else{
+                        $(".price").text("0đ");
+                    }
+                },
+                error: function(xhr) {
+                    console.log(xhr)
+                }
+            });
+        }
+
+        function fetchDataBorder() {
+            $.ajax({
+                url: `{{ $api_url }}products/${id}/border`,
+                method: 'GET',
+                success: function(response) {
+                    response.forEach(item => {
+                        $(".border-product").append(`<li>${item.border.name}</li>`);
+                        $(".border-list").append(`
+                            <li data-value="${item.border.id}" class="option selected">
+                                ${item.border.name}
+                            </li>
+                        `);
+                    });
+                },
+                error: function(xhr) {
+                    console.log(xhr)
+                }
+            });
+        }
+
+        function fetchDataSize() {
+            $.ajax({
+                url: `{{ $api_url }}products/${id}/detail`,
+                method: 'GET',
+                success: function(response) {
+                    response.forEach(item => {
+                        $(".size-product").append(`<li>${item.size.name}</li>`);
+                        $(".size-list").append(`
+                            <li data-value="${item.size.id}" class="option selected">
+                                ${item.size.name}
+                            </li>
+                        `);
+                    });
+                },
+                error: function(xhr) {
+                    console.log(xhr)
+                }
+            });
+        }
+
+        function fetchDataTopping() {
+            $.ajax({
+                url: `{{ $api_url }}products/${id}/topping`,
+                method: 'GET',
+                success: function(response) {
+                    response.forEach(item => {
+                        $(".topping-product").append(`<li>${item.topping.name}</li>`);
+                        $(".topping-list").append(`
+                            <li data-value="${item.topping.id}" class="option selected">
+                                ${item.topping.name}
+                            </li>
+                        `);
+                    });
+                },
+                error: function(xhr) {
+                    console.log(xhr)
+                }
+            });
+        }
+
+        fetchData();
+        fetchDataBorder();
+        fetchDataSize();
+        fetchDataTopping();
+    });
+</script>
+@endsection

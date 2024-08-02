@@ -111,9 +111,10 @@
                 success: function(response) {
                     // Populate the table with data
                     response.data.forEach(item => {
+                        const url = `/loai-pizza/${encodeURIComponent(item.slug)}`;
                         $('.list-categories').append(`
                             <li>
-                                <a href="shop-single.html">
+                                <a href="${url}">
                                     <img style="width: 25px; height: 25px;" src="{{ asset('storage') }}/${item.image}" alt="${item.name}" alt="img"> 
                                     ${item.name}
                                 </a>

@@ -89,7 +89,7 @@
                     <div class="offcanvas__content">
                         <div class="offcanvas__top mb-5 d-flex justify-content-between align-items-center">
                             <div class="offcanvas__logo">
-                                <a href="index.html">
+                                <a href="{{ route('web.home') }}">
                                 <img src="assets/img/logo/logo.svg" alt="logo-img">
                                 </a>
                             </div>
@@ -217,7 +217,7 @@
                         </div>
                     </form>
                     <div class="middle-header-logo">
-                        <a href="index.html">
+                        <a href="{{ route('web.home') }}">
                             <img src="assets/img/logo/logo.svg" alt="">
                         </a>
                     </div>
@@ -277,7 +277,7 @@
                 <div class="mega-menu-wrapper">
                     <div class="header-main">
                         <div class="logo">
-                            <a href="index.html" class="header-logo">
+                            <a href="{{ route('web.home') }}" class="header-logo">
                             <img src="assets/img/logo/logo-3.svg" alt="logo-img">
                             </a>
                         </div>
@@ -288,12 +288,12 @@
                                     <nav id="mobile-menu">
                                         <ul class="link-menu">
                                             <li class="has-dropdown active">
-                                                <a href="index.html">
+                                                <a href="{{ route('web.home') }}">
                                                 TRANG CHỦ
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="contact.html">MUA PIZZA</a>
+                                                <a href="{{ route('web.product.list') }}">MUA PIZZA</a>
                                             </li>
                                         </ul>
                                     </nav>
@@ -468,7 +468,7 @@
         <!-- Footer Section Start -->
         <footer class="footer-section section-bg-3 fix bg-cover" style="background-image: url('assets/img/hero-6/bg-shape.png');">
             <div class="footer-logo-6">
-                <a href="index.html">
+                <a href="{{ route('web.home') }}">
                     <img src="assets/img/logo/logo-2.svg" alt="logo-img">
                 </a>
             </div>
@@ -624,7 +624,7 @@
                 <div class="container">
                     <div class="footer-bottom-wrapper d-flex align-items-center justify-content-between">
                         <p class="wow fadeInLeft" data-wow-delay=".3s">
-                            © Copyright <span class="theme-color-3">2024</span> <a href="index.html">Foodking </a>. All Rights Reserved.
+                            © Copyright <span class="theme-color-3">2024</span> <a href="{{ route('web.home') }}">Foodking </a>. All Rights Reserved.
                         </p>
                         <ul class="wow fadeInRight" data-wow-delay=".5s">
                             <li>
@@ -702,9 +702,10 @@
 
                     // Populate the table with data
                     response.data.forEach(item => {
+                        const url = `/loai-pizza/${encodeURIComponent(item.slug)}`;
                         $('.link-menu').append(`
                             <li>
-                                <a href="contact.html">${item.name}</a>
+                                <a href="${url}">${item.name}</a>
                             </li>
                         `);
 
@@ -712,12 +713,12 @@
                             $('.food-menu-card-wrapper').append(`
                                 <div class="food-menu-card-items wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
                                     <div class="menu-thumb">
-                                        <a href="shop-right-sidebar.html">
+                                        <a href="${url}">
                                             <img style="width: 117px; height: 95px;" src="{{ asset('storage') }}/${item.image}" alt="${item.name}" alt="img">
                                         </a>
                                     </div>
                                     <h5 class="title">
-                                        <a href="shop-right-sidebar.html">${item.name}</a>
+                                        <a href="${url}">${item.name}</a>
                                     </h5>
                                 </div>
                             `);
@@ -725,12 +726,12 @@
                             $('.food-menu-card-wrapper').append(`
                                 <div class="food-menu-card-items wow fadeInUp" data-wow-delay=".2s" style="visibility: visible; animation-delay: 0.2s; animation-name: fadeInUp;">
                                     <div class="menu-thumb">
-                                        <a href="shop-right-sidebar.html">
+                                        <a href="${url}">
                                             <img style="width: 117px; height: 95px;" src="{{ asset('storage') }}/${item.image}" alt="${item.name}" alt="img">
                                         </a>
                                     </div>
                                     <h5 class="title">
-                                        <a href="shop-right-sidebar.html">${item.name}</a>
+                                        <a href="${url}">${item.name}</a>
                                     </h5>
                                 </div>
                             `);
