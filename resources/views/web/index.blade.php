@@ -34,7 +34,15 @@
             document.addEventListener('DOMContentLoaded', function() {
                 if (localStorage.getItem('access_token')) {
                     var accountUrl = '{{ route('web.customer.index') }}';
+                    var cartUrl = '{{ route('web.cart') }}';
+
                     var accountLinks = document.getElementsByClassName('account');
+                    var cartList = document.getElementsByClassName('cartList');
+
+                    for (var i = 0; i < cartList.length; i++) {
+                        cartList[i].href = cartUrl;
+                    }
+
                     for (var i = 0; i < accountLinks.length; i++) {
                         accountLinks[i].href = accountUrl;
                     }
@@ -240,7 +248,7 @@
                             </div>
                         </div>
                         <div class="menu-cart">
-                            <a href="shop-cart.html">
+                            <a class="cartList" href="{{ route('web.auth') }}">
                                 <i class="far fa-shopping-basket"></i>
                             </a>
                             

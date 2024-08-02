@@ -34,13 +34,22 @@
             document.addEventListener('DOMContentLoaded', function() {
                 if (localStorage.getItem('access_token')) {
                     var accountUrl = '{{ route('web.customer.index') }}';
+                    var cartUrl = '{{ route('web.cart') }}';
+
                     var accountLinks = document.getElementsByClassName('account');
+                    var cartList = document.getElementsByClassName('cartList');
+
+                    for (var i = 0; i < cartList.length; i++) {
+                        cartList[i].href = cartUrl;
+                    }
+
                     for (var i = 0; i < accountLinks.length; i++) {
                         accountLinks[i].href = accountUrl;
                     }
                 }
             });
         </script>
+        @yield('auth')
     </head>
     <body>
         <!-- Proloader Start -->
@@ -228,7 +237,7 @@
                                     </a>
                                 </div>
                                 <div class="header-button">
-                                    <a href="{{ route('web.cart') }}" class="theme-btn bg-red-2">Giỏ Hàng</a>
+                                    <a href="{{ route('web.auth') }}" class="theme-btn bg-red-2 cartList">Giỏ Hàng</a>
                                 </div>
                                 <div class="header__hamburger d-xl-block my-auto">
                                     <div class="sidebar__toggle">

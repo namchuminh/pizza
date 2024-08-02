@@ -1,6 +1,13 @@
 @extends('web.layouts.app')
 @section('title', 'Giỏ hàng')
 @section('title-breadcrumb', 'Giỏ hàng')
+@section('auth')
+<script>
+    if (!localStorage.getItem('access_token')) {
+        window.location.href  = '{{ route('web.auth') }}';
+    }
+</script>
+@endsection
 @section('content')
 <section class="cart-section section-padding fix">
     <div class="container">

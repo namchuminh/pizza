@@ -1,6 +1,13 @@
 @extends('web.layouts.app')
 @section('title', 'Đăng nhập')
 @section('title-breadcrumb', 'Đăng Nhập & Đăng Ký')
+@section('auth')
+<script>
+    if (localStorage.getItem('access_token')) {
+        window.location.href  = '{{ route('web.customer.index') }}';
+    }
+</script>
+@endsection
 @section('content')
 <section class="checkout-section fix section-padding border-bottom">
     <div class="container">
