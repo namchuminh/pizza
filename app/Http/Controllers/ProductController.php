@@ -19,12 +19,16 @@ class ProductController extends Controller
         $perPage = $request->query('per_page', 10); // Mặc định là 10 sản phẩm mỗi trang
 
         // Xây dựng query để tìm kiếm và phân trang
-        $query = Product::with('category');
+        $query = Product::with('category')->with('detail_products');
 
         if ($search) {
             $query->where('name', 'like', "%{$search}%")
-                  ->orWhere('short_description', 'like', "%{$search}%")
-                  ->orWhere('detailed_description', 'like', "%{$search}%");
+                ->orWhereHas('detail_products', function($query) use ($search) {
+                    $query->where('size_id', 'like', "%{$search}%");
+                })
+                ->orWhereHas('category', function($query) use ($search) {
+                    $query->where('slug', '=', $search);
+                });
         }
 
         $products = $query->paginate($perPage);

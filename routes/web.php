@@ -14,11 +14,15 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProfileController;
 
+use App\Http\Controllers\Web\HomeController;
+use App\Http\Controllers\Web\WebProductController;
+use App\Http\Controllers\Web\WebCategoryController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
+Route::get('/', [HomeController::class, 'index'])->name('web.home');
+Route::get('/pizza', [WebProductController::class, 'index'])->name('web.product.list');
+Route::get('/pizza/{slug}', [WebProductController::class, 'detail'])->name('web.product.detail');
+Route::get('/loai-pizza/{category}', [WebCategoryController::class, 'index'])->name('web.category.index');
 
 Route::prefix('admin')->group(function () {
     Route::get('/login', [AuthController::class, 'login'])->name('admin.login');
