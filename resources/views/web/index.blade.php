@@ -359,15 +359,6 @@
                                     Delicious & <br>
                                     hot pizza
                                 </h3>
-                                <a href="shop-single.html" class="link-btn">
-                                order now <i class="fas fa-arrow-right"></i>
-                                </a>
-                            </div>
-                            <div class="offer-image-2">
-                                <img src="assets/img/offer/50percent-off-2.png" alt="offer-img">
-                            </div>
-                            <div class="small-pizza">
-                                <img src="assets/img/food/small-pizza.png" alt="pizza-img">
                             </div>
                         </div>
                     </div>
@@ -379,15 +370,6 @@
                                 </h4>
                                 <h3>french fry</h3>
                                 <h5>This Weekend only</h5>
-                                <a href="shop-single.html" class="theme-btn bg-yellow">
-                                <span class="button-content-wrapper d-flex align-items-center">
-                                <span class="button-icon"><i class="flaticon-delivery"></i></span>
-                                <span class="button-text">order now</span>
-                                </span>
-                                </a>
-                            </div>
-                            <div class="french-image">
-                                <img src="assets/img/food/french-fry.png" alt="food-img">
                             </div>
                         </div>
                     </div>
@@ -399,15 +381,6 @@
                                     chiken & <br>
                                     french fry
                                 </h3>
-                                <a href="shop-single.html" class="link-btn">
-                                order now <i class="fas fa-arrow-right"></i>
-                                </a>
-                            </div>
-                            <div class="offer-shape-3">
-                                <img src="assets/img/offer/50percent-off-4.png" alt="shape-img">
-                            </div>
-                            <div class="main-food-3">
-                                <img src="assets/img/food/main-food-3.png" alt="pizza-img">
                             </div>
                         </div>
                     </div>
@@ -754,6 +727,7 @@
                     $('.pizza-menu-list-1').empty();
                     // Populate the table with data
                     response.data.forEach(item => {
+                        const url = `/pizza/${encodeURIComponent(item.slug)}-${item.id}.html`;
                         $('.pizza-menu-list-1').append(`
                             <div class="swiper-slide">
                                 <div class="popular-dishes-items">
@@ -769,7 +743,7 @@
                                             <i class="fas fa-star"></i>
                                         </div>
                                         <h4>
-                                            <a href="shop-single.html">${item.name}</a>
+                                            <a href="${url}">${item.name}</a>
                                         </h4>
                                         <h5>price $20.15</h5>
                                     </div>
@@ -793,6 +767,7 @@
                     $('.pizza-menu-list-2').empty();
                     // Populate the table with data
                     response.data.forEach(item => {
+                        const url = `/pizza/${encodeURIComponent(item.slug)}-${item.id}.html`;
                         $('.pizza-menu-list-2').append(`
                             <div class="swiper-slide">
                                 <div class="popular-dishes-items">
@@ -808,7 +783,7 @@
                                             <i class="fas fa-star"></i>
                                         </div>
                                         <h4>
-                                            <a href="shop-single.html">${item.name}</a>
+                                            <a href="${url}">${item.name}</a>
                                         </h4>
                                         <h5>price $20.15</h5>
                                     </div>

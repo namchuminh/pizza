@@ -143,7 +143,7 @@
                         if(item.detail_products.length != 0){
                             price = Number(item.detail_products[0].price);
                         }
-
+                        const url = `/pizza/${encodeURIComponent(item.slug)}-${item.id}.html`;
                         $('.list-pizza').append(`
                             <div class="col-xl-4 col-lg-6 col-md-6">
                                 <a href="#">
@@ -156,7 +156,7 @@
                                                 <span>Giá: ${price.toLocaleString('vi-VN')}đ</span>
                                             </div>
                                             <h4>
-                                                <a href="shop-single.html">${item.name}</a>
+                                                <a href="${url}">${item.name}</a>
                                             </h4>
                                             <div class="star">
                                                 <span class="fas fa-star"></span>
@@ -207,6 +207,7 @@
                                     }
 
                                     if(pizzaHotCount <= 5){
+                                        const url = `/pizza/${encodeURIComponent(item.slug)}-${item.id}.html`;
                                         $('.popular-food-posts').append(`
                                             <div class="single-post-item">
                                                 <div class="thumb bg-cover" style="background-image: url('{{ asset('storage') }}/${item.image}');"></div>
@@ -218,7 +219,7 @@
                                                         <span class="fas fa-star"></span>
                                                         <span class="fas fa-star"></span>
                                                     </div>
-                                                    <h4><a href="shop-single.html">${item.name}</a></h4>
+                                                    <h4><a href="${url}">${item.name}</a></h4>
                                                     <div class="post-price">
                                                         <span>Giá:</span>
                                                         <span class="theme-color-2">${price.toLocaleString('vi-VN')}đ</span>
@@ -288,7 +289,7 @@
                         if(item.detail_products.length != 0){
                             price = Number(item.detail_products[0].price);
                         }
-
+                        const url = `/pizza/${encodeURIComponent(item.slug)}-${item.id}.html`;
                         $('.list-pizza').append(`
                             <div class="col-xl-4 col-lg-6 col-md-6">
                                 <a href="#">
@@ -301,7 +302,7 @@
                                                 <span>Giá: ${price.toLocaleString('vi-VN')}đ</span>
                                             </div>
                                             <h4>
-                                                <a href="shop-single.html">${item.name}</a>
+                                                <a href="${url}">${item.name}</a>
                                             </h4>
                                             <div class="star">
                                                 <span class="fas fa-star"></span>

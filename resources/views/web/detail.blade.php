@@ -158,8 +158,8 @@
                 url: `{{ $api_url }}products/${id}`,
                 method: 'GET',
                 success: function(response) {
-                    let price = Number(response.detail_products[0].price);
-                    let priceMax = Number(response.detail_products[response.detail_products.length - 1].price);
+                    let price = 0;
+                    let priceMax = 0;
                     $(".p-name").text(response.name);
                     $(".description-items").html(response.detailed_description);
                     $(".sort_des").html(response.short_description);
@@ -167,8 +167,10 @@
                     $(".title-breadcrumb-top").html(response.name);
                     $("title").html(response.name)
                     if(response.detail_products.length == 1){
+                        price = Number(response.detail_products[0].price);
                         $(".price").text(price.toLocaleString('vi-VN') + "đ");
                     }else if(response.detail_products.length > 1){
+                        priceMax = Number(response.detail_products[response.detail_products.length - 1].price);
                         $(".price").text(price.toLocaleString('vi-VN') + "đ đến " + priceMax.toLocaleString('vi-VN') + "đ");
                     }else{
                         $(".price").text("0đ");
