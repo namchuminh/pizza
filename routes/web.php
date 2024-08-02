@@ -1,18 +1,20 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Web\AuthController;
-use App\Http\Controllers\Web\DashboardController;
-use App\Http\Controllers\Web\CategoryController;
-use App\Http\Controllers\Web\ProductController;
-use App\Http\Controllers\Web\SizeController;
-use App\Http\Controllers\Web\BorderController;
-use App\Http\Controllers\Web\ToppingController;
-use App\Http\Controllers\Web\CouponController;
-use App\Http\Controllers\Web\EmployeeController;
-use App\Http\Controllers\Web\UserController;
-use App\Http\Controllers\Web\OrderController;
-use App\Http\Controllers\Web\ProfileController;
+use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\SizeController;
+use App\Http\Controllers\Admin\BorderController;
+use App\Http\Controllers\Admin\ToppingController;
+use App\Http\Controllers\Admin\CouponController;
+use App\Http\Controllers\Admin\EmployeeController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\ProfileController;
+
+
 Route::get('/', function () {
     return view('welcome');
 });
