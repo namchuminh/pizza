@@ -19,6 +19,8 @@ use App\Http\Controllers\Web\WebProductController;
 use App\Http\Controllers\Web\WebCategoryController;
 use App\Http\Controllers\Web\WebCustomerController;
 use App\Http\Controllers\Web\WebAuthController;
+use App\Http\Controllers\Web\WebCartController;
+
 
 Route::get('/', [HomeController::class, 'index'])->name('web.home');
 Route::get('/pizza', [WebProductController::class, 'index'])->name('web.product.list');
@@ -28,6 +30,9 @@ Route::get('/loai-pizza/{category}', [WebCategoryController::class, 'index'])->n
 Route::get('/khach-hang/', [WebCustomerController::class, 'index'])->name('web.customer.index');
 
 Route::get('/tai-khoan/', [WebAuthController::class, 'index'])->name('web.auth');
+
+Route::get('/gio-hang/', [WebCartController::class, 'index'])->name('web.cart');
+
 
 Route::prefix('admin')->group(function () {
     Route::get('/login', [AuthController::class, 'login'])->name('admin.login');

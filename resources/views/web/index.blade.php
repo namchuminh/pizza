@@ -240,40 +240,8 @@
                             </div>
                         </div>
                         <div class="menu-cart">
-                            <div class="cart-box">
-                                <ul>
-                                    <li>
-                                        <img src="assets/img/shop-food/s2.png" alt="image">
-                                        <div class="cart-product">
-                                            <a href="#0">grilled chiken</a>
-                                            <span>168$</span>
-                                        </div>
-                                    </li>
-                                </ul>
-                                <ul>
-                                    <li class="border-none">
-                                        <img src="assets/img/shop-food/s3.png" alt="image">
-                                        <div class="cart-product">
-                                            <a href="#0">grilled chiken</a>
-                                            <span>168$</span>
-                                        </div>
-                                    </li>
-                                </ul>
-                                <div class="shopping-items d-flex align-items-center justify-content-between">
-                                    <span>Shopping : $20.00</span>
-                                    <span>Total : $168.00</span>
-                                </div>
-                                <div class="cart-button d-flex justify-content-between mb-4">
-                                    <a href="shop-cart.html" class="theme-btn">
-                                    View Cart
-                                    </a>
-                                    <a href="checkout.html" class="theme-btn bg-red-2">
-                                    Checkout
-                                    </a>
-                                </div>
-                            </div>
-                            <a href="shop-cart.html" class="cart-icon">
-                            <i class="far fa-shopping-basket"></i>
+                            <a href="shop-cart.html">
+                                <i class="far fa-shopping-basket"></i>
                             </a>
                             
                         </div>

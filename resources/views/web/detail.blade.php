@@ -49,7 +49,7 @@
                                     <span class="current">
                                         Chọn Kích Thước
                                     </span>
-                                    <ul class="list size-list">
+                                    <ul class="list size-list" style="min-width: fit-content;">
 
                                     </ul>
                                 </div>
@@ -60,7 +60,7 @@
                                     <span class="current">
                                         Chọn Viền Bánh
                                     </span>
-                                    <ul class="list border-list">
+                                    <ul class="list border-list" style="min-width: fit-content;">
 
                                     </ul>
                                 </div>
@@ -71,7 +71,7 @@
                                     <span class="current">
                                         Chọn Topping
                                     </span>
-                                    <ul class="list topping-list">
+                                    <ul class="list topping-list" style="min-width: fit-content;">
 
                                     </ul>
                                 </div>
@@ -89,7 +89,7 @@
                             <div class="form-clt">
                                 <button type="submit" class="theme-btn">
                                     <i class="far fa-shopping-bag"></i>
-                                    <span class="button-text">Thêm Giỏ Hàng</span>
+                                    <span class="button-text add-to-cart">Thêm Giỏ Hàng</span>
                                 </button>
                             </div>
                         </form>
@@ -175,6 +175,7 @@
                         price = Number(response.detail_products[0].price);
                         $(".price").text(price.toLocaleString('vi-VN') + "đ");
                     }else if(response.detail_products.length > 1){
+                        price = Number(response.detail_products[0].price);
                         priceMax = Number(response.detail_products[response.detail_products.length - 1].price);
                         $(".price").text(price.toLocaleString('vi-VN') + "đ đến " + priceMax.toLocaleString('vi-VN') + "đ");
                     }else{
@@ -195,8 +196,8 @@
                     response.forEach(item => {
                         $(".border-product").append(`<li>${item.border.name}</li>`);
                         $(".border-list").append(`
-                            <li data-value="${item.border.id}" class="option selected">
-                                ${item.border.name}
+                            <li data-value="${item.border.id}" class="option">
+                                ${item.border.name} (+ ${Number(item.border.price).toLocaleString('vi-VN')}Đ)
                             </li>
                         `);
                     });
@@ -215,8 +216,8 @@
                     response.forEach(item => {
                         $(".size-product").append(`<li>${item.size.name}</li>`);
                         $(".size-list").append(`
-                            <li data-value="${item.size.id}" class="option selected">
-                                ${item.size.name}
+                            <li data-value="${item.id}" class="option selected">
+                                ${item.size.name} (${Number(item.price).toLocaleString('vi-VN')}Đ)
                             </li>
                         `);
                     });
@@ -235,8 +236,8 @@
                     response.forEach(item => {
                         $(".topping-product").append(`<li>${item.topping.name}</li>`);
                         $(".topping-list").append(`
-                            <li data-value="${item.topping.id}" class="option selected">
-                                ${item.topping.name}
+                            <li data-value="${item.topping.id}" class="option">
+                                ${item.topping.name} (+ ${Number(item.topping.price).toLocaleString('vi-VN')}Đ)
                             </li>
                         `);
                     });
@@ -244,6 +245,72 @@
                 error: function(xhr) {
                     console.log(xhr)
                 }
+            });
+        }
+
+
+
+        $('.add-to-cart').on('click', function(event) {
+            event.preventDefault(); // Ngăn không cho form gửi theo cách mặc định
+
+            // Lấy dữ liệu từ các dropdown và input
+            var size = $('.size-list .selected').data('value');
+            var border = $('.border-list .selected').data('value');
+            var topping = $('.topping-list .selected').data('value');
+            var quantity = $('#qty2').val();
+
+            // Tạo form data
+            var formData = {
+                detail_product_id: size,
+                border_id: border,
+                topping_id: topping,
+                quantity: quantity
+            };
+
+            function addToCart(){
+                // Gửi dữ liệu POST đến API
+                $.ajax({
+                    url: '{{ $api_url }}carts',
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                    },
+                    data: formData,
+                    success: function(response) {
+                        alert('Thêm giỏ hàng thành công!');
+                        // Xử lý thành công (có thể cập nhật giỏ hàng, hiển thị thông báo, v.v.)
+                    },
+                    error: function(xhr) {
+                        console.log(xhr)
+                        if (xhr.status === 401) {
+                            refreshToken().done(function() {
+                                // Retry the update request with the new token
+                                addToCart();
+                            });
+                        } else {
+                            alert('Không thể thêm sản phẩm vào giỏ hàng!');
+                        }
+                    }
+                });
+            }
+
+            addToCart();
+        });
+
+        function refreshToken() {
+            return $.ajax({
+                url: `{{ $api_url }}refresh`,
+                method: 'POST',
+                data: {
+                    'refresh_token': localStorage.getItem('refresh_token')
+                }
+            }).done(function(response) {
+                localStorage.setItem('access_token', response.access_token);
+                localStorage.setItem('refresh_token', response.refresh_token);
+            }).fail(function(xhr) {
+                localStorage.removeItem('access_token');
+                localStorage.removeItem('refresh_token');
+                window.location.href = '/tai-khoan'; // Replace with your login route
             });
         }
 

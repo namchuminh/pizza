@@ -87,6 +87,7 @@
 @section('script')
 <script>
     $(document).ready(function() {
+        $(".title-breadcrumb-top").html("ĐĂNG NHẬP & ĐĂNG KÝ");
         $('.login-form').on('submit', function(event) {
             event.preventDefault(); // Ngăn không cho form gửi theo cách mặc định
 

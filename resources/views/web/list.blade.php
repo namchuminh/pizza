@@ -138,8 +138,14 @@
                     $('.list-pizza').empty();
                     // Populate the table with data
                     response.data.forEach(item => {
-                        $(".title-breadcrumb-top").html(item.category.name);
-                        $(".title-sub").html(`<span><img src="https://modinatheme.com/html/foodking-html/assets/img/filter.png" alt="img"></span> Loại Bánh: ${item.category.name}`);
+                        if(slugCategory != ""){
+                            $(".title-breadcrumb-top").html(item.category.name);
+                            $(".title-sub").html(`<span><img src="https://modinatheme.com/html/foodking-html/assets/img/filter.png" alt="img"></span> Loại Bánh: ${item.category.name}`);
+                        }else{
+                            $(".title-breadcrumb-top").html("DANH SÁCH PIZZA");
+                            $(".title-sub").html(`<span><img src="https://modinatheme.com/html/foodking-html/assets/img/filter.png" alt="img"></span> DANH SÁCH PIZZA`);
+                        }
+                        
                         let price = 0;
 
                         if(item.detail_products.length != 0){

@@ -10,8 +10,14 @@ class CartController extends Controller
     // Lấy danh sách tất cả các giỏ hàng của người dùng đã xác thực
     public function index()
     {
-        $user_id = auth()->user()->id;
-        $carts = Cart::where('user_id', $user_id)->get();
+        $customer_id = auth()->user()->customer->id;
+        
+        $carts = Cart::with('detail_products.product')
+            ->with('detail_products.size')
+            ->with('border')
+            ->with('topping')
+            ->where('customer_id', $customer_id)
+            ->get();
 
         return response()->json($carts);
     }
@@ -19,18 +25,17 @@ class CartController extends Controller
     // Tạo mục giỏ hàng mới
     public function store(Request $request)
     {
-        $user_id = auth()->user()->id;
+        $customer_id = auth()->user()->customer->id;
         
         $validatedData = $request->validate([
-            'product_id' => 'required|exists:products,id',
-            'size' => 'required|string|max:255',
-            'border' => 'required|string|max:255',
-            'soles' => 'required|string|max:255',
+            'border_id' => 'nullable|exists:borders,id',
+            'topping_id' => 'nullable|exists:toppings,id',
+            'detail_product_id' => 'required|exists:detail_products,id',
             'quantity' => 'required|integer|min:1',
         ]);
 
         // Thêm user_id vào dữ liệu đã xác thực
-        $validatedData['user_id'] = $user_id;
+        $validatedData['customer_id'] = $customer_id;
 
         // Tạo mới mục giỏ hàng
         $cart = Cart::create($validatedData);
@@ -47,7 +52,6 @@ class CartController extends Controller
         }
 
         $validatedData = $request->validate([
-            'product_id' => 'required|exists:products,id',
             'quantity' => 'required|integer|min:1',
         ]);
 

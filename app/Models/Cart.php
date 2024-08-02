@@ -10,11 +10,22 @@ class Cart extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
-        'product_id',
-        'size',
-        'border',
-        'soles',
-        'quantity'
+        'customer_id',
+        'border_id',
+        'topping_id',
+        'quantity',
+        'detail_product_id',
     ];
+
+    public function detail_products(){
+        return $this->belongsTo(DetailProduct::class, 'detail_product_id');
+    }
+    
+    public function border(){
+        return $this->belongsTo(Border::class);
+    }
+
+    public function topping(){
+        return $this->belongsTo(Topping::class);
+    }   
 }
