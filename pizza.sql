@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 01, 2024 at 11:40 PM
+-- Generation Time: Aug 03, 2024 at 03:47 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -61,13 +61,6 @@ CREATE TABLE `carts` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `carts`
---
-
-INSERT INTO `carts` (`id`, `detail_product_id`, `customer_id`, `border_id`, `topping_id`, `quantity`, `created_at`, `updated_at`) VALUES
-(1, 4, 2, 0, 0, 3, '2024-07-23 08:02:09', '2024-07-23 08:03:26');
 
 -- --------------------------------------------------------
 
@@ -140,7 +133,13 @@ CREATE TABLE `customers` (
 
 INSERT INTO `customers` (`id`, `user_id`, `name`, `phone`, `address`, `created_at`, `updated_at`) VALUES
 (2, 3, 'Nguyễn Văn Khách', '0999888999', 'Hà Nội', '2024-07-31 17:48:15', '2024-07-31 17:48:18'),
-(3, 2, 'Nguyễn Văn Bánh', '0555666777', 'Hà Nội', '2024-07-31 18:44:22', '2024-07-31 13:18:16');
+(3, 2, 'Nguyễn Văn Bánh', '0555666777', 'Hà Nội', '2024-07-31 18:44:22', '2024-07-31 13:18:16'),
+(4, 7, 'Nguyen Van Em', '0999888777', 'Hà Nội', '2024-08-02 11:53:09', '2024-08-02 11:53:09'),
+(5, 8, 'Nam Nguyễn Văn', '0666777999', 'Hà Nội', '2024-08-02 12:04:22', '2024-08-02 12:04:22'),
+(6, 9, 'Nguyễn Văn Z', '0379962045', 'Hà Nội', '2024-08-02 12:06:14', '2024-08-02 12:06:14'),
+(7, 10, 'le trong tan', '0555999777', 'Hà Nam', '2024-08-02 12:07:07', '2024-08-02 12:07:07'),
+(8, 11, 'NGUYEN VAN HUNG', '0399888999', 'Hà Tây', '2024-08-02 12:09:38', '2024-08-02 12:09:38'),
+(9, 12, 'Nguyễn Văn Giang', '0222333555', 'Hà Nội', '2024-08-02 12:11:06', '2024-08-02 12:11:06');
 
 -- --------------------------------------------------------
 
@@ -165,7 +164,11 @@ CREATE TABLE `detail_orders` (
 
 INSERT INTO `detail_orders` (`id`, `detail_product_id`, `order_id`, `border_id`, `topping_id`, `quantity`, `created_at`, `updated_at`) VALUES
 (1, 4, 1, 1, 1, 2, '2024-07-25 22:55:53', '2024-07-25 22:55:53'),
-(2, 7, 1, 8, 2, 2, '2024-07-25 22:56:06', '2024-07-25 22:56:06');
+(2, 7, 1, 8, 2, 2, '2024-07-25 22:56:06', '2024-07-25 22:56:06'),
+(7, 4, 6, 8, 3, 2, '2024-08-02 17:19:32', '2024-08-02 17:19:32'),
+(8, 7, 6, 3, 2, 1, '2024-08-02 17:19:32', '2024-08-02 17:19:32'),
+(9, 4, 7, 8, 2, 2, '2024-08-02 17:25:30', '2024-08-02 17:25:30'),
+(10, 7, 7, 8, 1, 2, '2024-08-02 17:25:30', '2024-08-02 17:25:30');
 
 -- --------------------------------------------------------
 
@@ -308,8 +311,10 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `order_code`, `customer_id`, `employee_id`, `address`, `phone`, `payment`, `total_amount`, `status`, `coupon_id`, `created_at`, `updated_at`) VALUES
-(1, 'A2B3108AC4C503', 2, 5, 'Hà Nội', '0999888999', 1, 150000, 3, 3, '2024-07-23 05:09:43', '2024-08-01 04:57:31'),
-(2, 'C1D7C8B978B91C', 2, 1, 'Hà Nội', '0999888999', 1, 150000, 1, NULL, '2024-07-23 05:10:09', '2024-07-25 10:58:04');
+(1, 'A2B3108AC4C503', 2, 2, 'Hà Nội', '0999888999', 1, 150000, 3, 3, '2024-07-23 05:09:43', '2024-08-02 18:07:47'),
+(2, 'C1D7C8B978B91C', 2, 1, 'Hà Nội', '0999888999', 1, 150000, 1, NULL, '2024-07-23 05:10:09', '2024-07-25 10:58:04'),
+(6, '1EF0335B7AE113', 2, 2, 'Tầng 1, Tòa ABC, Đường XYZ, Quận JQK', '0999888999', 1, 115000, 1, NULL, '2024-08-02 17:19:32', '2024-08-02 18:08:13'),
+(7, '1081C297B3C420', 2, 2, 'Tầng 1, Tòa ABC, Đường XYZ, Quận JQK', '0999888999', 0, 100000, 2, NULL, '2024-08-02 17:25:30', '2024-08-02 18:08:22');
 
 -- --------------------------------------------------------
 
@@ -368,7 +373,7 @@ CREATE TABLE `products` (
 INSERT INTO `products` (`id`, `name`, `short_description`, `detailed_description`, `image`, `slug`, `quantity`, `created_at`, `updated_at`, `category_id`) VALUES
 (9, 'Pizza 2', 'Mô tả ngắn', 'Mô tả dài', 'images/vQPtg4Oou2bi2wCZXU2uXjPzr2iJZYy1fdrt7EMm.jpg', 'pizza-21', 15, '2024-07-23 08:00:34', '2024-07-26 05:05:45', 14),
 (10, 'Pizza 3', 'Mô tả ngắn', 'Mô tả dài', 'images/Ue95s35KDQtWUaPRcFwYRUX51LdAyWI2QrLlTOUL.jpg', 'pizza-3', 15, '2024-07-23 08:00:57', '2024-07-23 08:00:57', 3),
-(12, 'Bánh Pizza giao diện', 'abcde', '<p>Để làm nên chiếc bánh pizza thì mình cần có các nguyên liệu chính như: <a href=\"https://www.bachhoaxanh.com/bot-da-dung-bot-mi\"><strong>Bột mì</strong></a><strong>, men nở, </strong><a href=\"https://www.bachhoaxanh.com/dau-an-dau-olive\"><strong>dầu oliu</strong></a><strong>.</strong> Phần làm nên hương vị của bánh chính là <strong>lớp </strong><a href=\"https://www.bachhoaxanh.com/gia-vi-nem-san-sot-ca-mi-y\"><strong>sốt cà chua</strong></a><strong> phủ lên trên đế bánh trước khi cho xúc xích, rau củ và cuối cùng chính là phủ lên lớp </strong><a href=\"https://www.bachhoaxanh.com/pho-mai-an/pho-mai-mozzarella-khoi-bottega-zelachi-goi-200g\"><strong>phô mai béo mozzarella</strong></a><strong>, </strong><a href=\"https://www.bachhoaxanh.com/pho-mai-an/pho-mai-bottega-zelachi-cheddar-goi-200g-16-mieng\"><strong>Cheddar</strong></a><strong>,...</strong></p><figure class=\"image\"><img style=\"aspect-ratio:762/429;\" src=\"https://cdn.tgdd.vn/Files/2021/12/07/1402760/tong-hop-cac-cach-lam-pizza-chi-can-o-nha-cung-co-the-thuong-thuc-202112070702477965.jpg\" alt=\"Nguyên liệu làm đế bánh pizza\" width=\"762\" height=\"429\"></figure><p><br>&nbsp;</p>', 'images/A8PFK2gN3AhWaAM7hvlgu2B3yWSNEapKfwvJhp3E.jpg', 'banh-pizza-giao-dien', 15, '2024-07-26 05:04:04', '2024-07-26 05:05:55', 2),
+(12, 'Bánh Pizza giao diện', 'abcde', '<p>Để làm nên chiếc bánh pizza thì mình cần có các nguyên liệu chính như: <a href=\"https://www.bachhoaxanh.com/bot-da-dung-bot-mi\">Bột mì</a>, men nở, <a href=\"https://www.bachhoaxanh.com/dau-an-dau-olive\">dầu oliu</a>. Phần làm nên hương vị của bánh chính là lớp <a href=\"https://www.bachhoaxanh.com/gia-vi-nem-san-sot-ca-mi-y\">sốt cà chua</a> phủ lên trên đế bánh trước khi cho xúc xích, rau củ và cuối cùng chính là phủ lên lớp <a href=\"https://www.bachhoaxanh.com/pho-mai-an/pho-mai-mozzarella-khoi-bottega-zelachi-goi-200g\">phô mai béo mozzarella</a>, <a href=\"https://www.bachhoaxanh.com/pho-mai-an/pho-mai-bottega-zelachi-cheddar-goi-200g-16-mieng\">Cheddar</a>,...</p><p>&nbsp;</p><figure class=\"image\"><img style=\"aspect-ratio:762/429;\" src=\"https://cdn.tgdd.vn/Files/2021/12/07/1402760/tong-hop-cac-cach-lam-pizza-chi-can-o-nha-cung-co-the-thuong-thuc-202112070702477965.jpg\" alt=\"Nguyên liệu làm đế bánh pizza\" width=\"762\" height=\"429\"><figcaption>&nbsp;</figcaption></figure><p><br>&nbsp;</p>', 'images/A8PFK2gN3AhWaAM7hvlgu2B3yWSNEapKfwvJhp3E.jpg', 'banh-pizza-giao-dien', 15, '2024-07-26 05:04:04', '2024-08-02 12:23:02', 2),
 (13, 'Pizza Hải Sản', 'Bánh pizza hải sản thơm ngon lắm', '<p>Bánh pizza hải sản thơm ngon,Bánh pizza hải sản thơm ngon,Bánh pizza hải sản thơm ngon</p>', 'images/065LZp2rzU462TeAMx8t1hMqB7v1nxOpVivBgrNx.jpg', 'pizza-hai-san', 15, '2024-07-26 08:26:47', '2024-07-26 08:27:07', 2),
 (14, 'Pizza1111', 'abcde', '<p>abcde</p>', 'images/8kcPwk4EQkAXyvZwjAt08Q66mhhmdsD3gm4Cr4lt.png', 'pizza111', 244, '2024-08-01 02:15:44', '2024-08-01 02:16:06', 3);
 
@@ -418,7 +423,8 @@ INSERT INTO `product_toppings` (`id`, `product_id`, `topping_id`, `created_at`, 
 (8, 9, 3, '2024-08-01 12:52:20', '2024-08-01 12:52:20'),
 (9, 9, 1, '2024-08-01 12:52:23', '2024-08-01 12:52:23'),
 (11, 10, 1, '2024-08-01 12:52:54', '2024-08-01 12:52:54'),
-(12, 10, 2, '2024-08-01 12:52:56', '2024-08-01 12:52:56');
+(12, 10, 2, '2024-08-01 12:52:56', '2024-08-01 12:52:56'),
+(13, 9, 2, '2024-08-02 07:24:44', '2024-08-02 07:24:44');
 
 -- --------------------------------------------------------
 
@@ -518,7 +524,13 @@ INSERT INTO `users` (`id`, `role_id`, `email`, `email_verified_at`, `password`, 
 (1, 1, 'admin@gmail.com', NULL, '$2y$10$Q1WwZ2ryq7/Z0oMaajJOoug0Be8ijiky8aB.3hvxk2gX5.PATlZ0y', 1, NULL, '2024-07-19 11:32:07', '2024-08-01 04:00:15'),
 (2, 2, 'nguyenvanb@gmail.com', NULL, '$2y$10$cz1BxdnUoDdzhHRcFtzo3.eyd7EnH5zx1tX7HsnsTu3ewt61mMevi', 1, NULL, '2024-07-20 16:13:26', '2024-07-31 13:18:16'),
 (3, 3, 'khachhang@gmail.com', NULL, '$2y$10$tkOwHK6UxxCCs19y5jX9x./Q7rYfva08JnAttEl7p/zZM/7jnI8AC', 1, NULL, '2024-07-31 17:38:06', '2024-07-31 10:58:05'),
-(6, 2, 'nguyenvanc@gmail.com', NULL, '$2y$10$lu42guEmbhrOlwRab5Y0WuIOFQncvO95b9Jd8fhOZFVqyWobU15oS', 1, NULL, '2024-08-01 14:27:00', '2024-08-01 14:30:51');
+(6, 2, 'nguyenvanc@gmail.com', NULL, '$2y$10$lu42guEmbhrOlwRab5Y0WuIOFQncvO95b9Jd8fhOZFVqyWobU15oS', 1, NULL, '2024-08-01 14:27:00', '2024-08-01 14:30:51'),
+(7, 3, 'nguyenvane@gmail.com', NULL, '$2y$10$TfFK12F80pApfoWwwOxL2u./dGLYl1GfD5JOr1ZvpK5g0vpZDr.NS', 1, NULL, '2024-08-02 11:53:09', '2024-08-02 11:53:09'),
+(8, 3, 'namnguyenvan@gmail.com', NULL, '$2y$10$40tuOW4OduGmHWQ3l0sbs.aCJdWI3Z6i9/.T0uJlG1kcue8kN4f6i', 1, NULL, '2024-08-02 12:04:22', '2024-08-02 12:04:22'),
+(9, 3, 'letrunghieu@gmail.com', NULL, '$2y$10$Zs5/Ejc7u7W2l.25a2lI0eG/pX9b04zFTdqmQ0Xs2O0klGUdskDiy', 1, NULL, '2024-08-02 12:06:14', '2024-08-02 12:06:14'),
+(10, 3, 'letrongtan@gmail.com', NULL, '$2y$10$wiLdGz39G0FvtQ/rtrxuluhPY.q5usgS1xoIBtAIpQ20VNbghYmya', 1, NULL, '2024-08-02 12:07:07', '2024-08-02 12:07:07'),
+(11, 3, 'nguyenvanhung@gmail.com', NULL, '$2y$10$qia83M4b8D8sQRv5JRvl1.EuhpcrdxUA/xm6ZIPnDQ7QUZPQNriyq', 1, NULL, '2024-08-02 12:09:38', '2024-08-02 12:09:38'),
+(12, 3, 'nguyenvangiang@gmail.com', NULL, '$2y$10$TupiU/lh3EpUeF6hJb.riOjr51wONg8HKjd13O73iMcKRhufKiW8.', 1, NULL, '2024-08-02 12:11:06', '2024-08-02 12:11:06');
 
 --
 -- Indexes for dumped tables
@@ -686,7 +698,7 @@ ALTER TABLE `borders`
 -- AUTO_INCREMENT for table `carts`
 --
 ALTER TABLE `carts`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -704,13 +716,13 @@ ALTER TABLE `coupons`
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `detail_orders`
 --
 ALTER TABLE `detail_orders`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `detail_products`
@@ -740,7 +752,7 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -764,7 +776,7 @@ ALTER TABLE `product_borders`
 -- AUTO_INCREMENT for table `product_toppings`
 --
 ALTER TABLE `product_toppings`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `roles`
@@ -788,7 +800,7 @@ ALTER TABLE `toppings`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- Constraints for dumped tables
