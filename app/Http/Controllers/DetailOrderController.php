@@ -16,7 +16,7 @@ class DetailOrderController extends Controller
             return response()->json(['error' => 'Order not found'], 404);
         }
 
-        if((auth()->user()->role_id == 3) && ($order->user_id != auth()->user()->id)){
+        if((auth()->user()->role_id == 3) && ($order->customer_id != auth()->user()->customer->id)){
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 

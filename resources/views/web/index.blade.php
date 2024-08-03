@@ -654,6 +654,8 @@
         var currentPage = 1;
         var currentSearch = '';
 
+        var last_page;
+
         function fetchDataCategory(page, search = '') {
             $.ajax({
                 url: `{{ $api_url }}categories?page=${page}&search=${search}`,
@@ -719,7 +721,9 @@
                     $('.pizza-menu-list-1').empty();
                     // Populate the table with data
                     response.data.forEach(item => {
+                        last_page = item.last_page;
                         const url = `/pizza/${encodeURIComponent(item.slug)}-${item.id}.html`;
+                        var price = item.detail_products.length >= 1 ? Number(item.detail_products[0].price) : 0 ;
                         $('.pizza-menu-list-1').append(`
                             <div class="swiper-slide">
                                 <div class="popular-dishes-items">
@@ -737,7 +741,7 @@
                                         <h4>
                                             <a href="${url}">${item.name}</a>
                                         </h4>
-                                        <h5>price $20.15</h5>
+                                        <h5>${price.toLocaleString('vi-VN')}đ</h5>
                                     </div>
                                 </div>
                             </div>
@@ -751,6 +755,7 @@
         }
 
         function fetchDataPizza2(page, search = '') {
+            console.log(page)
             $.ajax({
                 url: `{{ $api_url }}products?page=${page}&search=${search}`,
                 method: 'GET',
@@ -760,6 +765,7 @@
                     // Populate the table with data
                     response.data.forEach(item => {
                         const url = `/pizza/${encodeURIComponent(item.slug)}-${item.id}.html`;
+                        var price = item.detail_products.length >= 1 ? Number(item.detail_products[0].price) : 0 ;
                         $('.pizza-menu-list-2').append(`
                             <div class="swiper-slide">
                                 <div class="popular-dishes-items">
@@ -777,7 +783,7 @@
                                         <h4>
                                             <a href="${url}">${item.name}</a>
                                         </h4>
-                                        <h5>price $20.15</h5>
+                                        <h5>${price.toLocaleString('vi-VN')}đ</h5>
                                     </div>
                                 </div>
                             </div>
@@ -793,6 +799,6 @@
         // Initial fetch
         fetchDataCategory(currentPage, currentSearch);
         fetchDataPizza1(currentPage, currentSearch);
-        fetchDataPizza2(2, currentSearch);
+        fetchDataPizza2(last_page, currentSearch);
     });
 </script>

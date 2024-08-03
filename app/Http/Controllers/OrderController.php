@@ -20,7 +20,8 @@ class OrderController extends Controller
 
             // Xây dựng query để tìm kiếm và phân trang
             $query = Order::query()
-                        ->where('user_id', auth()->user()->id); // Thêm điều kiện user_id
+                        ->where('customer_id', auth()->user()->customer->id)
+                        ->orderBy('id', 'desc'); 
 
             if ($search) {
                 $query->where(function($q) use ($search) {
@@ -38,7 +39,9 @@ class OrderController extends Controller
             $perPage = $request->query('per_page', 10); // Mặc định là 10 orders mỗi trang
 
             // Xây dựng query để tìm kiếm và phân trang
-            $query = Order::with('customer')->with('employee'); // Thêm with('user') để tải thông tin của User liên quan
+            $query = Order::with('customer')
+                ->with('employee')
+                ->orderBy('id', 'desc'); 
 
             if ($search) {
                 $query->where(function ($q) use ($search) {

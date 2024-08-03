@@ -30,6 +30,8 @@ Route::get('/loai-pizza/{category}', [WebCategoryController::class, 'index'])->n
 
 Route::get('/khach-hang/', [WebCustomerController::class, 'index'])->name('web.customer.index');
 
+Route::get('/don-hang/{order}', [WebCustomerController::class, 'detailOrder'])->name('web.customer.detailOrder');
+
 Route::get('/tai-khoan/', [WebAuthController::class, 'index'])->name('web.auth');
 
 Route::get('/gio-hang/', [WebCartController::class, 'index'])->name('web.cart');
