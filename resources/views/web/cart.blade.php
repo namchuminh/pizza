@@ -56,8 +56,8 @@
                                 </li>
                             </ul>
                             <div class="chck">
-                                <a href="checkout.html" class="theme-btn border-radius-none">
-                                Thanh Toán
+                                <a href="{{ route('web.order') }}" class="theme-btn border-radius-none">
+                                Đặt Hàng
                                 </a>
                             </div>
                         </div>

@@ -11,11 +11,10 @@ class DetailOrder extends Model
 
     protected $fillable = [
         'order_id',
-        'product_id',
-        'size',
-        'border',
-        'soles',
-        'quantity'
+        'detail_product_id',
+        'border_id',
+        'topping_id',
+        'quantity',
     ];
 
     public function detail_product(){

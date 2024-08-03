@@ -20,6 +20,7 @@ use App\Http\Controllers\Web\WebCategoryController;
 use App\Http\Controllers\Web\WebCustomerController;
 use App\Http\Controllers\Web\WebAuthController;
 use App\Http\Controllers\Web\WebCartController;
+use App\Http\Controllers\Web\WebOrderController;
 
 
 Route::get('/', [HomeController::class, 'index'])->name('web.home');
@@ -32,6 +33,8 @@ Route::get('/khach-hang/', [WebCustomerController::class, 'index'])->name('web.c
 Route::get('/tai-khoan/', [WebAuthController::class, 'index'])->name('web.auth');
 
 Route::get('/gio-hang/', [WebCartController::class, 'index'])->name('web.cart');
+
+Route::get('/dat-hang/', [WebOrderController::class, 'index'])->name('web.order');
 
 
 Route::prefix('admin')->group(function () {

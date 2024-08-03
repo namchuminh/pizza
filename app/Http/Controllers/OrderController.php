@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\DetailOrder;
+use App\Models\Cart;
+use App\Models\Coupon;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -54,22 +57,63 @@ class OrderController extends Controller
     // Tạo order mới
     public function store(Request $request)
     {
+        $customer_id = auth()->user()->customer->id;
+
         $validatedData = $request->validate([
             'address' => 'required|string|max:255',
             'phone' => 'required|string|max:15',
-            'total_amount' => 'required|numeric',
-            'coupon_id' => 'nullable|exists:coupons,id'
+            'coupon' => 'nullable|exists:coupons,code'
         ]);
 
-        $validatedData['customer_id'] = auth()->user()->id;
+        $coupon = null;
+        if (!empty($validatedData['coupon'])) {
+            $coupon = Coupon::where('code', $validatedData['coupon'])
+                            ->where('expiry_date', '>=', now())
+                            ->first();
+        }
+
+        $carts = Cart::with('detail_products.product', 'detail_products.size', 'border', 'topping')
+            ->where('customer_id', $customer_id)
+            ->get();
+
+        // Tính tổng giá trị dựa trên price của detail_products
+        $totalPrice = $carts->sum(function ($cart) {
+            return $cart->detail_products->price * $cart->quantity;
+        });
+
+        // Nếu có mã giảm giá và hợp lệ, áp dụng giá trị giảm giá theo phần trăm
+        if ($coupon) {
+            $discountAmount = ($totalPrice * $coupon->value) / 100;
+            $totalPrice -= $discountAmount;
+        }
+
+        $validatedData['total_amount'] = $totalPrice;
+        $validatedData['customer_id'] = $customer_id;
         $validatedData['payment'] = 0;
         $validatedData['status'] = 1;
-        
+        $validatedData['coupon_id'] = $coupon ? $coupon->id : null;
+
         // Tạo mới order
         $order = Order::create($validatedData);
 
+        // Thêm chi tiết đơn hàng
+        foreach ($carts as $cart) {
+            DetailOrder::create([
+                'order_id' => $order->id,
+                'detail_product_id' => $cart->detail_product_id,
+                'border_id' => $cart->border_id,
+                'topping_id' => $cart->topping_id,
+                'quantity' => $cart->quantity,
+            ]);
+        }
+
+        // Xóa toàn bộ cart với điều kiện customer_id
+        Cart::where('customer_id', $customer_id)->delete();
+
         return response()->json($order, 201);
     }
+
+
 
     // Lấy thông tin một order cụ thể
     public function show($id)
