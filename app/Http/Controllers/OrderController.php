@@ -76,9 +76,12 @@ class OrderController extends Controller
             ->where('customer_id', $customer_id)
             ->get();
 
-        // Tính tổng giá trị dựa trên price của detail_products
+        // Tính tổng giá trị dựa trên price của detail_products, border và topping
         $totalPrice = $carts->sum(function ($cart) {
-            return $cart->detail_products->price * $cart->quantity;
+            $productPrice = $cart->detail_products->price * $cart->quantity;
+            $borderPrice = $cart->border ? $cart->border->price : 0;
+            $toppingPrice = $cart->topping ? $cart->topping->price : 0;
+            return $productPrice + $borderPrice + $toppingPrice;
         });
 
         // Nếu có mã giảm giá và hợp lệ, áp dụng giá trị giảm giá theo phần trăm

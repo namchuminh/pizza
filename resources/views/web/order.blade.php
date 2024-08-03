@@ -99,12 +99,15 @@
                     'Authorization': `Bearer ${localStorage.getItem('access_token')}`
                 },
                 success: function(response) {
+                    if(response.length == 0){
+                        window.location.href = '{{ route('web.product.list') }}';
+                    }
                     $('tbody').empty();
                     let sum = 0;
                     let sumProduct = 0;
                     let sumQuantity = 0;
                     response.forEach(item => {
-                        let price = Number(item.detail_products.price) + Number(item.border == null ? 0 : item.border.price) + Number(item.topping == null ? 0 : item.topping.price)
+                        let price = Number(item.detail_products.price) * Number(item.quantity) + Number(item.border == null ? 0 : item.border.price) + Number(item.topping == null ? 0 : item.topping.price)
                         sum += price;
                         sumProduct++;
                         sumQuantity += item.quantity;
