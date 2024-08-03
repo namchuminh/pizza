@@ -38,7 +38,7 @@ class OrderController extends Controller
             $perPage = $request->query('per_page', 10); // Mặc định là 10 orders mỗi trang
 
             // Xây dựng query để tìm kiếm và phân trang
-            $query = Order::with('customer'); // Thêm with('user') để tải thông tin của User liên quan
+            $query = Order::with('customer')->with('employee'); // Thêm with('user') để tải thông tin của User liên quan
 
             if ($search) {
                 $query->where(function ($q) use ($search) {
@@ -149,6 +149,8 @@ class OrderController extends Controller
 
     public function status($id)
     {
+        $employee_id = auth()->user()->employee->id;
+
         $order = Order::find($id);
         if (!$order) {
             return response()->json(['error' => 'Order not found'], 404);
@@ -164,6 +166,7 @@ class OrderController extends Controller
             return response()->json(['error' => 'Unauthorized']);
         }
 
+        $order->employee_id = $employee_id;
         $order->status = $status;
 
         $order->save();
@@ -173,13 +176,17 @@ class OrderController extends Controller
 
     // Xác nhận thanh toán đơn hàng (cập nhật payment = 1)
     public function pay($id)
-    {
+    {   
+        $employee_id = auth()->user()->employee->id;
         $order = Order::find($id);
         if (!$order) {
             return response()->json(['error' => 'Order not found'], 404);
         }
 
-        $order->update(['payment' => 1]);
+        $order->employee_id = $employee_id;
+        $order->payment = 1;
+        
+        $order->save();
 
         return response()->json(['message' => 'Order paid successfully']);
     }

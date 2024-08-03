@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 class RoleMiddleware
 {
-    public function handle($request, Closure $next, $role)
+    public function handle($request, Closure $next, ...$roles)
     {
         // Check if the user is authenticated
         if (!Auth::check()) {
@@ -18,11 +18,11 @@ class RoleMiddleware
         $user = Auth::user()->load('role');
 
         // Check if the user's role name matches the required role
-        if ($user->role->name !== $role) {
-            return response()->json(['error' => 'Unauthorized'], 403);
+        if (in_array($user->role->name, $roles)) {
+            return $next($request);
         }
 
-        return $next($request);
+        return response()->json(['error' => 'Unauthorized'], 403);
     }
 }
 

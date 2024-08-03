@@ -38,6 +38,7 @@
                                     <th>Khách Hàng</th>
                                     <th>Tổng Tiền</th>
                                     <th>Trạng Thái</th>
+                                    <th>Nhân Viên Xử Lý</th>
                                     <th>Xác Nhận Thanh Toán</th>
                                     <th>Hành Động</th>
                                 </tr>
@@ -106,6 +107,7 @@
                                     <td><a href="{{ route('admin.customer.show') }}?id=${item.customer.id}">${item.customer.name}</a></td>
                                     <td>${totalAmount.toLocaleString('vi-VN')}đ</td>
                                     <td>${statusText}</td>
+                                    <td>${item.employee ? item.employee.name : "<b>HIỆN CHƯA CÓ</b>"}</td>
                                     <td>
                                         <a href="#" class="btn btn-warning pay-confirm-btn" data-id="${item.id}">Xác Nhận Thanh Toán</a>
                                     </td>
@@ -122,6 +124,7 @@
                                     <td><a href="{{ route('admin.customer.show') }}?id=${item.customer.id}">${item.customer.name}</a></td>
                                     <td>${totalAmount.toLocaleString('vi-VN')}đ</td>
                                     <td>${statusText}</td>
+                                    <td>${item.employee ? item.employee.name : "<b>HIỆN CHƯA CÓ</b>"}</td>
                                     <td>
                                         <a href="#" class="btn btn-default" style="cursor: not-allowed;" disabled>Đã Thanh Toán HĐ</a>
                                     </td>

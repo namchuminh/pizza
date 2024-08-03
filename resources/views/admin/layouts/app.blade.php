@@ -211,7 +211,7 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="nav-item has-treeview">
+                        <li class="nav-item has-treeview customer-menu-list">
                             <a href="{{ route('admin.employee.index') }}" class="nav-link">
                                 <i class="nav-icon fa-solid fa-users"></i>
                                 <p>
@@ -332,6 +332,49 @@
             localStorage.removeItem('refresh_token');
             window.location.href = '{{ route('admin.login') }}';
         });
+
+        function checkAdmin(){
+            // Gửi dữ liệu GET đến API
+            $.ajax({
+                url: '{{ $api_url }}user/profile',
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                },
+                success: function(response) {
+                    if(response.user.role_id == 2){
+                        $(".customer-menu-list").css('display', 'none');
+                    }
+                },
+                error: function(xhr) {
+                    if (xhr.status === 401) {
+                        refreshToken().done(function() {
+                            // Retry the update request with the new token
+                            checkAdmin();
+                        });
+                    }
+                }
+            });
+        }
+
+        function refreshToken() {
+            return $.ajax({
+                url: `{{ $api_url }}refresh`,
+                method: 'POST',
+                data: {
+                    'refresh_token': localStorage.getItem('refresh_token')
+                }
+            }).done(function(response) {
+                localStorage.setItem('access_token', response.access_token);
+                localStorage.setItem('refresh_token', response.refresh_token);
+            }).fail(function(xhr) {
+                localStorage.removeItem('access_token');
+                localStorage.removeItem('refresh_token');
+                window.location.href = '/tai-khoan'; // Replace with your login route
+            });
+        }
+
+        checkAdmin();
     });
 </script>
 @yield('script')
