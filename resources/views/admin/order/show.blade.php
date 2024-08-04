@@ -109,23 +109,21 @@
                 },
                 success: function(response) {
                     let rowNumber = 1;
-
                     $('tbody').empty();
                     // Populate the table with data
                     response.forEach(item => {
-
                         let price = Number(item.detail_product.price);
                         let sum = price * Number(item.quantity)
 
                         let border_price = 0;
                         let topping_price = 0;
 
-                        if(item.border.price != null){
+                        if(item.border != null){
                             border_price = Number(item.border.price)
                             sum = sum + border_price;
                         }
 
-                        if(item.topping.price != null){
+                        if(item.topping != null){
                             topping_price = Number(item.topping.price)
                             sum = sum + topping_price;
                         }
@@ -141,8 +139,8 @@
                                 <td>${item.quantity} cái</td>
                                 <td>
                                     <ul>
-                                        <li>Viền bánh: ${item.border.name} (+ ${border_price.toLocaleString('vi-VN')}đ)</li>
-                                        <li>Topping: ${item.topping.name} (+ ${topping_price.toLocaleString('vi-VN')}đ)</li>
+                                        <li>Viền bánh: ${item.border != null ? item.border.name : ""} (+ ${border_price.toLocaleString('vi-VN')}đ)</li>
+                                        <li>Topping: ${item.topping != null ? item.topping.name : ""} (+ ${topping_price.toLocaleString('vi-VN')}đ)</li>
                                     </ul>
                                 </td>
                                 <td>${sum.toLocaleString('vi-VN')}đ</td>
