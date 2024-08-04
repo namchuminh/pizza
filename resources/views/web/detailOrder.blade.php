@@ -58,7 +58,11 @@
                                 <a href="{{ route('web.customer.index') }}" class="theme-btn border-radius-none">
                                 Quay Lại
                                 </a>
+                                <a href="#" style="background-color: #ff0019;" class="order-status theme-btn border-radius-none d-none">
+                                Hủy Đơn
+                                </a>
                             </div>
+                            <p class="mt-2 text-center error"></p>
                         </div>
                     </div>
                 </div>
@@ -81,7 +85,6 @@
                     'Authorization': `Bearer ${localStorage.getItem('access_token')}`
                 },
                 success: function(response) {
-                    console.log(response)
                     $('tbody').empty();
                     let sum = 0;
                     let sumProduct = 0;
@@ -133,6 +136,63 @@
             });
         }
 
+        function fetchDataOrder(){
+            // Gửi dữ liệu POST đến API
+            $.ajax({
+                url: '{{ $api_url }}orders/{{ $id }}',
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                },
+                success: function(response) {
+                    if ((response.status != 0) && (response.status != 3)) {
+                        $(".order-status").removeClass('d-none');
+                    } 
+                },
+                error: function(xhr) {
+                    if (xhr.status === 401) {
+                        refreshToken().done(function() {
+                            // Retry the update request with the new token
+                            fetchDataOrder();
+                        });
+                    }
+                }
+            });
+        }
+
+        $('.order-status').on('click', function(e) {
+            e.preventDefault();
+            // Hiển thị hộp xác nhận
+            var confirmation = confirm('Bạn chắc chắn hủy đơn hàng này?');
+            if (confirmation) {
+                // Nếu người dùng xác nhận, gọi hàm cancel để hủy đơn hàng
+                cancel();
+            }
+        });
+
+        function cancel() {
+            // Gửi dữ liệu POST đến API
+            $.ajax({
+                url: '{{ $api_url }}orders/{{ $id }}/cancel',
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                },
+                success: function(response) {
+                    $(".order-status").addClass('d-none');
+                    $(".error").html("Hủy đơn hàng thành công!");
+                },
+                error: function(xhr) {
+                    if (xhr.status === 401) {
+                        refreshToken().done(function() {
+                            // Retry the update request with the new token
+                            cancel();
+                        });
+                    }
+                }
+            });
+        }
+
         function refreshToken() {
             return $.ajax({
                 url: `{{ $api_url }}refresh`,
@@ -150,6 +210,7 @@
             });
         }
         fetchData();
+        fetchDataOrder();
     });
 </script>
 @endsection

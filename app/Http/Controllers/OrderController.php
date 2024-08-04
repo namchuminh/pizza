@@ -129,7 +129,7 @@ class OrderController extends Controller
             return response()->json(['error' => 'Order not found'], 404);
         }
 
-        if((auth()->user()->role_id == 3) && ($order->customer_id != auth()->user()->id)){
+        if((auth()->user()->role_id == 3) && ($order->customer_id != auth()->user()->customer->id)){
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
@@ -145,7 +145,18 @@ class OrderController extends Controller
             return response()->json(['error' => 'Order not found'], 404);
         }
 
-        $order->update(['status' => 0]);
+        if((auth()->user()->role_id == 3) && ($order->customer_id != auth()->user()->customer->id)){
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        if((auth()->user()->role_id != 3)){
+            $employee_id = auth()->user()->employee->id;
+            $order->employee_id = $employee_id;
+        }
+        
+        $order->status = 0;
+
+        $order->save();
 
         return response()->json(['message' => 'Order cancelled successfully']);
     }
