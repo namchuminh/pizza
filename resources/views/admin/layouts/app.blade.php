@@ -211,7 +211,7 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="nav-item has-treeview customer-menu-list">
+                        <li class="nav-item has-treeview customer-menu-list d-none">
                             <a href="{{ route('admin.employee.index') }}" class="nav-link">
                                 <i class="nav-icon fa-solid fa-users"></i>
                                 <p>
@@ -342,8 +342,8 @@
                     'Authorization': `Bearer ${localStorage.getItem('access_token')}`
                 },
                 success: function(response) {
-                    if(response.user.role_id == 2){
-                        $(".customer-menu-list").css('display', 'none');
+                    if(response.user.role_id == 1){
+                        $(".customer-menu-list").removeClass('d-none');
                     }
                 },
                 error: function(xhr) {
