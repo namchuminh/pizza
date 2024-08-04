@@ -13,7 +13,29 @@
     <div class="container">
         <div class="main-cart-wrapper">
             <div class="row">
-                <div class="col-12">
+                <div class="col-md-5 col-lg-4 col-xl-3">
+                    <div class="checkout-radio">
+                        <p class="primary-text">CHỨC NĂNG</p>
+                        <div class="checkout-radio-wrapper">
+                            <div class="checkout-radio-single">
+                                <a href="{{ route('web.customer.index') }}"><i class="fas fa-list-alt"></i> DANH SÁCH ĐƠN HÀNG</a>
+                            </div>
+                            <hr>
+                            <div class="checkout-radio-single">
+                                <a href="{{ route('web.cart') }}"><i class="fas fa-shopping-cart"></i> GIỎ HÀNG</a>
+                            </div>
+                            <hr>
+                            <div class="checkout-radio-single">
+                                <a href="{{ route('web.customer.update') }}"><i class="fas fa-edit"></i> CẬP NHẬT THÔNG TIN</a>
+                            </div>
+                            <hr>
+                            <div class="checkout-radio-single">
+                                <a href="#" class="logout"><i class="fas fa-sign-out-alt"></i> ĐĂNG XUẤT</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-9">
                     <div class="cart-wrapper">
                         <div class="cart-items-wrapper">
                             <table>
@@ -115,6 +137,14 @@
                 window.location.href = '/tai-khoan'; // Replace with your login route
             });
         }
+
+        $(".logout").click(function(e){
+            e.preventDefault();
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
+            window.location.href = '{{ route('web.auth') }}';
+        });
+
         fetchData();
     });
 </script>

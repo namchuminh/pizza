@@ -108,7 +108,7 @@
                     if (response.access_token) {
                     localStorage.setItem('access_token', response.access_token);
                     localStorage.setItem('refresh_token', response.refresh_token);
-                    window.location.href = '{{ route('web.home') }}';
+                    window.location.href = '{{ route('web.customer.index') }}';
                     }
                 },
                 error: function(xhr) {

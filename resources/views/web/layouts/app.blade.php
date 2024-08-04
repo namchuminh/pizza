@@ -493,33 +493,30 @@
     </body>
 </html>
 <script>
-    $(document).ready(function() {
+var currentPage = 1;
+var currentSearch = '';
 
-        var currentPage = 1;
-        var currentSearch = '';
-
-        function fetchDataCategory(page, search = '') {
-            $.ajax({
-                url: `{{ $api_url }}categories?page=${page}&search=${search}`,
-                method: 'GET',
-                success: function(response) {
-                    // Populate the table with data
-                    response.data.forEach(item => {
-                        const url = `/loai-pizza/${encodeURIComponent(item.slug)}`;
-                        $('.link-menu').append(`
-                            <li>
-                                <a href="${url}">${item.name}</a>
-                            </li>
-                        `);
-                    });
-                },
-                error: function(xhr) {
-                    console.log(xhr)
-                }
+function fetchDataCategory(page, search = '') {
+    $.ajax({
+        url: `{{ $api_url }}categories?page=${page}&search=${search}`,
+        method: 'GET',
+        success: function(response) {
+            // Populate the table with data
+            response.data.forEach(item => {
+                const url = `/loai-pizza/${encodeURIComponent(item.slug)}`;
+                $('.link-menu').append(`
+                    <li>
+                        <a href="${url}">${item.name}</a>
+                    </li>
+                `);
             });
+        },
+        error: function(xhr) {
+            console.log(xhr)
         }
-
-        fetchDataCategory(currentPage, currentSearch);
     });
+}
+
+fetchDataCategory(currentPage, currentSearch);
 </script>
 @yield('script')

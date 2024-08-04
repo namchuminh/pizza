@@ -11,6 +11,10 @@ class WebCustomerController extends Controller
         return view('web.customer');
     }
 
+    public function update(){
+        return view('web.updateCustomer');
+    }
+
     public function detailOrder($id){
         return view('web.detailOrder', compact('id'));
     }

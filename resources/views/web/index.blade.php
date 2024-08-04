@@ -649,69 +649,68 @@
     </body>
 </html>
 <script>
-    $(document).ready(function() {
+    var currentPage = 1;
+    var currentSearch = '';
 
-        var currentPage = 1;
-        var currentSearch = '';
+    var last_page;
 
-        var last_page;
+    function fetchDataCategory(page, search = '') {
+        $.ajax({
+            url: `{{ $api_url }}categories?page=${page}&search=${search}`,
+            method: 'GET',
+            success: function(response) {
+                // Clear the table body
+                $('link-menu').empty();
+                $('.food-menu-card-wrapper').empty();
 
-        function fetchDataCategory(page, search = '') {
-            $.ajax({
-                url: `{{ $api_url }}categories?page=${page}&search=${search}`,
-                method: 'GET',
-                success: function(response) {
-                    // Clear the table body
-                    $('link-menu').empty();
-                    $('.food-menu-card-wrapper').empty();
+                let rowNumber = 1;
 
-                    let rowNumber = 1;
+                // Populate the table with data
+                response.data.forEach(item => {
+                    const url = `/loai-pizza/${encodeURIComponent(item.slug)}`;
+                    $('.link-menu').append(`
+                        <li>
+                            <a href="${url}">${item.name}</a>
+                        </li>
+                    `);
 
-                    // Populate the table with data
-                    response.data.forEach(item => {
-                        const url = `/loai-pizza/${encodeURIComponent(item.slug)}`;
-                        $('.link-menu').append(`
-                            <li>
-                                <a href="${url}">${item.name}</a>
-                            </li>
+                    if(rowNumber == 1){
+                        $('.food-menu-card-wrapper').append(`
+                            <div class="food-menu-card-items wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
+                                <div class="menu-thumb">
+                                    <a href="${url}">
+                                        <img style="width: 117px; height: 95px;" src="{{ asset('storage') }}/${item.image}" alt="${item.name}" alt="img">
+                                    </a>
+                                </div>
+                                <h5 class="title">
+                                    <a href="${url}">${item.name}</a>
+                                </h5>
+                            </div>
                         `);
-
-                        if(rowNumber == 1){
-                            $('.food-menu-card-wrapper').append(`
-                                <div class="food-menu-card-items wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
-                                    <div class="menu-thumb">
-                                        <a href="${url}">
-                                            <img style="width: 117px; height: 95px;" src="{{ asset('storage') }}/${item.image}" alt="${item.name}" alt="img">
-                                        </a>
-                                    </div>
-                                    <h5 class="title">
-                                        <a href="${url}">${item.name}</a>
-                                    </h5>
+                    }else{
+                        $('.food-menu-card-wrapper').append(`
+                            <div class="food-menu-card-items wow fadeInUp" data-wow-delay=".2s" style="visibility: visible; animation-delay: 0.2s; animation-name: fadeInUp;">
+                                <div class="menu-thumb">
+                                    <a href="${url}">
+                                        <img style="width: 117px; height: 95px;" src="{{ asset('storage') }}/${item.image}" alt="${item.name}" alt="img">
+                                    </a>
                                 </div>
-                            `);
-                        }else{
-                            $('.food-menu-card-wrapper').append(`
-                                <div class="food-menu-card-items wow fadeInUp" data-wow-delay=".2s" style="visibility: visible; animation-delay: 0.2s; animation-name: fadeInUp;">
-                                    <div class="menu-thumb">
-                                        <a href="${url}">
-                                            <img style="width: 117px; height: 95px;" src="{{ asset('storage') }}/${item.image}" alt="${item.name}" alt="img">
-                                        </a>
-                                    </div>
-                                    <h5 class="title">
-                                        <a href="${url}">${item.name}</a>
-                                    </h5>
-                                </div>
-                            `);
-                        }
-                        rowNumber++
-                    });
-                },
-                error: function(xhr) {
-                    console.log(xhr)
-                }
-            });
-        }
+                                <h5 class="title">
+                                    <a href="${url}">${item.name}</a>
+                                </h5>
+                            </div>
+                        `);
+                    }
+                    rowNumber++
+                });
+            },
+            error: function(xhr) {
+                console.log(xhr)
+            }
+        });
+    }
 
+    $(document).ready(function() {
         function fetchDataPizza1(page, search = '') {
             $.ajax({
                 url: `{{ $api_url }}products?page=${page}&search=${search}`,
@@ -797,8 +796,9 @@
         }
         
         // Initial fetch
-        fetchDataCategory(currentPage, currentSearch);
         fetchDataPizza1(currentPage, currentSearch);
         fetchDataPizza2(last_page, currentSearch);
     });
+
+    fetchDataCategory(currentPage, currentSearch);
 </script>
