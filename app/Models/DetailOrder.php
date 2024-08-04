@@ -28,4 +28,8 @@ class DetailOrder extends Model
     public function topping(){
         return $this->belongsTo(Topping::class);
     }
+
+    public function order(){
+        return $this->belongsTo(Order::class);
+    }
 }

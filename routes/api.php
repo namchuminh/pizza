@@ -14,6 +14,7 @@ use App\Http\Controllers\DetailOrderController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\StatisticsController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -79,11 +80,16 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::get('/user/profile', [UserController::class, 'profile']);
     Route::post('/user/update', [UserController::class, 'update']);
     Route::post('/user/{user}/block', [UserController::class, 'block']);
+
+    Route::get('/statistics', [StatisticsController::class, 'index'])->middleware('role:manager,employee');
 });
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/refresh', [AuthController::class, 'refresh']);
+
+Route::get('/statistics/revenue', [StatisticsController::class, 'monthlyRevenue']);
+Route::get('/statistics/order', [StatisticsController::class, 'monthlyOrder']);
 
 Route::get('/products', [ProductController::class, 'index']);
 Route::get('/products/{product}', [ProductController::class, 'show']);

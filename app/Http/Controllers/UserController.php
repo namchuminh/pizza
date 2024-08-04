@@ -114,7 +114,7 @@ class UserController extends Controller
     // Cấm khách hàng (đổi status bằng 0)
     public function block($id)
     {
-        if(auth()->user()->role == 'customer'){
+        if(auth()->user()->role_id == 3){
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
@@ -123,7 +123,7 @@ class UserController extends Controller
             return response()->json(['error' => 'User not found'], 404);
         }
 
-        if(($User->role == "manager") && auth()->user()->role == 'employee'){
+        if(($User->role_id == 1) && auth()->user()->role_id == 2){
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 

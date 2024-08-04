@@ -330,6 +330,7 @@
         $(".logout").click(function(){
             localStorage.removeItem('access_token');
             localStorage.removeItem('refresh_token');
+            localStorage.removeItem('role');
             window.location.href = '{{ route('admin.login') }}';
         });
 
@@ -345,6 +346,8 @@
                     if(response.user.role_id == 1){
                         $(".customer-menu-list").removeClass('d-none');
                     }
+
+                    localStorage.setItem('role', response.user.role_id);
                 },
                 error: function(xhr) {
                     if (xhr.status === 401) {
