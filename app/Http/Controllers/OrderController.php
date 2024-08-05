@@ -155,6 +155,7 @@ class OrderController extends Controller
         }
         
         $order->status = 0;
+        $order->payment = -1;
 
         $order->save();
 

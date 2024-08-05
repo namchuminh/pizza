@@ -347,7 +347,12 @@
                         $(".customer-menu-list").removeClass('d-none');
                     }
 
-                    localStorage.setItem('role', response.user.role_id);
+                    if(response.user.role_id == 3){
+                        localStorage.removeItem('role');
+                        window.location.href = '{{ route('web.customer.index') }}';
+                    }else{
+                        localStorage.setItem('role', response.user.role_id);
+                    }
                 },
                 error: function(xhr) {
                     if (xhr.status === 401) {
@@ -373,7 +378,7 @@
             }).fail(function(xhr) {
                 localStorage.removeItem('access_token');
                 localStorage.removeItem('refresh_token');
-                window.location.href = '/tai-khoan'; // Replace with your login route
+                window.location.href = '/login'; // Replace with your login route
             });
         }
 

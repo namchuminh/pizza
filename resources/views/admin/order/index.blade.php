@@ -116,7 +116,7 @@
                                     </td>
                                 </tr>
                             `);
-                        } else {
+                        } else if(item.payment === 1){
                             $('tbody').append(`
                                 <tr>
                                     <td>${rowNumber++}</td>
@@ -127,6 +127,23 @@
                                     <td>${item.employee ? item.employee.name : "<b>HIỆN CHƯA CÓ</b>"}</td>
                                     <td>
                                         <a href="#" class="btn btn-default" style="cursor: not-allowed;" disabled>Đã Thanh Toán HĐ</a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('admin.order.show') }}/?id=${item.id}" class="btn btn-primary">Xử Lý Hóa Đơn</a>
+                                    </td>
+                                </tr>
+                            `);
+                        }else{
+                            $('tbody').append(`
+                                <tr>
+                                    <td>${rowNumber++}</td>
+                                    <td>${item.order_code}</td>
+                                    <td><a href="{{ route('admin.customer.show') }}?id=${item.customer.id}">${item.customer.name}</a></td>
+                                    <td>${totalAmount.toLocaleString('vi-VN')}đ</td>
+                                    <td>${statusText}</td>
+                                    <td>${item.employee ? item.employee.name : "<b>HIỆN CHƯA CÓ</b>"}</td>
+                                    <td>
+                                        <a href="#" class="btn btn-default" style="cursor: not-allowed;" disabled>Không Được Phép</a>
                                     </td>
                                     <td>
                                         <a href="{{ route('admin.order.show') }}/?id=${item.id}" class="btn btn-primary">Xử Lý Hóa Đơn</a>
