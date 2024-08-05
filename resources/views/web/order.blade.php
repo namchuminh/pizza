@@ -107,7 +107,7 @@
                     let sumProduct = 0;
                     let sumQuantity = 0;
                     response.forEach(item => {
-                        let price = Number(item.detail_products.price) * Number(item.quantity) + Number(item.border == null ? 0 : item.border.price) + Number(item.topping == null ? 0 : item.topping.price)
+                        let price = Number(item.detail_products.price) * Number(item.quantity) + Number(item.border == null ? 0 : item.border.price) * Number(item.quantity) + Number(item.topping == null ? 0 : item.topping.price) * Number(item.quantity)
                         sum += price;
                         sumProduct++;
                         sumQuantity += item.quantity;
@@ -118,9 +118,9 @@
                                 </td>
                                 <td class="cart-item-price">
                                     <ul class="property">
-                                        <li class="size-p">Kích thước: ${item.detail_products.size.name} (${Number(item.detail_products.price).toLocaleString('vi-VN')}đ)</li>
-                                        <li class="border-p">Viền bánh: ${item.border == null ? "Không" : item.border.name} (${Number(item.border == null ? 0 : item.border.price).toLocaleString('vi-VN')}đ)</li>
-                                        <li class="topping-p">Topping thêm: ${item.topping == null ? "Không" : item.topping.name} (${Number(item.topping == null ? 0 : item.topping.price).toLocaleString('vi-VN')}đ)</li>
+                                        <li class="size-p">Kích thước: ${item.detail_products.size.name} (${Number(item.detail_products.price).toLocaleString('vi-VN')}đ x ${item.quantity})</li>
+                                        <li class="border-p">Viền bánh: ${item.border == null ? "Không" : item.border.name} (${Number(item.border == null ? 0 : item.border.price).toLocaleString('vi-VN')}đ x ${item.quantity})</li>
+                                        <li class="topping-p">Topping thêm: ${item.topping == null ? "Không" : item.topping.name} (${Number(item.topping == null ? 0 : item.topping.price).toLocaleString('vi-VN')}đ x ${item.quantity})</li>
                                     </ul>
                                 </td>
                                 <td>
