@@ -50,6 +50,14 @@
                                     <span class="tsl"></span>
                                 </li>
                                 <li>
+                                    <span>Tạm Tính</span>
+                                    <span class="ttinh"></span>
+                                </li>
+                                <li>
+                                    <span>Giảm Giá</span>
+                                    <span class="gg"></span>
+                                </li>
+                                <li>
                                     <span>Tổng Tiền</span>
                                     <span class="tt"></span>
                                 </li>
@@ -123,7 +131,7 @@
 
                     $(".tsp").html(sumProduct + ' loại');
                     $(".tsl").html(sumQuantity + ' cái');
-                    $(".tt").html(sum.toLocaleString('vi-VN') + 'đ');
+                    $(".ttinh").html(sum.toLocaleString('vi-VN') + 'đ');
                 },
                 error: function(xhr) {
                     if (xhr.status === 401) {
@@ -146,6 +154,8 @@
                 },
                 success: function(response) {
                     if ((response.status != 0) && (response.status != 3)) {
+                        $(".tt").html(Number(response.total_amount).toLocaleString('vi-VN') + 'đ');
+                        $(".gg").html(response.coupon == null ? "0%" : response.coupon.value + '%');
                         $(".order-status").removeClass('d-none');
                     } 
                 },

@@ -19,9 +19,9 @@ class OrderController extends Controller
             $perPage = $request->query('per_page', 10); // Mặc định là 10 orders mỗi trang
 
             // Xây dựng query để tìm kiếm và phân trang
-            $query = Order::query()
-                        ->where('customer_id', auth()->user()->customer->id)
-                        ->orderBy('id', 'desc'); 
+            $query = Order::with('coupon')
+                ->where('customer_id', auth()->user()->customer->id)
+                ->orderBy('id', 'desc'); 
 
             if ($search) {
                 $query->where(function($q) use ($search) {
