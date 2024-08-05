@@ -112,7 +112,11 @@
                     }
                 },
                 error: function(xhr) {
-                    $(".errorr").html('Sai tài khoản hoặc mật khẩu!');
+                    if(xhr.status == 403){
+                        $(".errorr").html('Tài khoản hiện bị cấm khỏi hệ thống!');
+                    }else{
+                        $(".errorr").html('Sai tài khoản hoặc mật khẩu!');
+                    }
                 }
             });
         });

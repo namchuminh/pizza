@@ -28,6 +28,10 @@ class AuthController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
+        if ($user->status == 0) {
+            return response()->json(['error' => 'Blocked'], 403);
+        }
+
         // Tạo access token
         $accessToken = $this->createToken($user->id, $this->accessTokenTTL);
 
