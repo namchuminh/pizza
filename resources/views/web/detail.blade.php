@@ -158,12 +158,16 @@
     $(document).ready(function() {
         var slug = "{{ $slug }}";
         const id = slug.match(/(\d+)\.html$/)[1];
+        var price = 0;
+        var priceDisplay = 0;
+        var borderPrice = 0;
+        var toppingPrice = 0;
+        var qtyValue = 1;
         function fetchData(page, search = '') {
             $.ajax({
                 url: `{{ $api_url }}products/${id}`,
                 method: 'GET',
                 success: function(response) {
-                    let price = 0;
                     let priceMax = 0;
                     $(".p-name").text(response.name);
                     $(".description-items").html(response.detailed_description);
@@ -196,10 +200,15 @@
                     response.forEach(item => {
                         $(".border-product").append(`<li>${item.border.name}</li>`);
                         $(".border-list").append(`
-                            <li data-value="${item.border.id}" class="option">
+                            <li data-value="${item.border.id}" value="${item.border.price}" class="option">
                                 ${item.border.name} (+ ${Number(item.border.price).toLocaleString('vi-VN')}Đ)
                             </li>
                         `);
+                    });
+
+                    $('.border-list .option').on('click', function() {
+                        borderPrice = Number($(this).attr('value'));
+                        $(".price").text(((priceDisplay + toppingPrice + borderPrice) * qtyValue).toLocaleString('vi-VN') + "đ");
                     });
                 },
                 error: function(xhr) {
@@ -216,10 +225,16 @@
                     response.forEach(item => {
                         $(".size-product").append(`<li>${item.size.name}</li>`);
                         $(".size-list").append(`
-                            <li data-value="${item.id}" class="option selected">
+                            <li data-value="${item.id}" value="${item.price}" class="option">
                                 ${item.size.name} (${Number(item.price).toLocaleString('vi-VN')}Đ)
                             </li>
                         `);
+                    });
+
+                    $('.size-list .option').on('click', function() {
+                        var value = Number($(this).attr('value'));
+                        priceDisplay = value;
+                        $(".price").text(Number((priceDisplay + toppingPrice + borderPrice) * qtyValue).toLocaleString('vi-VN') + "đ");
                     });
                 },
                 error: function(xhr) {
@@ -236,10 +251,15 @@
                     response.forEach(item => {
                         $(".topping-product").append(`<li>${item.topping.name}</li>`);
                         $(".topping-list").append(`
-                            <li data-value="${item.topping.id}" class="option">
+                            <li data-value="${item.topping.id}" value="${item.topping.price}" class="option">
                                 ${item.topping.name} (+ ${Number(item.topping.price).toLocaleString('vi-VN')}Đ)
                             </li>
                         `);
+                    });
+
+                    $('.topping-list .option').on('click', function() {
+                        toppingPrice = Number($(this).attr('value'));
+                        $(".price").text(((priceDisplay + toppingPrice + borderPrice) * qtyValue).toLocaleString('vi-VN') + "đ");
                     });
                 },
                 error: function(xhr) {
@@ -295,6 +315,26 @@
             }
 
             addToCart();
+        });
+
+        $('input[name="qty"]').on('input change', function() {
+            qtyValue = Number($(this).val());
+            $(".price").text(((priceDisplay + toppingPrice + borderPrice) * qtyValue).toLocaleString('vi-VN') + "đ");
+        });
+
+        $('.qtyminus').on('click', function() {
+            var qtyInput = $(this).siblings('input[name="qty"]');
+            var currentValue = parseInt(qtyInput.val());
+            if (currentValue >= 1) {
+                qtyInput.val(currentValue).trigger('change');
+            }
+        });
+
+        // Bắt sự kiện click của nút tăng
+        $('.qtyplus').on('click', function() {
+            var qtyInput = $(this).siblings('input[name="qty"]');
+            var currentValue = parseInt(qtyInput.val());
+            qtyInput.val(currentValue).trigger('change');
         });
 
         function refreshToken() {
