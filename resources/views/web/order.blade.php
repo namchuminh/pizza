@@ -191,6 +191,28 @@
             order();
         });
 
+        function profile(){
+            $.ajax({
+                url: '{{ $api_url }}user/profile',
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                },
+                success: function(response) {
+                    $("#phone").val(response.user.customer.phone)
+                    $("#address").val(response.user.customer.address)
+                },
+                error: function(xhr) {
+                    if (xhr.status === 401) {
+                        refreshToken().done(function() {
+                            // Retry the update request with the new token
+                            profile();
+                        });
+                    }
+                }
+            });
+        }
+
         function refreshToken() {
             return $.ajax({
                 url: `{{ $api_url }}refresh`,
@@ -209,6 +231,7 @@
         }
 
         fetchData();
+        profile();
     });
 </script>
 @endsection
