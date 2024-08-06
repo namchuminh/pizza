@@ -153,9 +153,9 @@
                     'Authorization': `Bearer ${localStorage.getItem('access_token')}`
                 },
                 success: function(response) {
-                    if ((response.status != 0) && (response.status != 3)) {
-                        $(".tt").html(Number(response.total_amount).toLocaleString('vi-VN') + 'đ');
-                        $(".gg").html(response.coupon == null ? "0%" : response.coupon.value + '%');
+                    $(".tt").html(Number(response.total_amount).toLocaleString('vi-VN') + 'đ');
+                    $(".gg").html(response.coupon == null ? "0%" : response.coupon.value + '%');
+                    if ((response.status != 0) && (response.status != 3) && (response.status != 2)) {
                         $(".order-status").removeClass('d-none');
                     } 
                 },
