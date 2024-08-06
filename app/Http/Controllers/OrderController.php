@@ -198,9 +198,16 @@ class OrderController extends Controller
             return response()->json(['error' => 'Order not found'], 404);
         }
 
+        $status = $order->status;
+
+        if($status != 3){
+            $status = $status + 1;
+        }
+
         $order->employee_id = $employee_id;
         $order->payment = 1;
-        
+        $order->status = $status;
+
         $order->save();
 
         return response()->json(['message' => 'Order paid successfully']);
