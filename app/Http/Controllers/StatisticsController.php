@@ -69,7 +69,7 @@ class StatisticsController extends Controller
                 'monthQuantity' => $monthQuantity,
             ]);
         }else{
-            $employee = auth()->user()->id;
+            $employee = auth()->user()->employee->id;
             // Ngày hiện tại
             $todayRevenue = Order::whereDate('created_at', Carbon::today())
                 ->where('status', 3)
