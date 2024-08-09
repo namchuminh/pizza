@@ -43,7 +43,11 @@ class OrderController extends Controller
                 ->with('employee')
                 ->orderBy('id', 'desc'); 
 
-            if ($search) {
+            if (is_numeric($search)) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('status', $search);
+                });
+            }else{
                 $query->where(function ($q) use ($search) {
                     $q->where('order_code', 'like', "%{$search}%")
                     ->orWhere('address', 'like', "%{$search}%")

@@ -26,6 +26,13 @@
                 <div class="card">
                     <div class="card-header d-flex">
                         <input id="search-input" class="form-control col-md-2" type="text" placeholder="Mã hóa đơn">
+                        <select id="select-input" class="form-control col-md-2 ml-2">
+                            <option value="">Chọn Trạng Thái</option>
+                            <option value="1">Chờ Duyệt Đơn</option>
+                            <option value="2">Chuẩn Bị Đơn</option>
+                            <option value="3">Đã Giao Đơn</option>
+                            <option value="0">Đã Hủy</option>
+                        </select>
                         <button id="search-button" class="btn btn-primary ml-2 timkiem">Tìm Kiếm</button>
                     </div>
                     <!-- /.card-header -->
@@ -259,6 +266,9 @@
         $('#search-button').on('click', function(event) {
             event.preventDefault();
             currentSearch = $('#search-input').val();
+            if($('#search-input').val() == ""){
+                currentSearch = $('#select-input').val();
+            }
             currentPage = 1; // Reset to the first page
             fetchData(currentPage, currentSearch);
         });
