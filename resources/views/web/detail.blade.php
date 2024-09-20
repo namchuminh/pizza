@@ -89,7 +89,7 @@
                             <div class="form-clt">
                                 <button type="submit" class="theme-btn add-to-cart">
                                     <i class="far fa-shopping-bag"></i>
-                                    <span class="button-text add-to-cart">Thêm Giỏ Hàng</span>
+                                    <span class="button-text">Thêm Giỏ Hàng</span>
                                 </button>
                             </div>
                         </form>
